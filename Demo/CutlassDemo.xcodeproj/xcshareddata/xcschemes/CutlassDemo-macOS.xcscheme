@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "466151EF24731BE300F87A9B"
-               BuildableName = "Cutlass.framework"
-               BlueprintName = "Cutlass-iOS"
-               ReferencedContainer = "container:Cutlass.xcodeproj">
+               BlueprintIdentifier = "4641A06F24742FFE007C85D0"
+               BuildableName = "CutlassDemo-macOS.app"
+               BlueprintName = "CutlassDemo-macOS"
+               ReferencedContainer = "container:CutlassDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "466151FB247338E100F87A9B"
-               BuildableName = "CutlassTests-iOS.xctest"
-               BlueprintName = "CutlassTests-iOS"
-               ReferencedContainer = "container:Cutlass.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4641A06F24742FFE007C85D0"
+            BuildableName = "CutlassDemo-macOS.app"
+            BlueprintName = "CutlassDemo-macOS"
+            ReferencedContainer = "container:CutlassDemo.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "466151EF24731BE300F87A9B"
-            BuildableName = "Cutlass.framework"
-            BlueprintName = "Cutlass-iOS"
-            ReferencedContainer = "container:Cutlass.xcodeproj">
+            BlueprintIdentifier = "4641A06F24742FFE007C85D0"
+            BuildableName = "CutlassDemo-macOS.app"
+            BlueprintName = "CutlassDemo-macOS"
+            ReferencedContainer = "container:CutlassDemo.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

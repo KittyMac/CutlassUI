@@ -10,6 +10,10 @@
 		4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46229640246DF14100A3ED6D /* Cutlass.framework */; };
 		4622964F246DF14200A3ED6D /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; };
 		46229651246DF14200A3ED6D /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4641A06224742645007C85D0 /* CutlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A06124742645007C85D0 /* CutlassView.swift */; };
+		4641A06324742645007C85D0 /* CutlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A06124742645007C85D0 /* CutlassView.swift */; };
+		4641A065247428B9007C85D0 /* CutlassRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A064247428B9007C85D0 /* CutlassRenderer.swift */; };
+		4641A066247428B9007C85D0 /* CutlassRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A064247428B9007C85D0 /* CutlassRenderer.swift */; };
 		46615201247338E100F87A9B /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466151F024731BE300F87A9B /* Cutlass.framework */; platformFilter = ios; };
 		46615207247338F700F87A9B /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; platformFilter = ios; };
 		4661520F24733A6800F87A9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4661520E24733A6800F87A9B /* AppDelegate.swift */; };
@@ -50,6 +54,8 @@
 		46229649246DF14200A3ED6D /* CutlassTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CutlassTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4622964E246DF14200A3ED6D /* CutlassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassTests.swift; sourceTree = "<group>"; };
 		46229650246DF14200A3ED6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4641A06124742645007C85D0 /* CutlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassView.swift; sourceTree = "<group>"; };
+		4641A064247428B9007C85D0 /* CutlassRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassRenderer.swift; sourceTree = "<group>"; };
 		466151F024731BE300F87A9B /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		466151F324731BE300F87A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466151FC247338E100F87A9B /* CutlassTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CutlassTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +183,8 @@
 			isa = PBXGroup;
 			children = (
 				46229643246DF14100A3ED6D /* Cutlass.h */,
+				4641A06124742645007C85D0 /* CutlassView.swift */,
+				4641A064247428B9007C85D0 /* CutlassRenderer.swift */,
 			);
 			path = "Cutlass-Shared";
 			sourceTree = "<group>";
@@ -305,12 +313,14 @@
 				TargetAttributes = {
 					4622963F246DF14100A3ED6D = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1140;
 					};
 					46229648246DF14200A3ED6D = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
 					466151EF24731BE300F87A9B = {
 						CreatedOnToolsVersion = 11.4.1;
+						LastSwiftMigration = 1140;
 					};
 					466151FB247338E100F87A9B = {
 						CreatedOnToolsVersion = 11.4.1;
@@ -389,6 +399,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641A065247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
+				4641A06224742645007C85D0 /* CutlassView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +416,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641A066247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
+				4641A06324742645007C85D0 /* CutlassView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +592,7 @@
 		46229655246DF14200A3ED6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -596,6 +611,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chimerasw.Cutlass;
 				PRODUCT_NAME = "${PROJECT_NAME}";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -603,6 +619,7 @@
 		46229656246DF14200A3ED6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -628,6 +645,7 @@
 		46229658246DF14200A3ED6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
@@ -646,6 +664,7 @@
 		46229659246DF14200A3ED6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
@@ -664,6 +683,7 @@
 		466151F624731BE300F87A9B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
@@ -684,6 +704,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -692,6 +713,7 @@
 		466151F724731BE300F87A9B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
@@ -721,6 +743,7 @@
 		46615205247338E100F87A9B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				INFOPLIST_FILE = CutlassTests/Info.plist;
@@ -742,6 +765,7 @@
 		46615206247338E100F87A9B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				INFOPLIST_FILE = CutlassTests/Info.plist;

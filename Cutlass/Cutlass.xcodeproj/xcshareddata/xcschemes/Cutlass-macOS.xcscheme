@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "46229648246DF14200A3ED6D"
-               BuildableName = "Cutlass.xctest"
+               BuildableName = "CutlassTests-macOS.xctest"
                BlueprintName = "CutlassTests-macOS"
                ReferencedContainer = "container:Cutlass.xcodeproj">
             </BuildableReference>
