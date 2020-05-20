@@ -1,5 +1,12 @@
 framework module Cutlass {
     umbrella header "Cutlass.h"
+    
+    explicit module Yoga {
+        private header "Yoga.h"
+        private header "YGEnums.h"
+        private header "YGMacros.h"
+        private header "YGValue.h"
+    }
 
     export *
 }
