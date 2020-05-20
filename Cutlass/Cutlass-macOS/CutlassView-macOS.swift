@@ -66,7 +66,7 @@ class CutlassView: NSView, CALayerDelegate {
         renderer.render(to: metalLayer)
     }
     
-    func setupCVDisplayLinkForScreen(_ screen:NSScreen) -> Bool {
+    func setupCVDisplayLinkForScreen(_ screen:NSScreen) {
         let displayLinkOutputCallback: CVDisplayLinkOutputCallback = {(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn in
             let view = unsafeBitCast(displayLinkContext, to: CutlassView.self)
             autoreleasepool {
@@ -78,8 +78,6 @@ class CutlassView: NSView, CALayerDelegate {
         CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
         CVDisplayLinkSetOutputCallback(displayLink!, displayLinkOutputCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
         CVDisplayLinkStart(displayLink!)
-
-        return true
     }
     
 }

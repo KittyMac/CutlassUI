@@ -33,6 +33,10 @@ constexpr int n() {
   typedef YG_ENUM_BEGIN(NAME){__VA_ARGS__} YG_ENUM_END(NAME); \
   WIN_EXPORT const char* NAME##ToString(NAME);
 
+#define YG_OPTIONS_DECL(NAME, ...)                               \
+    typedef YG_OPTIONS_BEGIN(NAME){__VA_ARGS__} YG_OPTIONS_END(NAME); \
+    WIN_EXPORT const char* NAME##ToString(NAME);
+
 #ifdef __cplusplus
 #define YG_ENUM_SEQ_DECL(NAME, ...)  \
   YG_ENUM_DECL(NAME, __VA_ARGS__)    \
@@ -130,7 +134,7 @@ YG_ENUM_SEQ_DECL(
 
 YG_ENUM_SEQ_DECL(YGPositionType, YGPositionTypeRelative, YGPositionTypeAbsolute)
 
-YG_ENUM_DECL(
+YG_OPTIONS_DECL (
     YGPrintOptions,
     YGPrintOptionsLayout = 1,
     YGPrintOptionsStyle = 2,
