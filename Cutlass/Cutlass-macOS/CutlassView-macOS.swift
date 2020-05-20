@@ -7,20 +7,15 @@
 //
 
 import Foundation
-
-#if os(iOS)
-import UIKit
-#elseif os(macOS)
 import Cocoa
-#endif
 
-#if os(macOS)
 class CutlassView: NSView, CALayerDelegate {
     let renderer:CutlassRenderer
     let metalLayer:CAMetalLayer
     let device:MTLDevice!
     let pixelFormat:MTLPixelFormat = .bgra8Unorm
     
+    fileprivate var displayLink: CVDisplayLink?
     
     override init(frame: NSRect) {
         device = MTLCreateSystemDefaultDevice()!
@@ -43,13 +38,13 @@ class CutlassView: NSView, CALayerDelegate {
         metalLayer.device = device
         metalLayer.isOpaque = true
         metalLayer.delegate = self
-        metalLayer.maximumDrawableCount = 3
+        metalLayer.maximumDrawableCount = CutlassRenderer.maxConcurrentFrames
         metalLayer.framebufferOnly = true
         
         self.layerContentsRedrawPolicy = .duringViewResize
         self.layerContentsPlacement = .scaleAxesIndependently
         
-        var backgroundColorValues:[CGFloat] = [1, 0, 0, 1]
+        var backgroundColorValues:[CGFloat] = [1, 1, 1, 1]
         if let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) {
             metalLayer.colorspace = colorSpace
             metalLayer.backgroundColor = CGColor(colorSpace: colorSpace, components: &backgroundColorValues)
@@ -63,53 +58,29 @@ class CutlassView: NSView, CALayerDelegate {
         
         return metalLayer
     }
-}
-
-#else
-
-class CutlassView: UIView {
-    let renderer:CutlassRenderer
-    let device:MTLDevice!
-    let pixelFormat:MTLPixelFormat = .bgra8Unorm
     
-    lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
+    override func viewDidMoveToWindow() {
+        setupCVDisplayLinkForScreen(window!.screen!)
+    }
     
-    override class var layerClass: AnyClass {
-        get {
-            return CAMetalLayer.self
+    func render() {
+        renderer.render(to: metalLayer)
+    }
+    
+    func setupCVDisplayLinkForScreen(_ screen:NSScreen) -> Bool {
+        let displayLinkOutputCallback: CVDisplayLinkOutputCallback = {(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn in
+            let view = unsafeBitCast(displayLinkContext, to: CutlassView.self)
+            autoreleasepool {
+                view.render()
+            }
+            return kCVReturnSuccess
         }
-    }
-    
-    override init(frame: CGRect) {
-        device = MTLCreateSystemDefaultDevice()!
-        renderer = CutlassRenderer(pixelFormat: pixelFormat, device: device)
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        device = MTLCreateSystemDefaultDevice()!
-        renderer = CutlassRenderer(pixelFormat: pixelFormat, device: device)
-        super.init(coder: aDecoder)
-    }
-    
-    override func didMoveToWindow() {
-        metalLayer.pixelFormat = pixelFormat
-        metalLayer.device = device
-        metalLayer.isOpaque = true
-        metalLayer.maximumDrawableCount = 3
-        metalLayer.framebufferOnly = true
-        metalLayer.delegate = self
-        
-        var backgroundColorValues:[CGFloat] = [1, 0, 0, 1]
-        if let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) {
-            metalLayer.colorspace = colorSpace
-            metalLayer.backgroundColor = CGColor(colorSpace: colorSpace, components: &backgroundColorValues)
-        }
-        
-        metalLayer.allowsNextDrawableTimeout = false
-        metalLayer.needsDisplayOnBoundsChange = true
-        metalLayer.presentsWithTransaction = true
-    }
-}
+            
+        CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
+        CVDisplayLinkSetOutputCallback(displayLink!, displayLinkOutputCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+        CVDisplayLinkStart(displayLink!)
 
-#endif
+        return true
+    }
+    
+}

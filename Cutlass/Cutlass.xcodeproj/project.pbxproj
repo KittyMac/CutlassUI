@@ -10,10 +10,16 @@
 		4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46229640246DF14100A3ED6D /* Cutlass.framework */; };
 		4622964F246DF14200A3ED6D /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; };
 		46229651246DF14200A3ED6D /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4641A06224742645007C85D0 /* CutlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A06124742645007C85D0 /* CutlassView.swift */; };
-		4641A06324742645007C85D0 /* CutlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A06124742645007C85D0 /* CutlassView.swift */; };
 		4641A065247428B9007C85D0 /* CutlassRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A064247428B9007C85D0 /* CutlassRenderer.swift */; };
 		4641A066247428B9007C85D0 /* CutlassRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A064247428B9007C85D0 /* CutlassRenderer.swift */; };
+		4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0A424745778007C85D0 /* CutlassView-iOS.swift */; };
+		4641A0A72474577E007C85D0 /* CutlassView-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0A62474577E007C85D0 /* CutlassView-macOS.swift */; };
+		4641A0AC2474583D007C85D0 /* Flat.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0A92474583D007C85D0 /* Flat.metal */; };
+		4641A0AD2474583D007C85D0 /* Flat.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0A92474583D007C85D0 /* Flat.metal */; };
+		4641A0AE2474583D007C85D0 /* SDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AA2474583D007C85D0 /* SDF.metal */; };
+		4641A0AF2474583D007C85D0 /* SDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AA2474583D007C85D0 /* SDF.metal */; };
+		4641A0B02474583D007C85D0 /* Textured.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AB2474583D007C85D0 /* Textured.metal */; };
+		4641A0B12474583D007C85D0 /* Textured.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AB2474583D007C85D0 /* Textured.metal */; };
 		46615201247338E100F87A9B /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466151F024731BE300F87A9B /* Cutlass.framework */; platformFilter = ios; };
 		46615207247338F700F87A9B /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; platformFilter = ios; };
 		4661520F24733A6800F87A9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4661520E24733A6800F87A9B /* AppDelegate.swift */; };
@@ -54,8 +60,12 @@
 		46229649246DF14200A3ED6D /* CutlassTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CutlassTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4622964E246DF14200A3ED6D /* CutlassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassTests.swift; sourceTree = "<group>"; };
 		46229650246DF14200A3ED6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4641A06124742645007C85D0 /* CutlassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassView.swift; sourceTree = "<group>"; };
 		4641A064247428B9007C85D0 /* CutlassRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutlassRenderer.swift; sourceTree = "<group>"; };
+		4641A0A424745778007C85D0 /* CutlassView-iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CutlassView-iOS.swift"; sourceTree = "<group>"; };
+		4641A0A62474577E007C85D0 /* CutlassView-macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CutlassView-macOS.swift"; sourceTree = "<group>"; };
+		4641A0A92474583D007C85D0 /* Flat.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Flat.metal; sourceTree = "<group>"; };
+		4641A0AA2474583D007C85D0 /* SDF.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = SDF.metal; sourceTree = "<group>"; };
+		4641A0AB2474583D007C85D0 /* Textured.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Textured.metal; sourceTree = "<group>"; };
 		466151F024731BE300F87A9B /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		466151F324731BE300F87A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466151FC247338E100F87A9B /* CutlassTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CutlassTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +147,7 @@
 		46229642246DF14100A3ED6D /* Cutlass-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				4641A0A62474577E007C85D0 /* CutlassView-macOS.swift */,
 				46229644246DF14100A3ED6D /* Info.plist */,
 			);
 			path = "Cutlass-macOS";
@@ -151,9 +162,20 @@
 			path = CutlassTests;
 			sourceTree = "<group>";
 		};
+		4641A0A82474583D007C85D0 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				4641A0A92474583D007C85D0 /* Flat.metal */,
+				4641A0AA2474583D007C85D0 /* SDF.metal */,
+				4641A0AB2474583D007C85D0 /* Textured.metal */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
 		466151F124731BE300F87A9B /* Cutlass-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4641A0A424745778007C85D0 /* CutlassView-iOS.swift */,
 				466151F324731BE300F87A9B /* Info.plist */,
 			);
 			path = "Cutlass-iOS";
@@ -182,8 +204,8 @@
 		4661522324733B9700F87A9B /* Cutlass-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4641A0A82474583D007C85D0 /* Shaders */,
 				46229643246DF14100A3ED6D /* Cutlass.h */,
-				4641A06124742645007C85D0 /* CutlassView.swift */,
 				4641A064247428B9007C85D0 /* CutlassRenderer.swift */,
 			);
 			path = "Cutlass-Shared";
@@ -400,7 +422,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A065247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
-				4641A06224742645007C85D0 /* CutlassView.swift in Sources */,
+				4641A0B02474583D007C85D0 /* Textured.metal in Sources */,
+				4641A0A72474577E007C85D0 /* CutlassView-macOS.swift in Sources */,
+				4641A0AC2474583D007C85D0 /* Flat.metal in Sources */,
+				4641A0AE2474583D007C85D0 /* SDF.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,8 +441,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */,
+				4641A0B12474583D007C85D0 /* Textured.metal in Sources */,
 				4641A066247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
-				4641A06324742645007C85D0 /* CutlassView.swift in Sources */,
+				4641A0AD2474583D007C85D0 /* Flat.metal in Sources */,
+				4641A0AF2474583D007C85D0 /* SDF.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
