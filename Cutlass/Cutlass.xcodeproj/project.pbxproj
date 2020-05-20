@@ -20,6 +20,66 @@
 		4641A0AF2474583D007C85D0 /* SDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AA2474583D007C85D0 /* SDF.metal */; };
 		4641A0B02474583D007C85D0 /* Textured.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AB2474583D007C85D0 /* Textured.metal */; };
 		4641A0B12474583D007C85D0 /* Textured.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0AB2474583D007C85D0 /* Textured.metal */; };
+		4641A0D32474DB26007C85D0 /* BitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B32474DB26007C85D0 /* BitUtils.h */; };
+		4641A0D42474DB26007C85D0 /* BitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B32474DB26007C85D0 /* BitUtils.h */; };
+		4641A0D52474DB26007C85D0 /* CompactValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B42474DB26007C85D0 /* CompactValue.h */; };
+		4641A0D62474DB26007C85D0 /* CompactValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B42474DB26007C85D0 /* CompactValue.h */; };
+		4641A0D72474DB26007C85D0 /* event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0B62474DB26007C85D0 /* event.cpp */; };
+		4641A0D82474DB26007C85D0 /* event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0B62474DB26007C85D0 /* event.cpp */; };
+		4641A0D92474DB26007C85D0 /* event.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B72474DB26007C85D0 /* event.h */; };
+		4641A0DA2474DB26007C85D0 /* event.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B72474DB26007C85D0 /* event.h */; };
+		4641A0DB2474DB26007C85D0 /* experiments-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B92474DB26007C85D0 /* experiments-inl.h */; };
+		4641A0DC2474DB26007C85D0 /* experiments-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0B92474DB26007C85D0 /* experiments-inl.h */; };
+		4641A0DD2474DB26007C85D0 /* experiments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BA2474DB26007C85D0 /* experiments.cpp */; };
+		4641A0DE2474DB26007C85D0 /* experiments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BA2474DB26007C85D0 /* experiments.cpp */; };
+		4641A0DF2474DB26007C85D0 /* experiments.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BB2474DB26007C85D0 /* experiments.h */; };
+		4641A0E02474DB26007C85D0 /* experiments.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BB2474DB26007C85D0 /* experiments.h */; };
+		4641A0E12474DB26007C85D0 /* log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BC2474DB26007C85D0 /* log.cpp */; };
+		4641A0E22474DB26007C85D0 /* log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BC2474DB26007C85D0 /* log.cpp */; };
+		4641A0E32474DB26007C85D0 /* log.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BD2474DB26007C85D0 /* log.h */; };
+		4641A0E42474DB26007C85D0 /* log.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BD2474DB26007C85D0 /* log.h */; };
+		4641A0E52474DB26007C85D0 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BE2474DB26007C85D0 /* Utils.cpp */; };
+		4641A0E62474DB26007C85D0 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0BE2474DB26007C85D0 /* Utils.cpp */; };
+		4641A0E72474DB26007C85D0 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BF2474DB26007C85D0 /* Utils.h */; };
+		4641A0E82474DB26007C85D0 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0BF2474DB26007C85D0 /* Utils.h */; };
+		4641A0E92474DB26007C85D0 /* YGConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C02474DB26007C85D0 /* YGConfig.cpp */; };
+		4641A0EA2474DB26007C85D0 /* YGConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C02474DB26007C85D0 /* YGConfig.cpp */; };
+		4641A0EB2474DB26007C85D0 /* YGConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C12474DB26007C85D0 /* YGConfig.h */; };
+		4641A0EC2474DB26007C85D0 /* YGConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C12474DB26007C85D0 /* YGConfig.h */; };
+		4641A0ED2474DB26007C85D0 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C22474DB26007C85D0 /* YGEnums.cpp */; };
+		4641A0EE2474DB26007C85D0 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C22474DB26007C85D0 /* YGEnums.cpp */; };
+		4641A0EF2474DB26007C85D0 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C32474DB26007C85D0 /* YGEnums.h */; };
+		4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C32474DB26007C85D0 /* YGEnums.h */; };
+		4641A0F12474DB26007C85D0 /* YGFloatOptional.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C42474DB26007C85D0 /* YGFloatOptional.h */; };
+		4641A0F22474DB26007C85D0 /* YGFloatOptional.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C42474DB26007C85D0 /* YGFloatOptional.h */; };
+		4641A0F32474DB26007C85D0 /* YGLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C52474DB26007C85D0 /* YGLayout.cpp */; };
+		4641A0F42474DB26007C85D0 /* YGLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C52474DB26007C85D0 /* YGLayout.cpp */; };
+		4641A0F52474DB26007C85D0 /* YGLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C62474DB26007C85D0 /* YGLayout.h */; };
+		4641A0F62474DB26007C85D0 /* YGLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C62474DB26007C85D0 /* YGLayout.h */; };
+		4641A0F72474DB26007C85D0 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C72474DB26007C85D0 /* YGMacros.h */; };
+		4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C72474DB26007C85D0 /* YGMacros.h */; };
+		4641A0F92474DB26007C85D0 /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C82474DB26007C85D0 /* YGNode.cpp */; };
+		4641A0FA2474DB26007C85D0 /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C82474DB26007C85D0 /* YGNode.cpp */; };
+		4641A0FB2474DB26007C85D0 /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C92474DB26007C85D0 /* YGNode.h */; };
+		4641A0FC2474DB26007C85D0 /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C92474DB26007C85D0 /* YGNode.h */; };
+		4641A0FD2474DB26007C85D0 /* YGNodePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CA2474DB26007C85D0 /* YGNodePrint.cpp */; };
+		4641A0FE2474DB26007C85D0 /* YGNodePrint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CA2474DB26007C85D0 /* YGNodePrint.cpp */; };
+		4641A0FF2474DB26007C85D0 /* YGNodePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CB2474DB26007C85D0 /* YGNodePrint.h */; };
+		4641A1002474DB26007C85D0 /* YGNodePrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CB2474DB26007C85D0 /* YGNodePrint.h */; };
+		4641A1012474DB26007C85D0 /* YGStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CC2474DB26007C85D0 /* YGStyle.cpp */; };
+		4641A1022474DB26007C85D0 /* YGStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CC2474DB26007C85D0 /* YGStyle.cpp */; };
+		4641A1032474DB26007C85D0 /* YGStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CD2474DB26007C85D0 /* YGStyle.h */; };
+		4641A1042474DB26007C85D0 /* YGStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CD2474DB26007C85D0 /* YGStyle.h */; };
+		4641A1052474DB26007C85D0 /* YGValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CE2474DB26007C85D0 /* YGValue.cpp */; };
+		4641A1062474DB26007C85D0 /* YGValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CE2474DB26007C85D0 /* YGValue.cpp */; };
+		4641A1072474DB26007C85D0 /* YGValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CF2474DB26007C85D0 /* YGValue.h */; };
+		4641A1082474DB26007C85D0 /* YGValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CF2474DB26007C85D0 /* YGValue.h */; };
+		4641A1092474DB26007C85D0 /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D02474DB26007C85D0 /* Yoga-internal.h */; };
+		4641A10A2474DB26007C85D0 /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D02474DB26007C85D0 /* Yoga-internal.h */; };
+		4641A10B2474DB26007C85D0 /* Yoga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0D12474DB26007C85D0 /* Yoga.cpp */; };
+		4641A10C2474DB26007C85D0 /* Yoga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0D12474DB26007C85D0 /* Yoga.cpp */; };
+		4641A10D2474DB26007C85D0 /* Yoga.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D22474DB26007C85D0 /* Yoga.h */; };
+		4641A10E2474DB26007C85D0 /* Yoga.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D22474DB26007C85D0 /* Yoga.h */; };
 		46615201247338E100F87A9B /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466151F024731BE300F87A9B /* Cutlass.framework */; platformFilter = ios; };
 		46615207247338F700F87A9B /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; platformFilter = ios; };
 		4661520F24733A6800F87A9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4661520E24733A6800F87A9B /* AppDelegate.swift */; };
@@ -66,6 +126,36 @@
 		4641A0A92474583D007C85D0 /* Flat.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Flat.metal; sourceTree = "<group>"; };
 		4641A0AA2474583D007C85D0 /* SDF.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = SDF.metal; sourceTree = "<group>"; };
 		4641A0AB2474583D007C85D0 /* Textured.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Textured.metal; sourceTree = "<group>"; };
+		4641A0B32474DB26007C85D0 /* BitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitUtils.h; sourceTree = "<group>"; };
+		4641A0B42474DB26007C85D0 /* CompactValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompactValue.h; sourceTree = "<group>"; };
+		4641A0B62474DB26007C85D0 /* event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = event.cpp; sourceTree = "<group>"; };
+		4641A0B72474DB26007C85D0 /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
+		4641A0B92474DB26007C85D0 /* experiments-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "experiments-inl.h"; sourceTree = "<group>"; };
+		4641A0BA2474DB26007C85D0 /* experiments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = experiments.cpp; sourceTree = "<group>"; };
+		4641A0BB2474DB26007C85D0 /* experiments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = experiments.h; sourceTree = "<group>"; };
+		4641A0BC2474DB26007C85D0 /* log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = log.cpp; sourceTree = "<group>"; };
+		4641A0BD2474DB26007C85D0 /* log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = log.h; sourceTree = "<group>"; };
+		4641A0BE2474DB26007C85D0 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		4641A0BF2474DB26007C85D0 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		4641A0C02474DB26007C85D0 /* YGConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGConfig.cpp; sourceTree = "<group>"; };
+		4641A0C12474DB26007C85D0 /* YGConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGConfig.h; sourceTree = "<group>"; };
+		4641A0C22474DB26007C85D0 /* YGEnums.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGEnums.cpp; sourceTree = "<group>"; };
+		4641A0C32474DB26007C85D0 /* YGEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGEnums.h; sourceTree = "<group>"; };
+		4641A0C42474DB26007C85D0 /* YGFloatOptional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGFloatOptional.h; sourceTree = "<group>"; };
+		4641A0C52474DB26007C85D0 /* YGLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGLayout.cpp; sourceTree = "<group>"; };
+		4641A0C62474DB26007C85D0 /* YGLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGLayout.h; sourceTree = "<group>"; };
+		4641A0C72474DB26007C85D0 /* YGMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGMacros.h; sourceTree = "<group>"; };
+		4641A0C82474DB26007C85D0 /* YGNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGNode.cpp; sourceTree = "<group>"; };
+		4641A0C92474DB26007C85D0 /* YGNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGNode.h; sourceTree = "<group>"; };
+		4641A0CA2474DB26007C85D0 /* YGNodePrint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGNodePrint.cpp; sourceTree = "<group>"; };
+		4641A0CB2474DB26007C85D0 /* YGNodePrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGNodePrint.h; sourceTree = "<group>"; };
+		4641A0CC2474DB26007C85D0 /* YGStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGStyle.cpp; sourceTree = "<group>"; };
+		4641A0CD2474DB26007C85D0 /* YGStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGStyle.h; sourceTree = "<group>"; };
+		4641A0CE2474DB26007C85D0 /* YGValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YGValue.cpp; sourceTree = "<group>"; };
+		4641A0CF2474DB26007C85D0 /* YGValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGValue.h; sourceTree = "<group>"; };
+		4641A0D02474DB26007C85D0 /* Yoga-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Yoga-internal.h"; sourceTree = "<group>"; };
+		4641A0D12474DB26007C85D0 /* Yoga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Yoga.cpp; sourceTree = "<group>"; };
+		4641A0D22474DB26007C85D0 /* Yoga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Yoga.h; sourceTree = "<group>"; };
 		466151F024731BE300F87A9B /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		466151F324731BE300F87A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466151FC247338E100F87A9B /* CutlassTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CutlassTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +262,59 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		4641A0B22474DB26007C85D0 /* Yoga */ = {
+			isa = PBXGroup;
+			children = (
+				4641A0B32474DB26007C85D0 /* BitUtils.h */,
+				4641A0B42474DB26007C85D0 /* CompactValue.h */,
+				4641A0B52474DB26007C85D0 /* event */,
+				4641A0B82474DB26007C85D0 /* internal */,
+				4641A0BC2474DB26007C85D0 /* log.cpp */,
+				4641A0BD2474DB26007C85D0 /* log.h */,
+				4641A0BE2474DB26007C85D0 /* Utils.cpp */,
+				4641A0BF2474DB26007C85D0 /* Utils.h */,
+				4641A0C02474DB26007C85D0 /* YGConfig.cpp */,
+				4641A0C12474DB26007C85D0 /* YGConfig.h */,
+				4641A0C22474DB26007C85D0 /* YGEnums.cpp */,
+				4641A0C32474DB26007C85D0 /* YGEnums.h */,
+				4641A0C42474DB26007C85D0 /* YGFloatOptional.h */,
+				4641A0C52474DB26007C85D0 /* YGLayout.cpp */,
+				4641A0C62474DB26007C85D0 /* YGLayout.h */,
+				4641A0C72474DB26007C85D0 /* YGMacros.h */,
+				4641A0C82474DB26007C85D0 /* YGNode.cpp */,
+				4641A0C92474DB26007C85D0 /* YGNode.h */,
+				4641A0CA2474DB26007C85D0 /* YGNodePrint.cpp */,
+				4641A0CB2474DB26007C85D0 /* YGNodePrint.h */,
+				4641A0CC2474DB26007C85D0 /* YGStyle.cpp */,
+				4641A0CD2474DB26007C85D0 /* YGStyle.h */,
+				4641A0CE2474DB26007C85D0 /* YGValue.cpp */,
+				4641A0CF2474DB26007C85D0 /* YGValue.h */,
+				4641A0D02474DB26007C85D0 /* Yoga-internal.h */,
+				4641A0D12474DB26007C85D0 /* Yoga.cpp */,
+				4641A0D22474DB26007C85D0 /* Yoga.h */,
+			);
+			path = Yoga;
+			sourceTree = "<group>";
+		};
+		4641A0B52474DB26007C85D0 /* event */ = {
+			isa = PBXGroup;
+			children = (
+				4641A0B62474DB26007C85D0 /* event.cpp */,
+				4641A0B72474DB26007C85D0 /* event.h */,
+			);
+			path = event;
+			sourceTree = "<group>";
+		};
+		4641A0B82474DB26007C85D0 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				4641A0B92474DB26007C85D0 /* experiments-inl.h */,
+				4641A0BA2474DB26007C85D0 /* experiments.cpp */,
+				4641A0BB2474DB26007C85D0 /* experiments.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
 		466151F124731BE300F87A9B /* Cutlass-iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +347,7 @@
 		4661522324733B9700F87A9B /* Cutlass-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4641A0B22474DB26007C85D0 /* Yoga */,
 				4641A0A82474583D007C85D0 /* Shaders */,
 				46229643246DF14100A3ED6D /* Cutlass.h */,
 				4641A064247428B9007C85D0 /* CutlassRenderer.swift */,
@@ -218,7 +362,25 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641A1032474DB26007C85D0 /* YGStyle.h in Headers */,
+				4641A1092474DB26007C85D0 /* Yoga-internal.h in Headers */,
+				4641A0FB2474DB26007C85D0 /* YGNode.h in Headers */,
+				4641A0D52474DB26007C85D0 /* CompactValue.h in Headers */,
+				4641A0EF2474DB26007C85D0 /* YGEnums.h in Headers */,
+				4641A0F52474DB26007C85D0 /* YGLayout.h in Headers */,
+				4641A0FF2474DB26007C85D0 /* YGNodePrint.h in Headers */,
+				4641A0EB2474DB26007C85D0 /* YGConfig.h in Headers */,
+				4641A0E32474DB26007C85D0 /* log.h in Headers */,
+				4641A0DB2474DB26007C85D0 /* experiments-inl.h in Headers */,
+				4641A1072474DB26007C85D0 /* YGValue.h in Headers */,
+				4641A0F72474DB26007C85D0 /* YGMacros.h in Headers */,
+				4641A0D32474DB26007C85D0 /* BitUtils.h in Headers */,
 				46229651246DF14200A3ED6D /* Cutlass.h in Headers */,
+				4641A0F12474DB26007C85D0 /* YGFloatOptional.h in Headers */,
+				4641A0D92474DB26007C85D0 /* event.h in Headers */,
+				4641A0E72474DB26007C85D0 /* Utils.h in Headers */,
+				4641A0DF2474DB26007C85D0 /* experiments.h in Headers */,
+				4641A10D2474DB26007C85D0 /* Yoga.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +388,25 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4641A1042474DB26007C85D0 /* YGStyle.h in Headers */,
+				4641A10A2474DB26007C85D0 /* Yoga-internal.h in Headers */,
+				4641A0FC2474DB26007C85D0 /* YGNode.h in Headers */,
+				4641A0D62474DB26007C85D0 /* CompactValue.h in Headers */,
+				4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */,
+				4641A0F62474DB26007C85D0 /* YGLayout.h in Headers */,
+				4641A1002474DB26007C85D0 /* YGNodePrint.h in Headers */,
+				4641A0EC2474DB26007C85D0 /* YGConfig.h in Headers */,
+				4641A0E42474DB26007C85D0 /* log.h in Headers */,
+				4641A0DC2474DB26007C85D0 /* experiments-inl.h in Headers */,
+				4641A1082474DB26007C85D0 /* YGValue.h in Headers */,
+				4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */,
+				4641A0D42474DB26007C85D0 /* BitUtils.h in Headers */,
 				4661522424733BD100F87A9B /* Cutlass.h in Headers */,
+				4641A0F22474DB26007C85D0 /* YGFloatOptional.h in Headers */,
+				4641A0DA2474DB26007C85D0 /* event.h in Headers */,
+				4641A0E82474DB26007C85D0 /* Utils.h in Headers */,
+				4641A0E02474DB26007C85D0 /* experiments.h in Headers */,
+				4641A10E2474DB26007C85D0 /* Yoga.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,9 +602,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A065247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
+				4641A1012474DB26007C85D0 /* YGStyle.cpp in Sources */,
+				4641A0E92474DB26007C85D0 /* YGConfig.cpp in Sources */,
 				4641A0B02474583D007C85D0 /* Textured.metal in Sources */,
+				4641A0F32474DB26007C85D0 /* YGLayout.cpp in Sources */,
+				4641A0E12474DB26007C85D0 /* log.cpp in Sources */,
 				4641A0A72474577E007C85D0 /* CutlassView-macOS.swift in Sources */,
+				4641A0ED2474DB26007C85D0 /* YGEnums.cpp in Sources */,
+				4641A0E52474DB26007C85D0 /* Utils.cpp in Sources */,
+				4641A1052474DB26007C85D0 /* YGValue.cpp in Sources */,
+				4641A0F92474DB26007C85D0 /* YGNode.cpp in Sources */,
 				4641A0AC2474583D007C85D0 /* Flat.metal in Sources */,
+				4641A0D72474DB26007C85D0 /* event.cpp in Sources */,
+				4641A0FD2474DB26007C85D0 /* YGNodePrint.cpp in Sources */,
+				4641A10B2474DB26007C85D0 /* Yoga.cpp in Sources */,
+				4641A0DD2474DB26007C85D0 /* experiments.cpp in Sources */,
 				4641A0AE2474583D007C85D0 /* SDF.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,9 +634,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */,
+				4641A1022474DB26007C85D0 /* YGStyle.cpp in Sources */,
+				4641A0EA2474DB26007C85D0 /* YGConfig.cpp in Sources */,
 				4641A0B12474583D007C85D0 /* Textured.metal in Sources */,
+				4641A0F42474DB26007C85D0 /* YGLayout.cpp in Sources */,
+				4641A0E22474DB26007C85D0 /* log.cpp in Sources */,
 				4641A066247428B9007C85D0 /* CutlassRenderer.swift in Sources */,
+				4641A0EE2474DB26007C85D0 /* YGEnums.cpp in Sources */,
+				4641A0E62474DB26007C85D0 /* Utils.cpp in Sources */,
+				4641A1062474DB26007C85D0 /* YGValue.cpp in Sources */,
+				4641A0FA2474DB26007C85D0 /* YGNode.cpp in Sources */,
 				4641A0AD2474583D007C85D0 /* Flat.metal in Sources */,
+				4641A0D82474DB26007C85D0 /* event.cpp in Sources */,
+				4641A0FE2474DB26007C85D0 /* YGNodePrint.cpp in Sources */,
+				4641A10C2474DB26007C85D0 /* Yoga.cpp in Sources */,
+				4641A0DE2474DB26007C85D0 /* experiments.cpp in Sources */,
 				4641A0AF2474583D007C85D0 /* SDF.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
