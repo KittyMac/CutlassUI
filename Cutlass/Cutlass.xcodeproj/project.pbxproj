@@ -49,7 +49,7 @@
 		4641A0ED2474DB26007C85D0 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C22474DB26007C85D0 /* YGEnums.cpp */; };
 		4641A0EE2474DB26007C85D0 /* YGEnums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C22474DB26007C85D0 /* YGEnums.cpp */; };
 		4641A0EF2474DB26007C85D0 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C32474DB26007C85D0 /* YGEnums.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C32474DB26007C85D0 /* YGEnums.h */; };
+		4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C32474DB26007C85D0 /* YGEnums.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4641A0F12474DB26007C85D0 /* YGFloatOptional.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C42474DB26007C85D0 /* YGFloatOptional.h */; };
 		4641A0F22474DB26007C85D0 /* YGFloatOptional.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C42474DB26007C85D0 /* YGFloatOptional.h */; };
 		4641A0F32474DB26007C85D0 /* YGLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C52474DB26007C85D0 /* YGLayout.cpp */; };
@@ -57,7 +57,7 @@
 		4641A0F52474DB26007C85D0 /* YGLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C62474DB26007C85D0 /* YGLayout.h */; };
 		4641A0F62474DB26007C85D0 /* YGLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C62474DB26007C85D0 /* YGLayout.h */; };
 		4641A0F72474DB26007C85D0 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C72474DB26007C85D0 /* YGMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C72474DB26007C85D0 /* YGMacros.h */; };
+		4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C72474DB26007C85D0 /* YGMacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4641A0F92474DB26007C85D0 /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C82474DB26007C85D0 /* YGNode.cpp */; };
 		4641A0FA2474DB26007C85D0 /* YGNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0C82474DB26007C85D0 /* YGNode.cpp */; };
 		4641A0FB2474DB26007C85D0 /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0C92474DB26007C85D0 /* YGNode.h */; };
@@ -73,7 +73,7 @@
 		4641A1052474DB26007C85D0 /* YGValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CE2474DB26007C85D0 /* YGValue.cpp */; };
 		4641A1062474DB26007C85D0 /* YGValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0CE2474DB26007C85D0 /* YGValue.cpp */; };
 		4641A1072474DB26007C85D0 /* YGValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CF2474DB26007C85D0 /* YGValue.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		4641A1082474DB26007C85D0 /* YGValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CF2474DB26007C85D0 /* YGValue.h */; };
+		4641A1082474DB26007C85D0 /* YGValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0CF2474DB26007C85D0 /* YGValue.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4641A1092474DB26007C85D0 /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D02474DB26007C85D0 /* Yoga-internal.h */; };
 		4641A10A2474DB26007C85D0 /* Yoga-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4641A0D02474DB26007C85D0 /* Yoga-internal.h */; };
 		4641A10B2474DB26007C85D0 /* Yoga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4641A0D12474DB26007C85D0 /* Yoga.cpp */; };
@@ -402,17 +402,17 @@
 			files = (
 				4641A1042474DB26007C85D0 /* YGStyle.h in Headers */,
 				4641A10E2474DB26007C85D0 /* Yoga.h in Headers */,
+				4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */,
+				4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */,
+				4641A1082474DB26007C85D0 /* YGValue.h in Headers */,
 				4641A10A2474DB26007C85D0 /* Yoga-internal.h in Headers */,
 				4641A0FC2474DB26007C85D0 /* YGNode.h in Headers */,
 				4641A0D62474DB26007C85D0 /* CompactValue.h in Headers */,
-				4641A0F02474DB26007C85D0 /* YGEnums.h in Headers */,
 				4641A0F62474DB26007C85D0 /* YGLayout.h in Headers */,
 				4641A1002474DB26007C85D0 /* YGNodePrint.h in Headers */,
 				4641A0EC2474DB26007C85D0 /* YGConfig.h in Headers */,
 				4641A0E42474DB26007C85D0 /* log.h in Headers */,
 				4641A0DC2474DB26007C85D0 /* experiments-inl.h in Headers */,
-				4641A1082474DB26007C85D0 /* YGValue.h in Headers */,
-				4641A0F82474DB26007C85D0 /* YGMacros.h in Headers */,
 				4641A0D42474DB26007C85D0 /* BitUtils.h in Headers */,
 				4661522424733BD100F87A9B /* Cutlass.h in Headers */,
 				4641A0F22474DB26007C85D0 /* YGFloatOptional.h in Headers */,

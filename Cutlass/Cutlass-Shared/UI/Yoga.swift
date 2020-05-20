@@ -43,9 +43,10 @@ class Yoga {
         node = YGNodeNew()
     }
     
+    
     func print() {
         YGNodePrint(node, YGPrintOptions(rawValue: 1 | 2 | 4)!)
-        //YGNodePrint(node, .layout | .style | .children)
+        //YGNodePrint(node, .layout. | .style | .children)
     }
     
     
@@ -178,10 +179,10 @@ class Yoga {
     @discardableResult func bottom(px:Float) -> Self { YGNodeStyleSetPosition(node, .bottom, px); _usesTop = false; return self }
     @discardableResult func right(px:Float) -> Self { YGNodeStyleSetPosition(node, .right, px); _usesLeft = false; return self }
 
-    @discardableResult func top(pc:Float) -> Self { YGNodeStyleSetPositionPercent(node, .top, pc); _usesTop = true; return self }
-    @discardableResult func left(pc:Float) -> Self { YGNodeStyleSetPositionPercent(node, .left, pc); _usesLeft = true; return self }
-    @discardableResult func bottom(pc:Float) -> Self { YGNodeStyleSetPositionPercent(node, .bottom, pc); _usesTop = false; return self }
-    @discardableResult func right(pc:Float) -> Self { YGNodeStyleSetPositionPercent(node, .right, pc); _usesLeft = false; return self }
+    @discardableResult func top(percent:Float) -> Self { YGNodeStyleSetPositionPercent(node, .top, percent); _usesTop = true; return self }
+    @discardableResult func left(percent:Float) -> Self { YGNodeStyleSetPositionPercent(node, .left, percent); _usesLeft = true; return self }
+    @discardableResult func bottom(percent:Float) -> Self { YGNodeStyleSetPositionPercent(node, .bottom, percent); _usesTop = false; return self }
+    @discardableResult func right(percent:Float) -> Self { YGNodeStyleSetPositionPercent(node, .right, percent); _usesLeft = false; return self }
 
     @discardableResult func paddingAll(px:Float) -> Self { YGNodeStyleSetPadding(node, .all, px); return self }
     @discardableResult func paddingTop(px:Float) -> Self { YGNodeStyleSetPadding(node, .top, px); return self }
@@ -189,11 +190,11 @@ class Yoga {
     @discardableResult func paddingBottom(px:Float) -> Self { YGNodeStyleSetPadding(node, .bottom, px); return self }
     @discardableResult func paddingRight(px:Float) -> Self { YGNodeStyleSetPadding(node, .right, px); return self }
     
-    @discardableResult func paddingAll(pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .all, pc); return self }
-    @discardableResult func paddingTop(pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .top, pc); return self }
-    @discardableResult func paddingLeft(pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .left, pc); return self }
-    @discardableResult func paddingBottom(pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .bottom, pc); return self }
-    @discardableResult func paddingRight(pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .right, pc); return self }
+    @discardableResult func paddingAll(percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .all, percent); return self }
+    @discardableResult func paddingTop(percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .top, percent); return self }
+    @discardableResult func paddingLeft(percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .left, percent); return self }
+    @discardableResult func paddingBottom(percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .bottom, percent); return self }
+    @discardableResult func paddingRight(percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, .right, percent); return self }
 
     @discardableResult func marginAll(px:Float) -> Self { YGNodeStyleSetMargin(node, .all, px); return self }
     @discardableResult func marginTop(px:Float) -> Self { YGNodeStyleSetMargin(node, .top, px); return self }
@@ -201,11 +202,11 @@ class Yoga {
     @discardableResult func marginBottom(px:Float) -> Self { YGNodeStyleSetMargin(node, .bottom, px); return self }
     @discardableResult func marginRight(px:Float) -> Self { YGNodeStyleSetMargin(node, .right, px); return self }
     
-    @discardableResult func marginAll(pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, .all, pc); return self }
-    @discardableResult func marginTop(pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, .top, pc); return self }
-    @discardableResult func marginLeft(pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, .left, pc); return self }
-    @discardableResult func marginBottom(pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, .bottom, pc); return self }
-    @discardableResult func marginRight(pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, .right, pc); return self }
+    @discardableResult func marginAll(percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, .all, percent); return self }
+    @discardableResult func marginTop(percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, .top, percent); return self }
+    @discardableResult func marginLeft(percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, .left, percent); return self }
+    @discardableResult func marginBottom(percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, .bottom, percent); return self }
+    @discardableResult func marginRight(percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, .right, percent); return self }
 
 
     // These are direct calls to the Yoga methods (most of which require parameters)
@@ -231,39 +232,39 @@ class Yoga {
     @discardableResult func flexAuto() -> Self { YGNodeStyleSetFlexBasisAuto(node); return self }
     
     @discardableResult func flexBasis(px:Float) -> Self { YGNodeStyleSetFlexBasis(node, px); return self }
-    @discardableResult func flexBasis(pc:Float) -> Self { YGNodeStyleSetFlexBasisPercent(node, pc); return self }
+    @discardableResult func flexBasis(percent:Float) -> Self { YGNodeStyleSetFlexBasisPercent(node, percent); return self }
 
     @discardableResult func position(edge:YGEdge, px:Float) -> Self { YGNodeStyleSetPosition(node, edge, px); return self }
-    @discardableResult func position(edge:YGEdge, pc:Float) -> Self { YGNodeStyleSetPositionPercent(node, edge, pc); return self }
+    @discardableResult func position(edge:YGEdge, percent:Float) -> Self { YGNodeStyleSetPositionPercent(node, edge, percent); return self }
 
     @discardableResult func margin(edge:YGEdge, px:Float) -> Self { YGNodeStyleSetMargin(node, edge, px); return self }
-    @discardableResult func margin(edge:YGEdge, pc:Float) -> Self { YGNodeStyleSetMarginPercent(node, edge, pc); return self }
+    @discardableResult func margin(edge:YGEdge, percent:Float) -> Self { YGNodeStyleSetMarginPercent(node, edge, percent); return self }
     @discardableResult func marginAuto(v1:YGEdge) -> Self { YGNodeStyleSetMarginAuto(node, v1); return self }
 
     @discardableResult func padding(edge:YGEdge, px:Float) -> Self { YGNodeStyleSetPadding(node, edge, px); return self }
-    @discardableResult func padding(edge:YGEdge, pc:Float) -> Self { YGNodeStyleSetPaddingPercent(node, edge, pc); return self }
+    @discardableResult func padding(edge:YGEdge, percent:Float) -> Self { YGNodeStyleSetPaddingPercent(node, edge, percent); return self }
 
     @discardableResult func border(v1:YGEdge, v2:Float) -> Self { YGNodeStyleSetBorder(node, v1, v2); return self }
 
     @discardableResult func width(px:Float) -> Self { YGNodeStyleSetWidth(node, px); return self }
-    @discardableResult func width(pc:Float) -> Self { YGNodeStyleSetWidthPercent(node, pc); return self }
+    @discardableResult func width(percent:Float) -> Self { YGNodeStyleSetWidthPercent(node, percent); return self }
     @discardableResult func widthAuto() -> Self { YGNodeStyleSetWidthAuto(node); return self }
 
     @discardableResult func height(px:Float) -> Self { YGNodeStyleSetHeight(node, px); return self }
-    @discardableResult func height(pc:Float) -> Self { YGNodeStyleSetHeightPercent(node, pc); return self }
+    @discardableResult func height(percent:Float) -> Self { YGNodeStyleSetHeightPercent(node, percent); return self }
     @discardableResult func heightAuto() -> Self { YGNodeStyleSetHeightAuto(node); return self }
 
     @discardableResult func minWidth(px:Float) -> Self { YGNodeStyleSetMinWidth(node, px); return self }
-    @discardableResult func minWidth(pc:Float) -> Self { YGNodeStyleSetMinWidthPercent(node, pc); return self }
+    @discardableResult func minWidth(percent:Float) -> Self { YGNodeStyleSetMinWidthPercent(node, percent); return self }
 
     @discardableResult func minHeight(px:Float) -> Self { YGNodeStyleSetMinHeight(node, px); return self }
-    @discardableResult func minHeight(pc:Float) -> Self { YGNodeStyleSetMinHeightPercent(node, pc); return self }
+    @discardableResult func minHeight(percent:Float) -> Self { YGNodeStyleSetMinHeightPercent(node, percent); return self }
 
     @discardableResult func maxWidth(px:Float) -> Self { YGNodeStyleSetMaxWidth(node, px); return self }
-    @discardableResult func maxWidth(pc:Float) -> Self { YGNodeStyleSetMaxWidthPercent(node, pc); return self }
+    @discardableResult func maxWidth(percent:Float) -> Self { YGNodeStyleSetMaxWidthPercent(node, percent); return self }
 
     @discardableResult func maxHeight(px:Float) -> Self { YGNodeStyleSetMaxHeight(node, px); return self }
-    @discardableResult func maxHeight(pc:Float) -> Self { YGNodeStyleSetMaxHeightPercent(node, pc); return self }
+    @discardableResult func maxHeight(percent:Float) -> Self { YGNodeStyleSetMaxHeightPercent(node, percent); return self }
 
     @discardableResult func aspectRatio(v:Float) -> Self { YGNodeStyleSetAspectRatio(node, v); return self }
 

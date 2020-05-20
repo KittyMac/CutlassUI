@@ -20,7 +20,7 @@ class CutlassTests: XCTestCase {
     }
 
     func testYoga1() {
-        let node = Yoga().size(1024,768).center().top(p: <#T##Float#>)
+        let node = Yoga().size(1024,768).center().top(percent:10)
         node.layout()
         node.print()
     }
