@@ -54,7 +54,6 @@ class CutlassView: NSView, CALayerDelegate {
         
         metalLayer.autoresizingMask = CAAutoresizingMask(arrayLiteral: [.layerHeightSizable, .layerWidthSizable])
         metalLayer.needsDisplayOnBoundsChange = true
-        metalLayer.presentsWithTransaction = true
         
         return metalLayer
     }

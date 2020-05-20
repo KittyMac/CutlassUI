@@ -13,8 +13,9 @@ class CutlassView: UIView {
     let renderer:CutlassRenderer
     let device:MTLDevice!
     let pixelFormat:MTLPixelFormat = .bgra8Unorm
-    
     lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
+    
+    fileprivate var displayLink: CADisplayLink?
     
     override class var layerClass: AnyClass {
         get {
@@ -50,6 +51,25 @@ class CutlassView: UIView {
         
         metalLayer.allowsNextDrawableTimeout = false
         metalLayer.needsDisplayOnBoundsChange = true
-        metalLayer.presentsWithTransaction = true
+        
+        if let window = window {
+            setupCVDisplayLinkForScreen(window.screen)
+        } else {
+            displayLink?.invalidate()
+            displayLink = nil
+            return
+        }
+        
+        displayLink?.add(to: RunLoop.current, forMode: .common)
+    }
+    
+    @objc func render() {
+        renderer.render(to:metalLayer)
+    }
+    
+    func setupCVDisplayLinkForScreen(_ screen:UIScreen) {
+        displayLink?.invalidate()
+        displayLink = screen.displayLink(withTarget: self, selector: #selector(render))
+        displayLink?.preferredFramesPerSecond = 0
     }
 }
