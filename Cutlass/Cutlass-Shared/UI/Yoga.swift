@@ -23,10 +23,11 @@ import Flynn
  */
 
 public class Yoga {
-    var parent:Yoga?
-    var node:YGNodeRef
+    private var parent:Yoga?
+    private var node:YGNodeRef
     
-    var views:[Actor] = []
+    private var views:[Viewable] = []
+    private var children:[Yoga] = []
     
     private var _pivot = GLKVector2Make(0.5,0.5)
     private var _anchor = GLKVector2Make(0.5,0.5)
@@ -66,17 +67,30 @@ public class Yoga {
         //if postLayout() then
         //  YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value, .LTR)
         //end
+    }
+    
+    public func render(_ ctx:RenderFrameContext) -> Int {
+        return render_recursive(0, ctx)
+    }
+    
+    private func render_recursive(_ n:Int, _ ctx:RenderFrameContext) -> Int {
+        var local_n:Int = n
         
+        for view in views {
+            view.render(ctx)
+            local_n += 1
+        }
+        
+        for child in children {
+            local_n += child.render(ctx)
+        }
+        
+        return local_n
     }
-    
-    public func render() {
-        // Walk over all children and call render on their views
-    }
-    
     
     // MARK: - Yoga Setters
     
-    @discardableResult public func view(_ view:Actor) -> Self {
+    @discardableResult public func view(_ view:Viewable) -> Self {
         views.append(view)
         return self
     }

@@ -8,16 +8,17 @@
 
 import Foundation
 import UIKit
+import Flynn
 
-class CutlassView: UIView {
-    let renderer:CutlassRenderer
+public class CutlassView: UIView {
+    let _renderer:Renderer
     let device:MTLDevice!
     let pixelFormat:MTLPixelFormat = .bgra8Unorm
     lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
     
     fileprivate var displayLink: CADisplayLink?
     
-    override class var layerClass: AnyClass {
+    public override class var layerClass: AnyClass {
         get {
             return CAMetalLayer.self
         }
@@ -25,21 +26,21 @@ class CutlassView: UIView {
     
     override init(frame: CGRect) {
         device = MTLCreateSystemDefaultDevice()!
-        renderer = CutlassRenderer(pixelFormat: pixelFormat, device: device)
+        _renderer = Renderer(pixelFormat: pixelFormat, device: device)
         super.init(frame: frame)
     }
     
     required init?(coder aDecoder: NSCoder) {
         device = MTLCreateSystemDefaultDevice()!
-        renderer = CutlassRenderer(pixelFormat: pixelFormat, device: device)
+        _renderer = Renderer(pixelFormat: pixelFormat, device: device)
         super.init(coder: aDecoder)
     }
     
-    override func didMoveToWindow() {
+    public override func didMoveToWindow() {
         metalLayer.pixelFormat = pixelFormat
         metalLayer.device = device
         metalLayer.isOpaque = true
-        metalLayer.maximumDrawableCount = CutlassRenderer.maxConcurrentFrames
+        //metalLayer.maximumDrawableCount = Renderer.maxConcurrentFrames
         metalLayer.framebufferOnly = true
         metalLayer.delegate = self
         
@@ -49,7 +50,6 @@ class CutlassView: UIView {
             metalLayer.backgroundColor = CGColor(colorSpace: colorSpace, components: &backgroundColorValues)
         }
         
-        metalLayer.allowsNextDrawableTimeout = false
         metalLayer.needsDisplayOnBoundsChange = true
         
         if let window = window {
@@ -63,8 +63,14 @@ class CutlassView: UIView {
         displayLink?.add(to: RunLoop.current, forMode: .common)
     }
     
+    public func renderer() -> Renderer {
+        return self._renderer
+    }
+    
     @objc func render() {
-        renderer.render(to:metalLayer)
+        autoreleasepool {
+            _renderer.render(metalLayer)
+        }
     }
     
     func setupCVDisplayLinkForScreen(_ screen:UIScreen) {

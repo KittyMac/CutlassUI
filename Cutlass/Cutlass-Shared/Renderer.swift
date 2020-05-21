@@ -1,5 +1,5 @@
 //
-//  CutlassRenderer.swift
+//  Renderer.swift
 //  Cutlass
 //
 //  Created by Rocco Bowling on 5/19/20.
@@ -10,6 +10,7 @@ import Foundation
 import MetalKit
 import GLKit
 import simd
+import Flynn
 
 #if os(iOS)
 import UIKit
@@ -31,11 +32,13 @@ struct SDFUniforms {
     var edgeWidth:Float
 }
 
-class CutlassRenderer {
-    static var maxConcurrentFrames:Int = 3
+public class Renderer : Actor {
+    private var metalDevice:MTLDevice
+    private var pixelFormat:MTLPixelFormat
     
-    var metalDevice:MTLDevice
-    var pixelFormat:MTLPixelFormat
+    private let maxConcurrentFrames:Int = 2
+    
+    private var root:Yoga = Yoga()
     
     private var metalCommandQueue: MTLCommandQueue!
     
@@ -240,14 +243,39 @@ class CutlassRenderer {
         bundlePathCache = Dictionary<String, String>()
         textureCache = Dictionary<String, MTLTexture>()
         isLoadingTextureCache = Dictionary<String, Bool>()
-                
-        depthTexture = getDepthTexture(size:CGSize(width: 128, height: 128))
         
+        super.init()
+        
+        self.privateInit()
+    }
+    
+    private func privateInit() {
+        depthTexture = getDepthTexture(size:CGSize(width: 128, height: 128))
+    }
+    
+    private func getDepthTexture(size:CGSize) -> MTLTexture {
+        
+        var textureWidth:Int = 128
+        var textureHeight:Int = 128
+        
+        if size.width > 0 {
+            textureWidth = Int(size.width)
+        }
+        if size.height > 0 {
+            textureHeight = Int(size.height)
+        }
+        
+        let desc = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .depth32Float_stencil8,
+            width: textureWidth, height: textureHeight, mipmapped: false)
+        desc.storageMode = .private
+        desc.usage = .renderTarget
+        return metalDevice.makeTexture(descriptor: desc)!
     }
     
     
     
-    // MARK: - Rendering
+    // MARK: - Behaviors - Rendering
     private var sceneMatrices = SceneMatrices()
     private var globalUniforms = GlobalUniforms()
     private var sdfUniforms = SDFUniforms(edgeDistance:0.4, edgeWidth:1.0)
@@ -259,10 +287,13 @@ class CutlassRenderer {
     private var projectedSize:CGSize = CGSize(width:128, height:128)
     
     private var lastFramesTime: CFAbsoluteTime = 0.0
-    var renderAheadCount:Int = 0
-    var numFrames:Int = 0
-    var firstRender:Bool = true
+    private var renderAheadCount:Int = 0
+    private var numFrames:Int = 0
+    private var firstRender:Bool = true
     
+    private var needsLayout:Bool = true
+    
+    #if IGIFHGIF
     public func render(to metalLayer: CAMetalLayer) {
         if let drawable = metalLayer.nextDrawable() {
             
@@ -275,7 +306,7 @@ class CutlassRenderer {
                 firstRender = false
             }
             
-            while renderAheadCount >= CutlassRenderer.maxConcurrentFrames { }
+            while renderAheadCount >= maxConcurrentFrames { }
             
             objc_sync_enter(renderAheadCountLock)
             defer {
@@ -283,6 +314,14 @@ class CutlassRenderer {
             }
             
             renderAheadCount += 1
+            
+            // Ask our root to layout and then render. Each will only actually do work if work is
+            // required. Render will synchronously runs through the Yoga hierarchy and
+            // asks each view actor to render (asynchronously).  render() will block until
+            // all work needed to render is completed.
+            root.layout()
+            root.render(self)
+            
             
             
             // TODO: Gather all render units
@@ -460,17 +499,173 @@ class CutlassRenderer {
             }
         }
     }
+    #endif
+    
+    public lazy var setRoot = Behavior(self) { (args:BehaviorArgs) in
+        self.root = args[x:0]
+    }
+    
+    // Render happens like this:
+    // 1. Someone (a view most likely) asks us to render, sending us a CAMetalLayer
+    // 2. We grab the next drawable and create a RenderFrameContext, putting ourself and the drawable in there
+    // 3. We call Yoga.render() on our root node, which walks the hiearchy and concurrently asks all views to render
+    // 4. Each view can submit render units (geometry + stuff to render their views) concurrently
+    // 5. We expect to receive a submitRenderFinished() call from all views in the hiearchy, and we know
+    //    the frame is done when we have received all of them back
+    private var numberOfViewsToRender:Int = 0
+    
+    public lazy var render = Behavior(self) { (args:BehaviorArgs) in
+        let metalLayer:CAMetalLayer = args[x:0]
+        
+        let size = CGSize(width: metalLayer.bounds.size.width * metalLayer.contentsScale,
+                          height: metalLayer.bounds.size.height * metalLayer.contentsScale)
+        
+        if size.equalTo(metalLayer.drawableSize) == false {
+            metalLayer.drawableSize = size
+        }
+        
+        if let drawable = metalLayer.nextDrawable() {
+            let ctx = RenderFrameContext(renderer:self,
+                                         drawable:drawable)
+            self.render_start(ctx)
+        }
+    }
+    
+    public lazy var submitRenderUnit = Behavior(self) { (args:BehaviorArgs) in
+        let ctx:RenderFrameContext = args[x:0]
+        let unit:RenderUnit = args[x:0]
+    }
+    
+    public lazy var submitRenderFinished = Behavior(self) { (args:BehaviorArgs) in
+        let ctx:RenderFrameContext = args[x:0]
+        
+        self.numberOfViewsToRender -= 1
+        if self.numberOfViewsToRender == 0 {
+            self.render_finish(ctx)
+        }
+    }
+    
+    public lazy var submitRenderOnScreen = Behavior(self) { (args:BehaviorArgs) in
+        self.renderAheadCount -= 1
+    }
+    
+    private func render_start(_ ctx:RenderFrameContext) {
+        // Check to see if our render size changed, if it did we need
+        // to reset the projection matrices to match and re-layout
+        let newProjectedSize = CGSize(width:ctx.drawable.texture.width, height:ctx.drawable.texture.height)
+        if projectedSize.equalTo(newProjectedSize) == false {
+            projectedSize = newProjectedSize
+            needsLayout = true
+        }
+        
+        // make sure we are not trying to render more than the max concurrent frames
+        if renderAheadCount >= maxConcurrentFrames {
+            return
+        }
+        
+        if needsLayout {
+            root.layout()
+            needsLayout = false
+        }
+        
+        numberOfViewsToRender = root.render(ctx)
+        if numberOfViewsToRender == 0 {
+            return
+        }
+        
+        renderAheadCount += 1
+    }
+    
+    private func render_finish(_ ctx:RenderFrameContext) {
+        let drawable = ctx.drawable
+        
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        if let depthAttachment = renderPassDescriptor.depthAttachment {
+            depthAttachment.texture = depthTexture
+            depthAttachment.clearDepth = 1.0
+            depthAttachment.storeAction = .dontCare
+            depthAttachment.loadAction = .clear
+            
+            if let stencilAttachment = renderPassDescriptor.stencilAttachment {
+                stencilAttachment.texture = depthAttachment.texture
+                stencilAttachment.storeAction = .dontCare
+                stencilAttachment.loadAction = .clear
+                stencilAttachment.clearStencil = 255
+            }
+        }
+            
+        renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+        renderPassDescriptor.colorAttachments[0].loadAction = .clear
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        
+        guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
+            renderAheadCount -= 1
+            return
+        }
+        
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
+            renderAheadCount -= 1
+            return
+        }
+
+        // define the modelview and projection matrics and make them
+        // available to the shaders
+        var modelViewMatrix = GLKMatrix4Identity
+        modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, Float(projectedSize.width * -0.5), Float(projectedSize.height * 0.5), -5000.0)
+        modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, Float.pi)
+        sceneMatrices.modelviewMatrix = modelViewMatrix
+                
+        renderEncoder.setVertexBytes(&sceneMatrices, length: MemoryLayout<SceneMatrices>.stride, index: 1)
+        renderEncoder.setFragmentBytes(&sdfUniforms, length: MemoryLayout<SDFUniforms>.stride, index: 0)
+        
+        globalUniforms.globalColor.r = -99
+        globalUniforms.globalColor.g = -999
+        globalUniforms.globalColor.b = -9999
+        globalUniforms.globalColor.a = -99999
+        
+        stencilValueCount = stencilValueMax
+        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+        renderEncoder.setDepthStencilState(ignoreStencilState)
+        
+        var aborted = false
+        
+        // TODO: process and render all collected render units for this frame
+        
+        renderEncoder.endEncoding()
+        
+        commandBuffer.addCompletedHandler { (buffer) in
+            self.submitRenderOnScreen()
+        }
+                
+        if aborted == false {
+            commandBuffer.present(drawable)
+        }
+        commandBuffer.commit()
+        
+        if aborted == false {
+            // Simple FPS so we can compare performance
+            numFrames = numFrames + 1
+            
+            let currentTime = CFAbsoluteTimeGetCurrent()
+            let elapsedTime = currentTime - lastFramesTime
+            if elapsedTime > 1.0 {
+                print("\(numFrames) fps")
+                numFrames = 0
+                lastFramesTime = currentTime
+            }
+        }
+    }
     
     
     // MARK: - Safe Texture Utility Methods
-    
+    /*
     private var textureCacheLock:NSObject = NSObject()
     private var urlStringFromBundlePathLock:NSObject = NSObject()
     private var renderAheadCountLock:NSObject = NSObject()
     
     private let serialQueue = DispatchQueue(label: "serial.queue", qos: .default)
     
-    func getDepthTexture(size:CGSize) -> MTLTexture {
+    private func getDepthTexture(size:CGSize) -> MTLTexture {
         
         var textureWidth:Int = 128
         var textureHeight:Int = 128
@@ -490,7 +685,7 @@ class CutlassRenderer {
         return metalDevice.makeTexture(descriptor: desc)!
     }
     
-    func createTextureFromBytes(namePtr: UnsafePointer<Int8>?, bytesPtr: UnsafeMutableRawPointer?, bytesCount:size_t) {
+    private func createTextureFromBytes(namePtr: UnsafePointer<Int8>?, bytesPtr: UnsafeMutableRawPointer?, bytesCount:size_t) {
         if let namePtr = namePtr {
             let name = String(cString: namePtr)
             if name.count == 0 {
@@ -524,7 +719,7 @@ class CutlassRenderer {
         }
     }
     
-    func createTextureAsync(urlPtr: UnsafePointer<Int8>?) {
+    private func createTextureAsync(urlPtr: UnsafePointer<Int8>?) {
         if let urlPtr = urlPtr {
             let urlString = String(cString: urlPtr)
             if urlString.count == 0 {
@@ -585,7 +780,7 @@ class CutlassRenderer {
         }
     }
     
-    func urlStringFromBundlePath(_ bundlePath:String) -> String {
+    private func urlStringFromBundlePath(_ bundlePath:String) -> String {
         // name is a "url path" to a file.  These are like in planet:
         // "resources://landscape_desert.jpg"
         // "documents://landscape_desert.jpg"
@@ -636,4 +831,5 @@ class CutlassRenderer {
         
         return pathString
     }
+ */
 }

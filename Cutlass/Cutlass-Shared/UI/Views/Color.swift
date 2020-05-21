@@ -12,8 +12,10 @@ import GLKit
 
 public final class Color: Actor, Viewable {
     public lazy var render = Behavior(self) { (args:BehaviorArgs) in
-        let bounds:GLKVector4 = args[x:0]
-        self._viewable_render(bounds)
-        print("Color bounds \(bounds)")
+        let ctx:RenderFrameContext = args[x:0]
+        
+        // TODO: create and submit the render unit
+        
+        self.protected_viewableRenderFinished(ctx)
     }
 }

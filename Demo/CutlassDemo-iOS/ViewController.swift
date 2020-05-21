@@ -7,12 +7,27 @@
 //
 
 import UIKit
+import Cutlass
+import Flynn
 
 class ViewController: UIViewController {
 
+    @IBOutlet var cutlassView: CutlassView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let node = Yoga().size(1024,768).center().top(percent:10)
+                         .view( Color() )
+                         .view( Color() )
+                         .view( Color() )
+                         .view( Color() )
+                         .view( Color() )
+                         .view( Color() )
+        
+        // assign our node as the renderer's root...
+        cutlassView.renderer().setRoot(node)
+        
     }
 
 
