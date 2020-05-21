@@ -12,6 +12,8 @@ import GLKit
 import simd
 import Flynn
 
-public struct RenderUnit {
-    
+public struct RenderFrameContext {
+    let renderer:Renderer
+    let viewSize:CGSize
+    let drawable:CAMetalDrawable
 }

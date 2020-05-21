@@ -40,7 +40,7 @@ public class CutlassView: UIView {
         metalLayer.pixelFormat = pixelFormat
         metalLayer.device = device
         metalLayer.isOpaque = true
-        //metalLayer.maximumDrawableCount = Renderer.maxConcurrentFrames
+        metalLayer.maximumDrawableCount = 3
         metalLayer.framebufferOnly = true
         metalLayer.delegate = self
         

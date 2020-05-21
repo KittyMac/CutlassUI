@@ -15,11 +15,15 @@ public protocol Viewable : Actor {
 }
 
 public extension Viewable {
-    func protected_viewableRender(_ args:BehaviorArgs) {
-        print("Viewable.render()")
-    }
     
-    func protected_viewableRenderFinished(_ ctx:RenderFrameContext) {
+    func protected_viewable_submitRenderUnit(_ ctx:RenderFrameContext,
+                                             _ vertices:FloatAlignedArray) {
+        let unit = RenderUnit(renderNumer: 0, vertices: vertices)
+        ctx.renderer.submitRenderUnit(ctx, unit)
+    }
+
+    
+    func protected_viewable_submitRenderFinished(_ ctx:RenderFrameContext) {
         ctx.renderer.submitRenderFinished(ctx)
     }
 }

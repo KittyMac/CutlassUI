@@ -38,7 +38,7 @@ public class CutlassView: NSView, CALayerDelegate {
         metalLayer.device = device
         metalLayer.isOpaque = true
         metalLayer.delegate = self
-        //metalLayer.maximumDrawableCount = Renderer.maxConcurrentFrames
+        metalLayer.maximumDrawableCount = 3
         metalLayer.framebufferOnly = true
         
         self.layerContentsRedrawPolicy = .duringViewResize

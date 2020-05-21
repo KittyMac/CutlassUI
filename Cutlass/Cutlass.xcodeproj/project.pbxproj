@@ -95,6 +95,12 @@
 		46C3D6172476E22100F8DC58 /* RenderUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6152476E22100F8DC58 /* RenderUnit.swift */; };
 		46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */; };
 		46C3D61A2476E30900F8DC58 /* RenderFrameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */; };
+		46C3D61E24770C0F00F8DC58 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D61C24770C0F00F8DC58 /* Geometry.swift */; };
+		46C3D61F24770C0F00F8DC58 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D61C24770C0F00F8DC58 /* Geometry.swift */; };
+		46C3D62024770C0F00F8DC58 /* BufferedGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */; };
+		46C3D62124770C0F00F8DC58 /* BufferedGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */; };
+		46C3D62324770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */; };
+		46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */; };
 		46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
 		46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
 		46E85CCA2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; };
@@ -208,6 +214,9 @@
 		4661522224733B4000F87A9B /* Cutlass.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Cutlass.modulemap; sourceTree = "<group>"; };
 		46C3D6152476E22100F8DC58 /* RenderUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderUnit.swift; sourceTree = "<group>"; };
 		46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderFrameContext.swift; sourceTree = "<group>"; };
+		46C3D61C24770C0F00F8DC58 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedGeometry.swift; sourceTree = "<group>"; };
+		46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatAlignedArray.swift; sourceTree = "<group>"; };
 		46E85CB12475AF1F0030E7CD /* Viewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Viewable.swift; sourceTree = "<group>"; };
 		46E85CC92475DA170030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
 		46E85CCD2475DA200030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
@@ -425,15 +434,26 @@
 		4661522324733B9700F87A9B /* Cutlass-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				46229643246DF14100A3ED6D /* Cutlass.h */,
 				4641A10F2474DCBA007C85D0 /* UI */,
 				4641A0B22474DB26007C85D0 /* Yoga */,
+				46C3D61B247707F000F8DC58 /* Renderer */,
 				4641A0A82474583D007C85D0 /* Shaders */,
-				46229643246DF14100A3ED6D /* Cutlass.h */,
+			);
+			path = "Cutlass-Shared";
+			sourceTree = "<group>";
+		};
+		46C3D61B247707F000F8DC58 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */,
+				46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */,
+				46C3D61C24770C0F00F8DC58 /* Geometry.swift */,
 				46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */,
 				46C3D6152476E22100F8DC58 /* RenderUnit.swift */,
 				4641A064247428B9007C85D0 /* Renderer.swift */,
 			);
-			path = "Cutlass-Shared";
+			path = Renderer;
 			sourceTree = "<group>";
 		};
 		46E85CC52475D3670030E7CD /* Protocols */ = {
@@ -694,6 +714,7 @@
 			files = (
 				4641A065247428B9007C85D0 /* Renderer.swift in Sources */,
 				4641A1012474DB26007C85D0 /* YGStyle.cpp in Sources */,
+				46C3D61E24770C0F00F8DC58 /* Geometry.swift in Sources */,
 				4641A0E92474DB26007C85D0 /* YGConfig.cpp in Sources */,
 				4641A0B02474583D007C85D0 /* Textured.metal in Sources */,
 				4641A0F32474DB26007C85D0 /* YGLayout.cpp in Sources */,
@@ -706,7 +727,9 @@
 				4641A0F92474DB26007C85D0 /* YGNode.cpp in Sources */,
 				4628104524759971009F04B3 /* Color.swift in Sources */,
 				46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
+				46C3D62324770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,
 				46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */,
+				46C3D62024770C0F00F8DC58 /* BufferedGeometry.swift in Sources */,
 				4641A0AC2474583D007C85D0 /* Flat.metal in Sources */,
 				4641A0D72474DB26007C85D0 /* event.cpp in Sources */,
 				4641A0FD2474DB26007C85D0 /* YGNodePrint.cpp in Sources */,
@@ -731,6 +754,7 @@
 			files = (
 				4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */,
 				4641A1022474DB26007C85D0 /* YGStyle.cpp in Sources */,
+				46C3D61F24770C0F00F8DC58 /* Geometry.swift in Sources */,
 				4641A0EA2474DB26007C85D0 /* YGConfig.cpp in Sources */,
 				4641A0B12474583D007C85D0 /* Textured.metal in Sources */,
 				4641A0F42474DB26007C85D0 /* YGLayout.cpp in Sources */,
@@ -743,7 +767,9 @@
 				4641A0FA2474DB26007C85D0 /* YGNode.cpp in Sources */,
 				4628104624759971009F04B3 /* Color.swift in Sources */,
 				46C3D61A2476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
+				46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,
 				46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */,
+				46C3D62124770C0F00F8DC58 /* BufferedGeometry.swift in Sources */,
 				4641A0AD2474583D007C85D0 /* Flat.metal in Sources */,
 				4641A0D82474DB26007C85D0 /* event.cpp in Sources */,
 				4641A0FE2474DB26007C85D0 /* YGNodePrint.cpp in Sources */,
