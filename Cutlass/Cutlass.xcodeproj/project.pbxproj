@@ -91,10 +91,13 @@
 		4661521824733A6A00F87A9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4661521724733A6A00F87A9B /* Preview Assets.xcassets */; };
 		4661521B24733A6A00F87A9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4661521924733A6A00F87A9B /* LaunchScreen.storyboard */; };
 		4661522424733BD100F87A9B /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46E85CAE2475A8C60030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CAD2475A8C60030E7CD /* Flynn.framework */; };
-		46E85CB02475A8CB0030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CAF2475A8CB0030E7CD /* Flynn.framework */; };
 		46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
 		46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
+		46E85CCA2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; };
+		46E85CCB2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; platformFilter = ios; };
+		46E85CCC2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; };
+		46E85CCE2475DA200030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CCD2475DA200030E7CD /* Flynn.framework */; };
+		46E85CCF2475DA200030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CCD2475DA200030E7CD /* Flynn.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +126,16 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		462810592475A49F009F04B3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46E85CC82475D6170030E7CD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
@@ -189,9 +202,9 @@
 		4661521A24733A6A00F87A9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4661521C24733A6A00F87A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4661522224733B4000F87A9B /* Cutlass.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Cutlass.modulemap; sourceTree = "<group>"; };
-		46E85CAD2475A8C60030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
-		46E85CAF2475A8CB0030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
 		46E85CB12475AF1F0030E7CD /* Viewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Viewable.swift; sourceTree = "<group>"; };
+		46E85CC92475DA170030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
+		46E85CCD2475DA200030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,7 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CB02475A8CB0030E7CD /* Flynn.framework in Frameworks */,
+				46E85CCE2475DA200030E7CD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E85CCF2475DA200030E7CD /* Flynn.framework in Frameworks */,
 				4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,7 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CAE2475A8C60030E7CD /* Flynn.framework in Frameworks */,
+				46E85CCA2475DA170030E7CD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +237,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E85CCB2475DA170030E7CD /* Flynn.framework in Frameworks */,
 				46615201247338E100F87A9B /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E85CCC2475DA170030E7CD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,8 +308,8 @@
 		462810512475A13D009F04B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				46E85CAF2475A8CB0030E7CD /* Flynn.framework */,
-				46E85CAD2475A8C60030E7CD /* Flynn.framework */,
+				46E85CCD2475DA200030E7CD /* Flynn.framework */,
+				46E85CC92475DA170030E7CD /* Flynn.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -559,6 +575,7 @@
 				4661520824733A6800F87A9B /* Sources */,
 				4661520924733A6800F87A9B /* Frameworks */,
 				4661520A24733A6800F87A9B /* Resources */,
+				46E85CC82475D6170030E7CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -965,6 +982,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/macOS",
+				);
 				INFOPLIST_FILE = CutlassTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -984,6 +1005,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/macOS",
+				);
 				INFOPLIST_FILE = CutlassTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1072,6 +1097,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/iOS",
+				);
 				INFOPLIST_FILE = CutlassTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1094,6 +1123,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/iOS",
+				);
 				INFOPLIST_FILE = CutlassTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1119,6 +1152,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TestHost/Preview Content\"";
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/iOS",
+				);
 				INFOPLIST_FILE = TestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1141,6 +1178,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TestHost/Preview Content\"";
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/Flynn-releases/iOS",
+				);
 				INFOPLIST_FILE = TestHost/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

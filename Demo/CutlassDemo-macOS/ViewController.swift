@@ -7,13 +7,17 @@
 //
 
 import Cocoa
+import Cutlass
 
 class ViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let node = Yoga().size(1024,768).center().top(percent:10)
+                         .view( Color() )
+        node.layout()
+        node.print()
     }
 
     override var representedObject: Any? {

@@ -20,6 +20,10 @@
 		4641A09B24744EA3007C85D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4641A09924744EA3007C85D0 /* LaunchScreen.storyboard */; };
 		4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; };
 		4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46E85CD12475DA350030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD02475DA350030E7CD /* Flynn.framework */; };
+		46E85CD22475DA350030E7CD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD02475DA350030E7CD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		46E85CD42475DA3B0030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD32475DA3B0030E7CD /* Flynn.framework */; };
+		46E85CD52475DA3B0030E7CD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD32475DA3B0030E7CD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +33,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				46E85CD52475DA3B0030E7CD /* Flynn.framework in Embed Frameworks */,
 				4641A08624743135007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -40,6 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				46E85CD22475DA350030E7CD /* Flynn.framework in Embed Frameworks */,
 				4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -64,6 +70,8 @@
 		4641A09A24744EA3007C85D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4641A09C24744EA3007C85D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4641A0A02474508B007C85D0 /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46E85CD02475DA350030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "../Cutlass/Frameworks/Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
+		46E85CD32475DA3B0030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "../Cutlass/Frameworks/Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E85CD42475DA3B0030E7CD /* Flynn.framework in Frameworks */,
 				4641A08524743135007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E85CD12475DA350030E7CD /* Flynn.framework in Frameworks */,
 				4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +131,8 @@
 		4641A08324743135007C85D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				46E85CD02475DA350030E7CD /* Flynn.framework */,
+				46E85CD32475DA3B0030E7CD /* Flynn.framework */,
 				4641A0A02474508B007C85D0 /* Cutlass.framework */,
 				4641A08424743135007C85D0 /* Cutlass.framework */,
 			);
@@ -409,6 +421,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../Cutlass/Frameworks/Flynn-releases/macOS";
 				INFOPLIST_FILE = "CutlassDemo-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -429,6 +442,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../Cutlass/Frameworks/Flynn-releases/macOS";
 				INFOPLIST_FILE = "CutlassDemo-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -446,6 +460,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../Cutlass/Frameworks/Flynn-releases/iOS";
 				INFOPLIST_FILE = "CutlassDemo-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -466,6 +481,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A3LA43YQN5;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../Cutlass/Frameworks/Flynn-releases/iOS";
 				INFOPLIST_FILE = "CutlassDemo-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

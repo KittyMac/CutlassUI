@@ -10,11 +10,11 @@ import Foundation
 import Flynn
 import GLKit
 
-protocol Viewable : Actor {
+public protocol Viewable : Actor {
     var render:Behavior<Self> { get }
 }
 
-extension Viewable {
+public extension Viewable {
     func _viewable_render(_ bounds:GLKVector4) {
         print("Viewable render \(bounds)")
     }
