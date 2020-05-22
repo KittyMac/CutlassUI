@@ -11,10 +11,11 @@ import UIKit
 import Flynn
 
 public class CutlassView: UIView {
-    let _renderer:Renderer
-    let device:MTLDevice!
-    let pixelFormat:MTLPixelFormat = .bgra8Unorm
-    lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
+    private let _renderer:Renderer
+    private let device:MTLDevice!
+    private let pixelFormat:MTLPixelFormat = .bgra8Unorm
+    private var contentsScale:CGFloat = 1.0
+    private lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
     
     fileprivate var displayLink: CADisplayLink?
     
@@ -37,6 +38,9 @@ public class CutlassView: UIView {
     }
     
     public override func didMoveToWindow() {
+        
+        super.didMoveToWindow()
+                
         metalLayer.pixelFormat = pixelFormat
         metalLayer.device = device
         metalLayer.isOpaque = true
@@ -53,6 +57,7 @@ public class CutlassView: UIView {
         metalLayer.needsDisplayOnBoundsChange = true
         
         if let window = window {
+            contentsScale = window.screen.nativeScale
             setupCVDisplayLinkForScreen(window.screen)
         } else {
             displayLink?.invalidate()
@@ -69,7 +74,7 @@ public class CutlassView: UIView {
     
     @objc func render() {
         autoreleasepool {
-            _renderer.render(metalLayer)
+            _renderer.render(metalLayer, contentsScale)
         }
     }
     

@@ -13,6 +13,7 @@ public class CutlassView: NSView, CALayerDelegate {
     private let _renderer:Renderer
     private let metalLayer:CAMetalLayer
     private let device:MTLDevice!
+    private var contentsScale:CGFloat = 1.0
     private let pixelFormat:MTLPixelFormat = .bgra8Unorm
     
     fileprivate var displayLink: CVDisplayLink?
@@ -23,6 +24,8 @@ public class CutlassView: NSView, CALayerDelegate {
         metalLayer = CAMetalLayer()
         super.init(frame: frame)
         self.wantsLayer = true
+        self.layerContentsRedrawPolicy = .duringViewResize
+        self.layerContentsPlacement = .scaleProportionallyToFill
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,6 +34,8 @@ public class CutlassView: NSView, CALayerDelegate {
         metalLayer = CAMetalLayer()
         super.init(coder: aDecoder)
         self.wantsLayer = true
+        self.layerContentsRedrawPolicy = .duringViewResize
+        self.layerContentsPlacement = .topLeft
     }
     
     public override func makeBackingLayer() -> CALayer {
@@ -40,10 +45,7 @@ public class CutlassView: NSView, CALayerDelegate {
         metalLayer.delegate = self
         metalLayer.maximumDrawableCount = 3
         metalLayer.framebufferOnly = true
-        
-        self.layerContentsRedrawPolicy = .duringViewResize
-        self.layerContentsPlacement = .scaleProportionallyToFill
-        
+                
         var backgroundColorValues:[CGFloat] = [1, 1, 1, 1]
         if let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) {
             metalLayer.colorspace = colorSpace
@@ -57,7 +59,14 @@ public class CutlassView: NSView, CALayerDelegate {
     }
     
     public override func viewDidMoveToWindow() {
-        setupCVDisplayLinkForScreen(window!.screen!)
+        super.viewDidMoveToWindow()
+        
+        if let window = window {
+            if let screen = window.screen {
+                contentsScale = screen.backingScaleFactor
+                setupCVDisplayLinkForScreen(screen)
+            }
+        }
     }
     
     public func renderer() -> Renderer {
@@ -66,7 +75,7 @@ public class CutlassView: NSView, CALayerDelegate {
     
     private func render() {
         autoreleasepool {
-            _renderer.render(metalLayer)
+            _renderer.render(metalLayer, contentsScale)
         }
     }
     

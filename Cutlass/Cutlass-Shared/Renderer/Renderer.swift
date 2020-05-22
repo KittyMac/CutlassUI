@@ -33,7 +33,7 @@ struct SDFUniforms {
 }
 
 public class Renderer : Actor {
-    static let maxConcurrentFrames:Int = 2
+    static let maxConcurrentFrames:Int = 3
     
     private var metalDevice:MTLDevice
     private var pixelFormat:MTLPixelFormat
@@ -310,16 +310,23 @@ public class Renderer : Actor {
     
     public lazy var render = Behavior(self) { (args:BehaviorArgs) in
         let metalLayer:CAMetalLayer = args[x:0]
+        let contentsScale:CGFloat = args[x:1]
         
         let pointSize = CGSize(width: metalLayer.bounds.size.width,
                                height: metalLayer.bounds.size.height)
         
-        let pixelSize = CGSize(width: metalLayer.bounds.size.width * metalLayer.contentsScale,
-                               height: metalLayer.bounds.size.height * metalLayer.contentsScale)
+        let pixelSize = CGSize(width: metalLayer.bounds.size.width * contentsScale,
+                               height: metalLayer.bounds.size.height * contentsScale)
         
-        metalLayer.drawableSize = pixelSize
-        
+        // ensure that our depth texture size is correct!
+        if pixelSize.equalTo(CGSize(width: self.depthTexture.width, height: self.depthTexture.height)) == false {
+            metalLayer.drawableSize = pixelSize
+            metalLayer.contentsScale = contentsScale
+            self.depthTexture = self.getDepthTexture(size:pixelSize)
+        }
+                
         if let drawable = metalLayer.nextDrawable() {
+                        
             let ctx = RenderFrameContext(renderer:self,
                                          viewSize:pointSize,
                                          drawable:drawable)
@@ -386,6 +393,7 @@ public class Renderer : Actor {
         }
         
         numberOfViewsToRender = root.render(ctx)
+
         if numberOfViewsToRender == 0 {
             return
         }
@@ -515,6 +523,7 @@ public class Renderer : Actor {
                 renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
             }*/
         }
+        renderUnits.removeAll()
         
         renderEncoder.endEncoding()
         
