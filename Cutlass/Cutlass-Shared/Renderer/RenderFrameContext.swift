@@ -16,4 +16,6 @@ public struct RenderFrameContext {
     let renderer:Renderer
     let viewSize:CGSize
     let drawable:CAMetalDrawable
+    let matrix:GLKMatrix4
+    let bounds:GLKVector4
 }

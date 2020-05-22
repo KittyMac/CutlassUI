@@ -17,13 +17,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let node = Yoga().size(1024,768).center().top(percent:10)
-                         .view( Color() )
-                         .view( Color() )
-                         .view( Color() )
-                         .view( Color() )
-                         .view( Color() )
-                         .view( Color() )
+        let node = Yoga().fill().rows().itemsStart().wrap().paddingAll(px: 12)
+        .view( Color() )
+        .children([
+            Yoga().sizePercent(50,50).view( Color().red() ),
+            Yoga().sizePercent(50,50).view( Color().green() ),
+            Yoga().sizePercent(50,50).view( Color().blue() ),
+            Yoga().sizePercent(50,50).view( Color().yellow() )
+        ])
         
         // assign our node as the renderer's root...
         cutlassView.renderer().setRoot(node)

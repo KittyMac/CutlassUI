@@ -77,29 +77,34 @@ public class FloatAlignedArray {
         return _rawpointer
     }
     
-    public func pushQuadVC(_ v0:GLKVector3, _ v1:GLKVector3, _ v2:GLKVector3, _ v3:GLKVector3, _ c:GLKVector4) {
+    public func pushQuadVC(_ m:GLKMatrix4, _ v0:GLKVector3, _ v1:GLKVector3, _ v2:GLKVector3, _ v3:GLKVector3, _ c:GLKVector4) {
         if _count + 42 >= _max {
             fatalError("FloatAlignedArray does not have enough allocated space for \(_count) floats (max of \(_max))")
         }
 
         let local_pointer = _pointer + _count
         
-        local_pointer[0] = v0.x; local_pointer[1] = v0.y; local_pointer[2] = v0.z
+        let mv0 = GLKMatrix4MultiplyVector3WithTranslation(m, v0)
+        let mv1 = GLKMatrix4MultiplyVector3WithTranslation(m, v1)
+        let mv2 = GLKMatrix4MultiplyVector3WithTranslation(m, v2)
+        let mv3 = GLKMatrix4MultiplyVector3WithTranslation(m, v3)
+        
+        local_pointer[0] = mv0.x; local_pointer[1] = mv0.y; local_pointer[2] = mv0.z
         local_pointer[3] = c.x; local_pointer[4] = c.y; local_pointer[5] = c.z; local_pointer[6] = c.w
 
-        local_pointer[7] = v1.x; local_pointer[8] = v1.y; local_pointer[9] = v1.z
+        local_pointer[7] = mv1.x; local_pointer[8] = mv1.y; local_pointer[9] = mv1.z
         local_pointer[10] = c.x; local_pointer[11] = c.y; local_pointer[12] = c.z; local_pointer[13] = c.w
 
-        local_pointer[14] = v2.x; local_pointer[15] = v2.y; local_pointer[16] = v2.z
+        local_pointer[14] = mv2.x; local_pointer[15] = mv2.y; local_pointer[16] = mv2.z
         local_pointer[17] = c.x; local_pointer[18] = c.y; local_pointer[19] = c.z; local_pointer[20] = c.w
 
-        local_pointer[21] = v2.x; local_pointer[22] = v2.y; local_pointer[23] = v2.z
+        local_pointer[21] = mv2.x; local_pointer[22] = mv2.y; local_pointer[23] = mv2.z
         local_pointer[24] = c.x; local_pointer[25] = c.y; local_pointer[26] = c.z; local_pointer[27] = c.w
 
-        local_pointer[28] = v3.x; local_pointer[29] = v3.y; local_pointer[30] = v3.z
+        local_pointer[28] = mv3.x; local_pointer[29] = mv3.y; local_pointer[30] = mv3.z
         local_pointer[31] = c.x; local_pointer[32] = c.y; local_pointer[33] = c.z; local_pointer[34] = c.w
 
-        local_pointer[35] = v0.x; local_pointer[36] = v0.y; local_pointer[37] = v0.z
+        local_pointer[35] = mv0.x; local_pointer[36] = mv0.y; local_pointer[37] = mv0.z
         local_pointer[38] = c.x; local_pointer[39] = c.y; local_pointer[40] = c.z; local_pointer[41] = c.w
         
         _count += 42

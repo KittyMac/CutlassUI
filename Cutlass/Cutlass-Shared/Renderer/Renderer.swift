@@ -296,7 +296,9 @@ public class Renderer : Actor {
     private var renderUnits:[RenderUnit] = []
     
     public lazy var setRoot = Behavior(self) { (args:BehaviorArgs) in
-        self.root = args[x:0]
+        self.root.removeAll()
+        self.root.child(args[x:0])
+        self.needsLayout = true
     }
     
     // Render happens like this:
@@ -329,7 +331,9 @@ public class Renderer : Actor {
                         
             let ctx = RenderFrameContext(renderer:self,
                                          viewSize:pointSize,
-                                         drawable:drawable)
+                                         drawable:drawable,
+                                           matrix:GLKMatrix4Identity,
+                                           bounds:GLKVector4Make(0, 0, 0, 0))
             self.render_start(ctx)
         }
     }
@@ -347,6 +351,7 @@ public class Renderer : Actor {
         let ctx:RenderFrameContext = args[x:0]
         
         self.numberOfViewsToRender -= 1
+        
         if self.numberOfViewsToRender == 0 {
             self.render_finish(ctx)
         }
@@ -397,7 +402,7 @@ public class Renderer : Actor {
         if numberOfViewsToRender == 0 {
             return
         }
-                
+        
         renderAheadCount += 1
     }
     
@@ -421,7 +426,7 @@ public class Renderer : Actor {
             
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .clear
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
             renderAheadCount -= 1

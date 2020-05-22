@@ -27,13 +27,18 @@ public class Yoga {
     private var node:YGNodeRef
     
     private var views:[Viewable] = []
-    private var children:[Yoga] = []
+    private var _children:[Yoga] = []
     
     private var _pivot = GLKVector2Make(0.5,0.5)
     private var _anchor = GLKVector2Make(0.5,0.5)
     
     private var _rotation = GLKVector3Make(0, 0, 0)
     private var _scale = GLKVector3Make(1.0, 1.0, 1.0)
+    
+    private var _alpha:Float = 1.0
+    private var _z:Float = 0.0
+    
+    private var _last_bounds:GLKVector4 = GLKVector4Make(0, 0, 0, 0)
     
     private var _usesLeft:Bool = true
     private var _usesTop:Bool = true
@@ -70,19 +75,84 @@ public class Yoga {
     }
     
     public func render(_ ctx:RenderFrameContext) -> Int {
-        return render_recursive(0, ctx)
+        let n = render_recursive(0, ctx)
+        return n
     }
     
     private func render_recursive(_ n:Int, _ ctx:RenderFrameContext) -> Int {
         var local_n:Int = n
         
-        for view in views {
-            view.render(ctx)
-            local_n += 1
-        }
+        let local_left = YGNodeLayoutGetLeft(node)
+        let local_top = YGNodeLayoutGetTop(node)
+        let local_width = YGNodeLayoutGetWidth(node)
+        let local_height = YGNodeLayoutGetHeight(node)
         
-        for child in children {
-            local_n += child.render(ctx)
+        if (local_width > 0) && (local_height > 0) && (_alpha > 0) {
+            
+            let pivotX = _pivot.x * local_width
+            let pivotY = _pivot.y * local_height
+            
+            var local_matrix = GLKMatrix4Translate(ctx.matrix,
+                                                   (local_left + (_anchor.x * local_width)) - (local_width / 2),
+                                                   (local_top + (_anchor.y * local_height)) - (local_height / 2),
+                                                   _z)
+            
+            local_matrix = GLKMatrix4Translate(local_matrix,
+                                                pivotX,
+                                                pivotY,
+                                                0)
+            
+            if (_rotation.x != 0) {
+                local_matrix = GLKMatrix4RotateX(local_matrix, _rotation.x)
+            }
+            if (_rotation.y != 0) {
+                local_matrix = GLKMatrix4RotateX(local_matrix, _rotation.y)
+            }
+            if (_rotation.z != 0) {
+                local_matrix = GLKMatrix4RotateX(local_matrix, _rotation.z)
+            }
+            
+            if (_scale.x != 1.0) || (_scale.y != 1.0) || (_scale.z != 1.0) {
+                local_matrix = GLKMatrix4Scale(local_matrix, _scale.x, _scale.y, _scale.z)
+            }
+            
+            // TODO: parentContentOffset
+            _last_bounds = GLKVector4Make(-pivotX, -pivotY, local_width, local_height)
+            
+            let view_ctx = RenderFrameContext(renderer: ctx.renderer,
+                                              viewSize: ctx.viewSize,
+                                              drawable: ctx.drawable,
+                                                matrix: local_matrix,
+                                                bounds: _last_bounds)
+            /*
+            let savedAlpha = ctx.alpha
+            
+            ctx.matrix = local_matrix
+            ctx.nodeID = id()
+            ctx.contentSize = contentSize()
+            ctx.nodeSize = nodeSize()
+            ctx.parentContentOffset = parentContentOffset
+            ctx.alpha = frameContext.alpha * _alpha
+            */
+            for view in views {
+                view.render(view_ctx)
+                local_n += 1
+            }
+            
+            local_matrix = GLKMatrix4Translate(local_matrix,
+                                               -pivotX,
+                                               -pivotY,
+                                               0)
+            
+            let child_ctx = RenderFrameContext(renderer: ctx.renderer,
+                                               viewSize: ctx.viewSize,
+                                               drawable: ctx.drawable,
+                                               matrix: local_matrix,
+                                               bounds: _last_bounds)
+            
+            for child in _children {
+                local_n = child.render_recursive(local_n, child_ctx)
+            }
         }
         
         return local_n
@@ -90,8 +160,33 @@ public class Yoga {
     
     // MARK: - Yoga Setters
     
+    @discardableResult public func removeAll() -> Self {
+        _children.removeAll()
+        YGNodeRemoveAllChildren(node)
+        return self
+    }
+    
     @discardableResult public func view(_ view:Viewable) -> Self {
         views.append(view)
+        return self
+    }
+    
+    @discardableResult public func views(_ view:[Viewable]) -> Self {
+        views.append(contentsOf: views)
+        return self
+    }
+    
+    @discardableResult public func child(_ yoga:Yoga) -> Self {
+        _children.append(yoga)
+        YGNodeInsertChild(node, yoga.node, YGNodeGetChildCount(node))
+        return self
+    }
+    
+    @discardableResult public func children(_ yogas:[Yoga]) -> Self {
+        _children.append(contentsOf: yogas)
+        for yoga in yogas {
+            YGNodeInsertChild(node, yoga.node, YGNodeGetChildCount(node))
+        }
         return self
     }
     
