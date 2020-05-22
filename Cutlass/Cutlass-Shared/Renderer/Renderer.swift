@@ -392,7 +392,7 @@ public class Renderer : Actor {
         }
         
         if needsLayout {
-            root.size(Float(projectedSize.width), Float(projectedSize.height))
+            root.size(px:(Float(projectedSize.width),Float(projectedSize.height)))
             root.layout()
             needsLayout = false
         }

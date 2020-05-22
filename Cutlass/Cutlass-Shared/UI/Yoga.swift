@@ -17,7 +17,7 @@ import Flynn
  Yoga.absolute().columns().safeTop().safeBottom().paddingRight(20).passingLeft(20).itemsCenter()
  .view( Scroll.horizontal(false) )
  .addChildren([
- Yoga.fit().widthPercent(100).columns().center()
+ Yoga.fit().width(percent:100).columns().center()
  .view( Color.red() )
  ])
  */
@@ -210,15 +210,15 @@ public class Yoga {
         return self
     }
     
-    @discardableResult public func size(_ w:Float, _ h:Float) -> Self {
-        YGNodeStyleSetWidth(node, w)
-        YGNodeStyleSetHeight(node, h)
+    @discardableResult public func size(px:(Float,Float)) -> Self {
+        YGNodeStyleSetWidth(node, px.0)
+        YGNodeStyleSetHeight(node, px.1)
         return self
     }
     
-    @discardableResult public func sizePercent(_ w:Float, _ h:Float) -> Self {
-        YGNodeStyleSetWidthPercent(node, w)
-        YGNodeStyleSetHeightPercent(node, h)
+    @discardableResult public func size(percent:(Float,Float)) -> Self {
+        YGNodeStyleSetWidthPercent(node, percent.0)
+        YGNodeStyleSetHeightPercent(node, percent.1)
         return self
     }
     
@@ -292,8 +292,8 @@ public class Yoga {
     @discardableResult public func absolute() -> Self { YGNodeStyleSetPositionType(node, .absolute); return self }
     @discardableResult public func relative() -> Self { YGNodeStyleSetPositionType(node, .relative); return self }
     
-    @discardableResult public func origin(_ x:Float, _ y:Float) -> Self { YGNodeStyleSetPosition(node, .left, x); YGNodeStyleSetPosition(node, .top, y); _usesLeft = true; _usesTop = true; return self }
-    @discardableResult public func originPercent(_ x:Float, _ y:Float) -> Self { YGNodeStyleSetPositionPercent(node, .left, x); YGNodeStyleSetPositionPercent(node, .top, y); _usesLeft = true; _usesTop = true; return self }
+    @discardableResult public func origin(px:(Float,Float)) -> Self { YGNodeStyleSetPosition(node, .left, px.0); YGNodeStyleSetPosition(node, .top, px.1); _usesLeft = true; _usesTop = true; return self }
+    @discardableResult public func origin(percent:(Float,Float)) -> Self { YGNodeStyleSetPositionPercent(node, .left, percent.0); YGNodeStyleSetPositionPercent(node, .top, percent.1); _usesLeft = true; _usesTop = true; return self }
     
     @discardableResult public func top(px:Float) -> Self { YGNodeStyleSetPosition(node, .top, px); _usesTop = true; return self }
     @discardableResult public func left(px:Float) -> Self { YGNodeStyleSetPosition(node, .left, px); _usesLeft = true; return self }
