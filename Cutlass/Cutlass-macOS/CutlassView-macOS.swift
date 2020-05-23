@@ -25,7 +25,7 @@ public class CutlassView: NSView, CALayerDelegate {
         super.init(frame: frame)
         self.wantsLayer = true
         self.layerContentsRedrawPolicy = .duringViewResize
-        self.layerContentsPlacement = .scaleProportionallyToFill
+        self.layerContentsPlacement = .scaleAxesIndependently
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,7 +35,7 @@ public class CutlassView: NSView, CALayerDelegate {
         super.init(coder: aDecoder)
         self.wantsLayer = true
         self.layerContentsRedrawPolicy = .duringViewResize
-        self.layerContentsPlacement = .topLeft
+        self.layerContentsPlacement = .scaleAxesIndependently
     }
     
     public override func makeBackingLayer() -> CALayer {
@@ -54,6 +54,8 @@ public class CutlassView: NSView, CALayerDelegate {
                 
         metalLayer.autoresizingMask = CAAutoresizingMask(arrayLiteral: [.layerHeightSizable, .layerWidthSizable])
         metalLayer.needsDisplayOnBoundsChange = true
+        metalLayer.presentsWithTransaction = true
+        metalLayer.allowsNextDrawableTimeout = false
         
         return metalLayer
     }
@@ -69,6 +71,17 @@ public class CutlassView: NSView, CALayerDelegate {
         }
     }
     
+    public override func setFrameSize(_ newSize: NSSize) {
+        super.setFrameSize(newSize)
+        metalLayer.drawableSize = convertToBacking(newSize)
+        self.viewDidChangeBackingProperties()
+    }
+    
+    public override func viewDidChangeBackingProperties() {
+        guard let window = self.window else { return }
+        metalLayer.contentsScale = window.backingScaleFactor
+    }
+        
     public func renderer() -> Renderer {
         return self._renderer
     }

@@ -536,10 +536,9 @@ public class Renderer : Actor {
             self.submitRenderOnScreen()
         }
                 
-        if aborted == false {
-            commandBuffer.present(drawable)
-        }
         commandBuffer.commit()
+        commandBuffer.waitUntilScheduled()
+        drawable.present()
         
         if aborted == false {
             // Simple FPS so we can compare performance
