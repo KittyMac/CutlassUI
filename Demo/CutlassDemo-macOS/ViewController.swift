@@ -17,13 +17,13 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let node = Yoga().fill().rows().itemsStart().wrap().paddingAll(px: 12)
+        let node = Yoga().fill().rows().itemsStart().wrap().paddingAll(12)
                          .view( Color() )
                          .children([
-                            Yoga().size(percent:(50,50)).view( Color().red() ),
-                            Yoga().size(percent:(50,50)).view( Color().green() ),
-                            Yoga().size(percent:(50,50)).view( Color().blue() ),
-                            Yoga().size(percent:(50,50)).view( Color().yellow() )
+                            Yoga().size(50%,50%).view( Color().red() ),
+                            Yoga().size(50%,50%).view( Color().green() ),
+                            Yoga().size(50%,50%).view( Color().blue() ),
+                            Yoga().size(50%,50%).view( Color().yellow() )
                          ])
 
         // assign our node as the renderer's root...
