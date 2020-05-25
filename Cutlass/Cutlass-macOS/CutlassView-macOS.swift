@@ -14,6 +14,7 @@ public class CutlassView: NSView, CALayerDelegate {
     private let metalLayer:CAMetalLayer
     private let device:MTLDevice!
     private var contentsScale:CGFloat = 1.0
+    private var contentsSize:CGSize = CGSize.zero
     private let pixelFormat:MTLPixelFormat = .bgra8Unorm
     
     fileprivate var displayLink: CVDisplayLink?
@@ -63,6 +64,8 @@ public class CutlassView: NSView, CALayerDelegate {
     public override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         
+        contentsSize = bounds.size
+        
         if let window = window {
             if let screen = window.screen {
                 contentsScale = screen.backingScaleFactor
@@ -73,13 +76,18 @@ public class CutlassView: NSView, CALayerDelegate {
     
     public override func setFrameSize(_ newSize: NSSize) {
         super.setFrameSize(newSize)
-        metalLayer.drawableSize = convertToBacking(newSize)
+        contentsSize = bounds.size
         self.viewDidChangeBackingProperties()
     }
     
     public override func viewDidChangeBackingProperties() {
         guard let window = self.window else { return }
+        contentsSize = bounds.size
         metalLayer.contentsScale = window.backingScaleFactor
+    }
+    
+    public func display(_ layer: CALayer) {
+        render()
     }
         
     public func renderer() -> Renderer {
@@ -88,7 +96,7 @@ public class CutlassView: NSView, CALayerDelegate {
     
     private func render() {
         autoreleasepool {
-            _renderer.render(metalLayer, contentsScale)
+            _renderer.render(metalLayer, contentsSize, contentsScale)
         }
     }
     

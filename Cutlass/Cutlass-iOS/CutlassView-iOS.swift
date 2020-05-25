@@ -15,6 +15,7 @@ public class CutlassView: UIView {
     private let device:MTLDevice!
     private let pixelFormat:MTLPixelFormat = .bgra8Unorm
     private var contentsScale:CGFloat = 1.0
+    private var contentsSize:CGSize = CGSize.zero
     private lazy var metalLayer:CAMetalLayer = self.layer as! CAMetalLayer
     
     fileprivate var displayLink: CADisplayLink?
@@ -56,6 +57,8 @@ public class CutlassView: UIView {
         
         metalLayer.needsDisplayOnBoundsChange = true
         
+        contentsSize = bounds.size
+        
         if let window = window {
             contentsScale = window.screen.nativeScale
             setupCVDisplayLinkForScreen(window.screen)
@@ -68,13 +71,21 @@ public class CutlassView: UIView {
         displayLink?.add(to: RunLoop.current, forMode: .common)
     }
     
+    public override func layoutSubviews() {
+        contentsSize = bounds.size
+    }
+    
+    override public func display(_ layer: CALayer) {
+        render()
+    }
+    
     public func renderer() -> Renderer {
         return self._renderer
     }
     
     @objc func render() {
         autoreleasepool {
-            _renderer.render(metalLayer, contentsScale)
+            _renderer.render(metalLayer, contentsSize, contentsScale)
         }
     }
     

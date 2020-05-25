@@ -14,8 +14,10 @@ import Flynn
 
 public struct RenderFrameContext {
     let renderer:Renderer
-    let viewSize:CGSize
-    let drawable:CAMetalDrawable
+    let metalLayer:CAMetalLayer
+    let pointSize:CGSize
+    let pixelSize:CGSize
     let matrix:GLKMatrix4
     let bounds:GLKVector4
+    let frameNumber:Int64
 }

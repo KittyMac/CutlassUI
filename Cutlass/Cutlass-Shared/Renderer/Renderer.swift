@@ -33,7 +33,7 @@ struct SDFUniforms {
 }
 
 public class Renderer : Actor {
-    static let maxConcurrentFrames:Int = 3
+    static let maxConcurrentFrames:Int = 1
     
     private var metalDevice:MTLDevice
     private var pixelFormat:MTLPixelFormat
@@ -284,8 +284,6 @@ public class Renderer : Actor {
     private var stencilValueCount:Int = 0
     private var stencilValueMax:Int = 255
     
-    private var projectedSize:CGSize = CGSize(width:128, height:128)
-    
     private var lastFramesTime: CFAbsoluteTime = 0.0
     private var renderAheadCount:Int = 0
     private var numFrames:Int = 0
@@ -303,39 +301,37 @@ public class Renderer : Actor {
     
     // Render happens like this:
     // 1. Someone (a view most likely) asks us to render, sending us a CAMetalLayer
-    // 2. We grab the next drawable and create a RenderFrameContext, putting ourself and the drawable in there
+    // 2. We check and record the size of the drawable, but don't grab a drawable yet
     // 3. We call Yoga.render() on our root node, which walks the hiearchy and concurrently asks all views to render
     // 4. Each view can submit render units (geometry + stuff to render their views) concurrently
     // 5. We expect to receive a submitRenderFinished() call from all views in the hiearchy, and we know
     //    the frame is done when we have received all of them back
     private var numberOfViewsToRender:Int = 0
+    private var frameNumberRequested:Int64 = 0
+    private var frameNumberDrawn:Int64 = 0
     
     public lazy var render = Behavior(self) { (args:BehaviorArgs) in
         let metalLayer:CAMetalLayer = args[x:0]
-        let contentsScale:CGFloat = args[x:1]
+        let contentsSize:CGSize = args[x:1]
+        let contentsScale:CGFloat = args[x:2]
         
-        let pointSize = CGSize(width: metalLayer.bounds.size.width,
-                               height: metalLayer.bounds.size.height)
-        
-        let pixelSize = CGSize(width: metalLayer.bounds.size.width * contentsScale,
-                               height: metalLayer.bounds.size.height * contentsScale)
-        
-        // ensure that our depth texture size is correct!
-        if pixelSize.equalTo(CGSize(width: self.depthTexture.width, height: self.depthTexture.height)) == false {
-            metalLayer.drawableSize = pixelSize
-            metalLayer.contentsScale = contentsScale
-            self.depthTexture = self.getDepthTexture(size:pixelSize)
-        }
+        let pointSize = CGSize(width: contentsSize.width, height: contentsSize.height)
+        let pixelSize = CGSize(width: contentsSize.width * contentsScale, height: contentsSize.height * contentsScale)
                 
-        if let drawable = metalLayer.nextDrawable() {
-                        
-            let ctx = RenderFrameContext(renderer:self,
-                                         viewSize:pointSize,
-                                         drawable:drawable,
-                                           matrix:GLKMatrix4Identity,
-                                           bounds:GLKVector4Make(0, 0, 0, 0))
-            self.render_start(ctx)
-        }
+        metalLayer.drawableSize = pixelSize
+        metalLayer.contentsScale = contentsScale
+        
+        self.frameNumberRequested += 1
+        
+        let ctx = RenderFrameContext(renderer:self,
+                                   metalLayer:metalLayer,
+                                    pointSize:pointSize,
+                                    pixelSize:pixelSize,
+                                       matrix:GLKMatrix4Identity,
+                                       bounds:GLKVector4Make(0, 0, 0, 0),
+                                       frameNumber:self.frameNumberRequested)
+        
+        self.render_start(ctx)
     }
     
     public lazy var submitRenderUnit = Behavior(self) { (args:BehaviorArgs) in
@@ -349,7 +345,6 @@ public class Renderer : Actor {
     
     public lazy var submitRenderFinished = Behavior(self) { (args:BehaviorArgs) in
         let ctx:RenderFrameContext = args[x:0]
-        
         self.numberOfViewsToRender -= 1
         
         if self.numberOfViewsToRender == 0 {
@@ -362,37 +357,15 @@ public class Renderer : Actor {
     }
     
     private func render_start(_ ctx:RenderFrameContext) {
-        // Check to see if our render size changed, if it did we need
-        // to reset the projection matrices to match and re-layout
-        if projectedSize.equalTo(ctx.viewSize) == false {
-            projectedSize = ctx.viewSize
-            
-            let aspect = fabsf(Float(projectedSize.width) / Float(projectedSize.height))
-            
-            // calculate the field of view such that at a given depth we
-            // match the size of the window exactly
-            var radtheta:Float = 0.0
-            let distance:Float = 5000.0
-            
-            radtheta = 2.0 * atan2( Float(projectedSize.height) / 2.0, distance );
-            
-            let projectionMatrix = GLKMatrix4MakePerspective(
-                radtheta,
-                aspect,
-                1.0,
-                distance * 10.0)
-            sceneMatrices.projectionMatrix = projectionMatrix
-            
-            needsLayout = true
-        }
-        
         // make sure we are not trying to render more than the max concurrent frames
         if renderAheadCount >= Renderer.maxConcurrentFrames {
             return
         }
         
-        if needsLayout {
-            root.size(Pixel(projectedSize.width), Pixel(projectedSize.height))
+        if needsLayout ||
+           Int(root.getWidth()) != Int(ctx.pointSize.width) ||
+           Int(root.getHeight()) != Int(ctx.pointSize.height) {
+            root.size(Pixel(ctx.pointSize.width), Pixel(ctx.pointSize.height))
             root.layout()
             needsLayout = false
         }
@@ -407,149 +380,183 @@ public class Renderer : Actor {
     }
     
     private func render_finish(_ ctx:RenderFrameContext) {
-        let drawable = ctx.drawable
         
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        if let depthAttachment = renderPassDescriptor.depthAttachment {
-            depthAttachment.texture = depthTexture
-            depthAttachment.clearDepth = 1.0
-            depthAttachment.storeAction = .dontCare
-            depthAttachment.loadAction = .clear
+        if let drawable = ctx.metalLayer.nextDrawable() {
+            let drawableWidth = drawable.texture.width
+            let drawableHeight = drawable.texture.height
             
-            if let stencilAttachment = renderPassDescriptor.stencilAttachment {
-                stencilAttachment.texture = depthAttachment.texture
-                stencilAttachment.storeAction = .dontCare
-                stencilAttachment.loadAction = .clear
-                stencilAttachment.clearStencil = 255
+            if drawableWidth != Int(ctx.pixelSize.width) || drawableHeight != Int(ctx.pixelSize.height) {
+                print(".")
+                renderAheadCount -= 1
+                return
             }
-        }
             
-        renderPassDescriptor.colorAttachments[0].texture = drawable.texture
-        renderPassDescriptor.colorAttachments[0].loadAction = .clear
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            if drawableWidth != depthTexture.width || drawableHeight != depthTexture.height {
+                depthTexture = getDepthTexture(size:CGSize(width: drawableWidth, height: drawableHeight))
+            }
+            
         
-        guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
-            renderAheadCount -= 1
-            return
-        }
-        
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
-            renderAheadCount -= 1
-            return
-        }
-
-        // define the modelview and projection matrics and make them
-        // available to the shaders
-        var modelViewMatrix = GLKMatrix4Identity
-        modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, Float(projectedSize.width * -0.5), Float(projectedSize.height * 0.5), -5000.0)
-        modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, Float.pi)
-        sceneMatrices.modelviewMatrix = modelViewMatrix
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            if let depthAttachment = renderPassDescriptor.depthAttachment {
+                depthAttachment.texture = depthTexture
+                depthAttachment.clearDepth = 1.0
+                depthAttachment.storeAction = .dontCare
+                depthAttachment.loadAction = .clear
                 
-        renderEncoder.setVertexBytes(&sceneMatrices, length: MemoryLayout<SceneMatrices>.stride, index: 1)
-        renderEncoder.setFragmentBytes(&sdfUniforms, length: MemoryLayout<SDFUniforms>.stride, index: 0)
-        
-        globalUniforms.globalColor.r = -99
-        globalUniforms.globalColor.g = -999
-        globalUniforms.globalColor.b = -9999
-        globalUniforms.globalColor.a = -99999
-        
-        stencilValueCount = stencilValueMax
-        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-        renderEncoder.setDepthStencilState(ignoreStencilState)
-        
-        var aborted = false
-        
-        // TODO: process and render all collected render units for this frame
-        renderEncoder.setRenderPipelineState(flatPipelineState)
-        renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-        
-        for unit in renderUnits {
-            if unit.textureName != nil {
-                /*
-                let texture = createTextureSync(namePtr: unit.textureName)
-                if texture == nil {
-                    continue
+                if let stencilAttachment = renderPassDescriptor.stencilAttachment {
+                    stencilAttachment.texture = depthAttachment.texture
+                    stencilAttachment.storeAction = .dontCare
+                    stencilAttachment.loadAction = .clear
+                    stencilAttachment.clearStencil = 255
                 }
-                renderEncoder.setFragmentTexture(texture, index: 0)*/
-            }
-            
-            /*
-            if stencilValueCount == stencilValueMax {
-                renderEncoder.setDepthStencilState(ignoreStencilState)
-            } else {
-                renderEncoder.setDepthStencilState(testStencilState)
-            }
-            */
-            
-            /*
-            if cullMode == CullMode_back {
-                renderEncoder.setCullMode(.back)
-            } else if cullMode == CullMode_front {
-                renderEncoder.setCullMode(.front)
-            } else if cullMode == CullMode_none {
-                renderEncoder.setCullMode(.none)
-            }
-            
-            if shaderType == ShaderType_Abort {
-                aborted = true
             }
                 
-            if shaderType == ShaderType_Flat {
-                renderEncoder.setRenderPipelineState(flatPipelineState)
-                renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-            } else if shaderType == ShaderType_Textured {
-                renderEncoder.setRenderPipelineState(texturePipelineState)
-                renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-            } else if shaderType == ShaderType_SDF {
-                renderEncoder.setRenderPipelineState(sdfPipelineState)
-                renderEncoder.setFragmentSamplerState(mipmapSamplerState, index:0)
-            } else if shaderType == ShaderType_Stencil_Begin {
-                renderEncoder.setDepthStencilState(decrementStencilState)
-                renderEncoder.setRenderPipelineState(stencilPipelineState)
-                renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-            } else if shaderType == ShaderType_Stencil_End {
-                renderEncoder.setDepthStencilState(incrementStencilState)
-                renderEncoder.setRenderPipelineState(stencilPipelineState)
-                renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-            }*/
+            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .clear
+            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             
-            
-            if unit.vertices.vertexCount() > 0 {
-                drawRenderUnit(renderEncoder, unit)
+            guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
+                renderAheadCount -= 1
+                return
             }
             
-            /*
-            if shaderType == ShaderType_Stencil_Begin {
-                stencilValueCount = max(stencilValueCount - 1, 0)
-                renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+            guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
+                renderAheadCount -= 1
+                return
             }
-            if shaderType == ShaderType_Stencil_End {
-                stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
-                renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-            }*/
-        }
-        renderUnits.removeAll()
-        
-        renderEncoder.endEncoding()
-        
-        commandBuffer.addCompletedHandler { (buffer) in
-            self.submitRenderOnScreen()
-        }
+            
+            
+            // Set up our projection matrix
+            let aspect = fabsf(Float(ctx.pointSize.width / ctx.pointSize.height))
+            
+            // calculate the field of view such that at a given depth we
+            // match the size of the window exactly
+            var radtheta:Float = 0.0
+            let distance:Float = 5000.0
+            
+            radtheta = 2.0 * atan2( Float(ctx.pointSize.height / 2.0), distance );
+            
+            let projectionMatrix = GLKMatrix4MakePerspective(
+                radtheta,
+                aspect,
+                1.0,
+                distance * 10.0)
+            sceneMatrices.projectionMatrix = projectionMatrix
+            
+
+            // define the modelview and projection matrics and make them
+            // available to the shaders
+            var modelViewMatrix = GLKMatrix4Identity
+            modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, Float(ctx.pointSize.width * -0.5), Float(ctx.pointSize.height * 0.5), -5000.0)
+            modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, Float.pi)
+            sceneMatrices.modelviewMatrix = modelViewMatrix
+                    
+            renderEncoder.setVertexBytes(&sceneMatrices, length: MemoryLayout<SceneMatrices>.stride, index: 1)
+            renderEncoder.setFragmentBytes(&sdfUniforms, length: MemoryLayout<SDFUniforms>.stride, index: 0)
+            
+            globalUniforms.globalColor.r = -99
+            globalUniforms.globalColor.g = -999
+            globalUniforms.globalColor.b = -9999
+            globalUniforms.globalColor.a = -99999
+            
+            stencilValueCount = stencilValueMax
+            renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+            renderEncoder.setDepthStencilState(ignoreStencilState)
+            
+            var aborted = false
+            
+            // TODO: process and render all collected render units for this frame
+            renderEncoder.setRenderPipelineState(flatPipelineState)
+            renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+            
+            for unit in renderUnits {
+                if unit.textureName != nil {
+                    /*
+                    let texture = createTextureSync(namePtr: unit.textureName)
+                    if texture == nil {
+                        continue
+                    }
+                    renderEncoder.setFragmentTexture(texture, index: 0)*/
+                }
                 
-        commandBuffer.commit()
-        commandBuffer.waitUntilScheduled()
-        drawable.present()
-        
-        if aborted == false {
-            // Simple FPS so we can compare performance
-            numFrames = numFrames + 1
+                /*
+                if stencilValueCount == stencilValueMax {
+                    renderEncoder.setDepthStencilState(ignoreStencilState)
+                } else {
+                    renderEncoder.setDepthStencilState(testStencilState)
+                }
+                */
+                
+                /*
+                if cullMode == CullMode_back {
+                    renderEncoder.setCullMode(.back)
+                } else if cullMode == CullMode_front {
+                    renderEncoder.setCullMode(.front)
+                } else if cullMode == CullMode_none {
+                    renderEncoder.setCullMode(.none)
+                }
+                
+                if shaderType == ShaderType_Abort {
+                    aborted = true
+                }
+                    
+                if shaderType == ShaderType_Flat {
+                    renderEncoder.setRenderPipelineState(flatPipelineState)
+                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                } else if shaderType == ShaderType_Textured {
+                    renderEncoder.setRenderPipelineState(texturePipelineState)
+                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                } else if shaderType == ShaderType_SDF {
+                    renderEncoder.setRenderPipelineState(sdfPipelineState)
+                    renderEncoder.setFragmentSamplerState(mipmapSamplerState, index:0)
+                } else if shaderType == ShaderType_Stencil_Begin {
+                    renderEncoder.setDepthStencilState(decrementStencilState)
+                    renderEncoder.setRenderPipelineState(stencilPipelineState)
+                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                } else if shaderType == ShaderType_Stencil_End {
+                    renderEncoder.setDepthStencilState(incrementStencilState)
+                    renderEncoder.setRenderPipelineState(stencilPipelineState)
+                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                }*/
+                
+                
+                if unit.vertices.vertexCount() > 0 {
+                    drawRenderUnit(renderEncoder, unit)
+                }
+                
+                /*
+                if shaderType == ShaderType_Stencil_Begin {
+                    stencilValueCount = max(stencilValueCount - 1, 0)
+                    renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                }
+                if shaderType == ShaderType_Stencil_End {
+                    stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
+                    renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                }*/
+            }
+            renderUnits.removeAll()
             
-            let currentTime = CFAbsoluteTimeGetCurrent()
-            let elapsedTime = currentTime - lastFramesTime
-            if elapsedTime > 1.0 {
-                print("\(numFrames) fps")
-                numFrames = 0
-                lastFramesTime = currentTime
+            renderEncoder.endEncoding()
+            
+            commandBuffer.addCompletedHandler { (buffer) in
+                self.submitRenderOnScreen()
+            }
+                    
+            commandBuffer.commit()
+            commandBuffer.waitUntilScheduled()
+            drawable.present()
+            
+            if aborted == false {
+                // Simple FPS so we can compare performance
+                numFrames = numFrames + 1
+                
+                let currentTime = CFAbsoluteTimeGetCurrent()
+                let elapsedTime = currentTime - lastFramesTime
+                if elapsedTime > 1.0 {
+                    print("\(numFrames) fps")
+                    numFrames = 0
+                    lastFramesTime = currentTime
+                }
             }
         }
     }

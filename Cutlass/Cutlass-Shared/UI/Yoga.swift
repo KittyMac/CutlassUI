@@ -128,10 +128,12 @@ public class Yoga {
             _last_bounds = GLKVector4Make(-pivotX, -pivotY, local_width, local_height)
             
             let view_ctx = RenderFrameContext(renderer: ctx.renderer,
-                                              viewSize: ctx.viewSize,
-                                              drawable: ctx.drawable,
+                                            metalLayer: ctx.metalLayer,
+                                             pointSize: ctx.pointSize,
+                                             pixelSize: ctx.pixelSize,
                                                 matrix: local_matrix,
-                                                bounds: _last_bounds)
+                                                bounds: _last_bounds,
+                                           frameNumber: ctx.frameNumber)
             /*
             let savedAlpha = ctx.alpha
             
@@ -153,11 +155,13 @@ public class Yoga {
                                                0)
             
             let child_ctx = RenderFrameContext(renderer: ctx.renderer,
-                                               viewSize: ctx.viewSize,
-                                               drawable: ctx.drawable,
-                                               matrix: local_matrix,
-                                               bounds: _last_bounds)
-            
+                                             metalLayer: ctx.metalLayer,
+                                               pointSize: ctx.pointSize,
+                                               pixelSize: ctx.pixelSize,
+                                                 matrix: local_matrix,
+                                                 bounds: _last_bounds,
+                                            frameNumber: ctx.frameNumber)
+
             for child in _children {
                 local_n = child.render_recursive(local_n, child_ctx)
             }
@@ -396,6 +400,9 @@ public class Yoga {
     @discardableResult public func maxHeight(_ percent:Percentage) -> Self { YGNodeStyleSetMaxHeightPercent(node, percent); return self }
     
     @discardableResult public func aspectRatio(v:Float) -> Self { YGNodeStyleSetAspectRatio(node, v); return self }
+    
+    func getWidth() -> Float { return YGNodeLayoutGetWidth(node); }
+    func getHeight() -> Float { return YGNodeLayoutGetHeight(node); }
     
     /*
      fun _handleNAN(v:Float):Float -> Self { if v.nan() then 0.0 else v end }
