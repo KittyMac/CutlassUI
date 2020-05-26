@@ -33,7 +33,7 @@ public class FloatAlignedArray {
     }
     
     public func reserve(_ numFloats:Int) {
-        if _max != numFloats {
+        if (numFloats * FloatAlignedArray.floatSize) > _max {
             if _rawpointer != nil {
                 dealloc()
             }
