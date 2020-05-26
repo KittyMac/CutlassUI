@@ -290,6 +290,7 @@ public class Renderer : Actor {
     private var firstRender:Bool = true
     
     private var needsLayout:Bool = true
+    private var needsRender:Bool = true
         
     public lazy var setRoot = Behavior(self) { (args:BehaviorArgs) in
         self.root.removeAll()
@@ -372,6 +373,13 @@ public class Renderer : Actor {
             root.size(Pixel(ctx.pointSize.width), Pixel(ctx.pointSize.height))
             root.layout()
             needsLayout = false
+            
+            needsRender = true
+        }
+        
+        
+        if needsRender == false {
+            return
         }
         
         numberOfViewsToRender = root.render(ctx)
@@ -546,10 +554,11 @@ public class Renderer : Actor {
             commandBuffer.addCompletedHandler { (buffer) in
                 self.submitRenderOnScreen()
             }
-                    
+            
+            if aborted == false {
+                commandBuffer.present(drawable)
+            }
             commandBuffer.commit()
-            commandBuffer.waitUntilScheduled()
-            drawable.present()
             
             if aborted == false {
                 // Simple FPS so we can compare performance

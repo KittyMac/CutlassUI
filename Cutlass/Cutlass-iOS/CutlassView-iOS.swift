@@ -85,6 +85,7 @@ public class CutlassView: UIView {
     
     @objc func render() {
         autoreleasepool {
+            contentsSize = bounds.size
             _renderer.render(metalLayer, contentsSize, contentsScale)
         }
     }
