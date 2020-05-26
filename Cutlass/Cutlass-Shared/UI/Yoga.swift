@@ -100,7 +100,7 @@ public class Yoga {
             let pivotX = _pivot.x * local_width
             let pivotY = _pivot.y * local_height
             
-            var local_matrix = GLKMatrix4Translate(ctx.matrix,
+            var local_matrix = GLKMatrix4Translate(ctx.view.matrix,
                                                    (local_left + (_anchor.x * local_width)) - (local_width / 2),
                                                    (local_top + (_anchor.y * local_height)) - (local_height / 2),
                                                    _z)
@@ -127,13 +127,6 @@ public class Yoga {
             // TODO: parentContentOffset
             _last_bounds = GLKVector4Make(-pivotX, -pivotY, local_width, local_height)
             
-            let view_ctx = RenderFrameContext(renderer: ctx.renderer,
-                                            metalLayer: ctx.metalLayer,
-                                             pointSize: ctx.pointSize,
-                                             pixelSize: ctx.pixelSize,
-                                                matrix: local_matrix,
-                                                bounds: _last_bounds,
-                                           frameNumber: ctx.frameNumber)
             /*
             let savedAlpha = ctx.alpha
             
@@ -145,6 +138,7 @@ public class Yoga {
             ctx.alpha = frameContext.alpha * _alpha
             */
             for view in views {
+                let view_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
                 view.render(view_ctx)
                 local_n += 1
             }
@@ -154,15 +148,8 @@ public class Yoga {
                                                -pivotY,
                                                0)
             
-            let child_ctx = RenderFrameContext(renderer: ctx.renderer,
-                                             metalLayer: ctx.metalLayer,
-                                               pointSize: ctx.pointSize,
-                                               pixelSize: ctx.pixelSize,
-                                                 matrix: local_matrix,
-                                                 bounds: _last_bounds,
-                                            frameNumber: ctx.frameNumber)
-
             for child in _children {
+                let child_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
                 local_n = child.render_recursive(local_n, child_ctx)
             }
         }

@@ -17,8 +17,9 @@ public protocol Viewable : Actor {
 public extension Viewable {
     
     func protected_viewable_submitRenderUnit(_ ctx:RenderFrameContext,
-                                             _ vertices:FloatAlignedArray) {
-        let unit = RenderUnit(renderNumer: 0, vertices: vertices)
+                                             _ vertices:FloatAlignedArray,
+                                             _ partNumber:Int64 = 0) {
+        let unit = RenderUnit(renderNumber: ctx.view.renderNumber + partNumber, vertices: vertices)
         ctx.renderer.submitRenderUnit(ctx, unit)
     }
 

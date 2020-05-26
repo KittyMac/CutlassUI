@@ -290,9 +290,7 @@ public class Renderer : Actor {
     private var firstRender:Bool = true
     
     private var needsLayout:Bool = true
-    
-    private var renderUnits:[RenderUnit] = []
-    
+        
     public lazy var setRoot = Behavior(self) { (args:BehaviorArgs) in
         self.root.removeAll()
         self.root.child(args[x:0])
@@ -308,7 +306,7 @@ public class Renderer : Actor {
     //    the frame is done when we have received all of them back
     private var numberOfViewsToRender:Int = 0
     private var frameNumberRequested:Int64 = 0
-    private var frameNumberDrawn:Int64 = 0
+    private var renderUnitTree: AVLTree<Int64, RenderUnit> = AVLTree()
     
     public lazy var render = Behavior(self) { (args:BehaviorArgs) in
         let metalLayer:CAMetalLayer = args[x:0]
@@ -323,27 +321,31 @@ public class Renderer : Actor {
         
         self.frameNumberRequested += 1
         
-        let ctx = RenderFrameContext(renderer:self,
-                                   metalLayer:metalLayer,
-                                    pointSize:pointSize,
-                                    pixelSize:pixelSize,
-                                       matrix:GLKMatrix4Identity,
-                                       bounds:GLKVector4Make(0, 0, 0, 0),
-                                       frameNumber:self.frameNumberRequested)
-        
+        let ctx = RenderFrameContext(renderer: self,
+                                     metalLayer: metalLayer,
+                                     pointSize: pointSize,
+                                     pixelSize: pixelSize,
+                                     frameNumber: self.frameNumberRequested,
+                                     view: ViewFrameContext(matrix: GLKMatrix4Identity, bounds: GLKVector4Make(0,0,0,0), renderNumber: 0))
+                
         self.render_start(ctx)
     }
     
     public lazy var submitRenderUnit = Behavior(self) { (args:BehaviorArgs) in
+        // Each view can submit a number of render units, with each render unit being
+        // an distinct renderable thing
         let ctx:RenderFrameContext = args[x:0]
         let unit:RenderUnit = args[x:1]
         
         // TODO: Replace this with a tree structure which can sort
         // the render units as it inserts them
-        self.renderUnits.append(unit)
+        self.renderUnitTree.insert(key: unit.renderNumber, payload:unit)
     }
     
     public lazy var submitRenderFinished = Behavior(self) { (args:BehaviorArgs) in
+        // Each view which received a render call must call submitRenderFinished when they
+        // have finished that render call. The Renderer tracks these to know when all views
+        // in a render frame have finished.
         let ctx:RenderFrameContext = args[x:0]
         self.numberOfViewsToRender -= 1
         
@@ -355,6 +357,8 @@ public class Renderer : Actor {
     public lazy var submitRenderOnScreen = Behavior(self) { (args:BehaviorArgs) in
         self.renderAheadCount -= 1
     }
+    
+    // MARK: - Internal - Rendering
     
     private func render_start(_ ctx:RenderFrameContext) {
         // make sure we are not trying to render more than the max concurrent frames
@@ -469,72 +473,74 @@ public class Renderer : Actor {
             renderEncoder.setRenderPipelineState(flatPipelineState)
             renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
             
-            for unit in renderUnits {
-                if unit.textureName != nil {
-                    /*
-                    let texture = createTextureSync(namePtr: unit.textureName)
-                    if texture == nil {
-                        continue
+            renderUnitTree.doInOrder(node: renderUnitTree.root) { (node) in
+                if let unit = node.payload {
+                    if unit.textureName != nil {
+                        /*
+                        let texture = createTextureSync(namePtr: unit.textureName)
+                        if texture == nil {
+                            continue
+                        }
+                        renderEncoder.setFragmentTexture(texture, index: 0)*/
                     }
-                    renderEncoder.setFragmentTexture(texture, index: 0)*/
-                }
-                
-                /*
-                if stencilValueCount == stencilValueMax {
-                    renderEncoder.setDepthStencilState(ignoreStencilState)
-                } else {
-                    renderEncoder.setDepthStencilState(testStencilState)
-                }
-                */
-                
-                /*
-                if cullMode == CullMode_back {
-                    renderEncoder.setCullMode(.back)
-                } else if cullMode == CullMode_front {
-                    renderEncoder.setCullMode(.front)
-                } else if cullMode == CullMode_none {
-                    renderEncoder.setCullMode(.none)
-                }
-                
-                if shaderType == ShaderType_Abort {
-                    aborted = true
-                }
                     
-                if shaderType == ShaderType_Flat {
-                    renderEncoder.setRenderPipelineState(flatPipelineState)
-                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                } else if shaderType == ShaderType_Textured {
-                    renderEncoder.setRenderPipelineState(texturePipelineState)
-                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                } else if shaderType == ShaderType_SDF {
-                    renderEncoder.setRenderPipelineState(sdfPipelineState)
-                    renderEncoder.setFragmentSamplerState(mipmapSamplerState, index:0)
-                } else if shaderType == ShaderType_Stencil_Begin {
-                    renderEncoder.setDepthStencilState(decrementStencilState)
-                    renderEncoder.setRenderPipelineState(stencilPipelineState)
-                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                } else if shaderType == ShaderType_Stencil_End {
-                    renderEncoder.setDepthStencilState(incrementStencilState)
-                    renderEncoder.setRenderPipelineState(stencilPipelineState)
-                    renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                }*/
-                
-                
-                if unit.vertices.vertexCount() > 0 {
-                    drawRenderUnit(renderEncoder, unit)
+                    /*
+                    if stencilValueCount == stencilValueMax {
+                        renderEncoder.setDepthStencilState(ignoreStencilState)
+                    } else {
+                        renderEncoder.setDepthStencilState(testStencilState)
+                    }
+                    */
+                    
+                    /*
+                    if cullMode == CullMode_back {
+                        renderEncoder.setCullMode(.back)
+                    } else if cullMode == CullMode_front {
+                        renderEncoder.setCullMode(.front)
+                    } else if cullMode == CullMode_none {
+                        renderEncoder.setCullMode(.none)
+                    }
+                    
+                    if shaderType == ShaderType_Abort {
+                        aborted = true
+                    }
+                        
+                    if shaderType == ShaderType_Flat {
+                        renderEncoder.setRenderPipelineState(flatPipelineState)
+                        renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                    } else if shaderType == ShaderType_Textured {
+                        renderEncoder.setRenderPipelineState(texturePipelineState)
+                        renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                    } else if shaderType == ShaderType_SDF {
+                        renderEncoder.setRenderPipelineState(sdfPipelineState)
+                        renderEncoder.setFragmentSamplerState(mipmapSamplerState, index:0)
+                    } else if shaderType == ShaderType_Stencil_Begin {
+                        renderEncoder.setDepthStencilState(decrementStencilState)
+                        renderEncoder.setRenderPipelineState(stencilPipelineState)
+                        renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                    } else if shaderType == ShaderType_Stencil_End {
+                        renderEncoder.setDepthStencilState(incrementStencilState)
+                        renderEncoder.setRenderPipelineState(stencilPipelineState)
+                        renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
+                    }*/
+                    
+                    
+                    if unit.vertices.vertexCount() > 0 {
+                        drawRenderUnit(renderEncoder, unit)
+                    }
+                    
+                    /*
+                    if shaderType == ShaderType_Stencil_Begin {
+                        stencilValueCount = max(stencilValueCount - 1, 0)
+                        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                    }
+                    if shaderType == ShaderType_Stencil_End {
+                        stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
+                        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                    }*/
                 }
-                
-                /*
-                if shaderType == ShaderType_Stencil_Begin {
-                    stencilValueCount = max(stencilValueCount - 1, 0)
-                    renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-                }
-                if shaderType == ShaderType_Stencil_End {
-                    stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
-                    renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-                }*/
             }
-            renderUnits.removeAll()
+            renderUnitTree = AVLTree()
             
             renderEncoder.endEncoding()
             

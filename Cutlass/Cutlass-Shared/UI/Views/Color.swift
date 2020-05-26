@@ -17,7 +17,7 @@ public final class Color: Actor, Viewable, Colorable {
     
     public lazy var render = Behavior(self) { (args:BehaviorArgs) in
         let ctx:RenderFrameContext = args[x:0]
-        let bounds = ctx.bounds
+        let bounds = ctx.view.bounds
         
         // TODO: create and submit the render unit
         let geom = self.bufferedGeometry.next()
@@ -31,7 +31,7 @@ public final class Color: Actor, Viewable, Colorable {
         let x_max = bounds.xMax()
         let y_max = bounds.yMax()
 
-        vertices.pushQuadVC(ctx.matrix,
+        vertices.pushQuadVC(ctx.view.matrix,
                             GLKVector3Make(x_min, y_min, 0),
                             GLKVector3Make(x_max, y_min, 0),
                             GLKVector3Make(x_max, y_max, 0),

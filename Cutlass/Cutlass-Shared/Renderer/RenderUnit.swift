@@ -19,6 +19,6 @@ public struct RenderUnit {
     
     let color:GLKVector4 = GLKVector4Make(1.0, 1.0, 1.0, 1.0)
     
-    let renderNumer:Int
+    let renderNumber:Int64
     let vertices:FloatAlignedArray
 }

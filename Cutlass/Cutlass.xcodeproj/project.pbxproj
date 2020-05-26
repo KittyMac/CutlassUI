@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4617ECF2247D66D4008BEACD /* AVLTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617ECF1247D66D4008BEACD /* AVLTree.swift */; };
+		4617ECF3247D66D4008BEACD /* AVLTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617ECF1247D66D4008BEACD /* AVLTree.swift */; };
 		4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46229640246DF14100A3ED6D /* Cutlass.framework */; };
 		4622964F246DF14200A3ED6D /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; };
 		46229651246DF14200A3ED6D /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -162,6 +164,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4617ECF1247D66D4008BEACD /* AVLTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVLTree.swift; sourceTree = "<group>"; };
 		46229640246DF14100A3ED6D /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46229643246DF14100A3ED6D /* Cutlass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cutlass.h; sourceTree = "<group>"; };
 		46229644246DF14100A3ED6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -453,6 +456,7 @@
 		46C3D61B247707F000F8DC58 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				4617ECF1247D66D4008BEACD /* AVLTree.swift */,
 				46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */,
 				46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */,
 				46C3D61C24770C0F00F8DC58 /* Geometry.swift */,
@@ -735,6 +739,7 @@
 				46C3D6162476E22100F8DC58 /* RenderUnit.swift in Sources */,
 				4641A1052474DB26007C85D0 /* YGValue.cpp in Sources */,
 				4641A0F92474DB26007C85D0 /* YGNode.cpp in Sources */,
+				4617ECF2247D66D4008BEACD /* AVLTree.swift in Sources */,
 				4628104524759971009F04B3 /* Color.swift in Sources */,
 				46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
 				46C3D62324770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,
@@ -777,6 +782,7 @@
 				46C3D6172476E22100F8DC58 /* RenderUnit.swift in Sources */,
 				4641A1062474DB26007C85D0 /* YGValue.cpp in Sources */,
 				4641A0FA2474DB26007C85D0 /* YGNode.cpp in Sources */,
+				4617ECF3247D66D4008BEACD /* AVLTree.swift in Sources */,
 				4628104624759971009F04B3 /* Color.swift in Sources */,
 				46C3D61A2476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
 				46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,

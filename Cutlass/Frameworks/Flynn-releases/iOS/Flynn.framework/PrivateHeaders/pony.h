@@ -61,7 +61,6 @@ void pony_actor_fast_dispatch10(void * actor, id arg0, id arg1, id arg2, id arg3
 
 int pony_actor_num_messages(void * actor);
 void pony_actor_destroy(void * actor);
-void pony_actor_poll(void* actor);
 
 int pony_actors_load_balance(void * actorArray, int num_actors);
 void pony_actors_wait(int min_msgs, void * actor, int num_actors);
