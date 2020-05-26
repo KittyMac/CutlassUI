@@ -381,6 +381,7 @@ public class Renderer : Actor {
         if needsRender == false {
             return
         }
+        needsRender = false
         
         numberOfViewsToRender = root.render(ctx)
 

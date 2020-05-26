@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Flynn/Flynn.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Cutlass/Cutlass.xcodeproj">
    </FileRef>
    <FileRef

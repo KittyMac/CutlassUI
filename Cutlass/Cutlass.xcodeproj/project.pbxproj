@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		4617ECF2247D66D4008BEACD /* AVLTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617ECF1247D66D4008BEACD /* AVLTree.swift */; };
 		4617ECF3247D66D4008BEACD /* AVLTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617ECF1247D66D4008BEACD /* AVLTree.swift */; };
+		4617ECF6247DB779008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECF5247DB779008BEACD /* Flynn.framework */; };
+		4617ECF7247DB779008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECF5247DB779008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4617ECFA247DB77D008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECF9247DB77D008BEACD /* Flynn.framework */; };
+		4617ECFB247DB77D008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECF9247DB77D008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46229640246DF14100A3ED6D /* Cutlass.framework */; };
 		4622964F246DF14200A3ED6D /* CutlassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622964E246DF14200A3ED6D /* CutlassTests.swift */; };
 		46229651246DF14200A3ED6D /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -109,11 +113,6 @@
 		46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */; };
 		46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
 		46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
-		46E85CCA2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; };
-		46E85CCB2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; platformFilter = ios; };
-		46E85CCC2475DA170030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CC92475DA170030E7CD /* Flynn.framework */; };
-		46E85CCE2475DA200030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CCD2475DA200030E7CD /* Flynn.framework */; };
-		46E85CCF2475DA200030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CCD2475DA200030E7CD /* Flynn.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,12 +140,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4617ECF8247DB779008BEACD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4617ECF7247DB779008BEACD /* Flynn.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		462810592475A49F009F04B3 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4617ECFB247DB77D008BEACD /* Flynn.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +176,8 @@
 
 /* Begin PBXFileReference section */
 		4617ECF1247D66D4008BEACD /* AVLTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVLTree.swift; sourceTree = "<group>"; };
+		4617ECF5247DB779008BEACD /* Flynn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Flynn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4617ECF9247DB77D008BEACD /* Flynn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Flynn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46229640246DF14100A3ED6D /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46229643246DF14100A3ED6D /* Cutlass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cutlass.h; sourceTree = "<group>"; };
 		46229644246DF14100A3ED6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -227,8 +240,6 @@
 		46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedGeometry.swift; sourceTree = "<group>"; };
 		46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatAlignedArray.swift; sourceTree = "<group>"; };
 		46E85CB12475AF1F0030E7CD /* Viewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Viewable.swift; sourceTree = "<group>"; };
-		46E85CC92475DA170030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
-		46E85CCD2475DA200030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,7 +247,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CCE2475DA200030E7CD /* Flynn.framework in Frameworks */,
+				4617ECF6247DB779008BEACD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +255,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CCF2475DA200030E7CD /* Flynn.framework in Frameworks */,
 				4622964A246DF14200A3ED6D /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,7 +263,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CCA2475DA170030E7CD /* Flynn.framework in Frameworks */,
+				4617ECFA247DB77D008BEACD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +271,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CCB2475DA170030E7CD /* Flynn.framework in Frameworks */,
 				46615201247338E100F87A9B /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,7 +279,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CCC2475DA170030E7CD /* Flynn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,8 +340,8 @@
 		462810512475A13D009F04B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				46E85CCD2475DA200030E7CD /* Flynn.framework */,
-				46E85CC92475DA170030E7CD /* Flynn.framework */,
+				4617ECF9247DB77D008BEACD /* Flynn.framework */,
+				4617ECF5247DB779008BEACD /* Flynn.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -542,6 +550,7 @@
 				4622963C246DF14100A3ED6D /* Sources */,
 				4622963D246DF14100A3ED6D /* Frameworks */,
 				4622963E246DF14100A3ED6D /* Resources */,
+				4617ECF8247DB779008BEACD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

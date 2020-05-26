@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4617ECF4247D880A008BEACD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07524742FFE007C85D0 /* ViewController.swift */; };
+		4617ECFD247DB7C5008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFC247DB7C5008BEACD /* Flynn.framework */; };
+		4617ECFE247DB7C5008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFC247DB7C5008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4617ED00247DB7CB008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFF247DB7CB008BEACD /* Flynn.framework */; };
+		4617ED01247DB7CB008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFF247DB7CB008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4641A07424742FFE007C85D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07324742FFE007C85D0 /* AppDelegate.swift */; };
 		4641A07624742FFE007C85D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07524742FFE007C85D0 /* ViewController.swift */; };
 		4641A07824742FFF007C85D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4641A07724742FFF007C85D0 /* Assets.xcassets */; };
@@ -20,10 +24,6 @@
 		4641A09B24744EA3007C85D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4641A09924744EA3007C85D0 /* LaunchScreen.storyboard */; };
 		4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; };
 		4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46E85CD12475DA350030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD02475DA350030E7CD /* Flynn.framework */; };
-		46E85CD22475DA350030E7CD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD02475DA350030E7CD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46E85CD42475DA3B0030E7CD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD32475DA3B0030E7CD /* Flynn.framework */; };
-		46E85CD52475DA3B0030E7CD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E85CD32475DA3B0030E7CD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,7 +33,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				46E85CD52475DA3B0030E7CD /* Flynn.framework in Embed Frameworks */,
+				4617ED01247DB7CB008BEACD /* Flynn.framework in Embed Frameworks */,
 				4641A08624743135007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -45,7 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				46E85CD22475DA350030E7CD /* Flynn.framework in Embed Frameworks */,
+				4617ECFE247DB7C5008BEACD /* Flynn.framework in Embed Frameworks */,
 				4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -54,6 +54,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4617ECFC247DB7C5008BEACD /* Flynn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Flynn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4617ECFF247DB7CB008BEACD /* Flynn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Flynn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4641A07024742FFE007C85D0 /* CutlassDemo-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CutlassDemo-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4641A07324742FFE007C85D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4641A07524742FFE007C85D0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CD42475DA3B0030E7CD /* Flynn.framework in Frameworks */,
+				4617ED00247DB7CB008BEACD /* Flynn.framework in Frameworks */,
 				4641A08524743135007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46E85CD12475DA350030E7CD /* Flynn.framework in Frameworks */,
+				4617ECFD247DB7C5008BEACD /* Flynn.framework in Frameworks */,
 				4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +132,8 @@
 		4641A08324743135007C85D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4617ECFF247DB7CB008BEACD /* Flynn.framework */,
+				4617ECFC247DB7C5008BEACD /* Flynn.framework */,
 				46E85CD02475DA350030E7CD /* Flynn.framework */,
 				46E85CD32475DA3B0030E7CD /* Flynn.framework */,
 				4641A0A02474508B007C85D0 /* Cutlass.framework */,
