@@ -26,7 +26,7 @@ public class CutlassView: NSView, CALayerDelegate {
         super.init(frame: frame)
         self.wantsLayer = true
         self.layerContentsRedrawPolicy = .duringViewResize
-        self.layerContentsPlacement = .scaleAxesIndependently
+        self.layerContentsPlacement = .topLeft
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,7 +36,7 @@ public class CutlassView: NSView, CALayerDelegate {
         super.init(coder: aDecoder)
         self.wantsLayer = true
         self.layerContentsRedrawPolicy = .duringViewResize
-        self.layerContentsPlacement = .scaleAxesIndependently
+        self.layerContentsPlacement = .topLeft
     }
     
     public override func makeBackingLayer() -> CALayer {
