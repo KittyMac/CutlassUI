@@ -475,6 +475,8 @@ public class Renderer : Actor {
             
             renderUnitTree.doInOrder(node: renderUnitTree.root) { (node) in
                 if let unit = node.payload {
+                    let shaderType = unit.shaderType
+                    
                     if unit.textureName != nil {
                         /*
                         let texture = createTextureSync(namePtr: unit.textureName)
@@ -484,13 +486,11 @@ public class Renderer : Actor {
                         renderEncoder.setFragmentTexture(texture, index: 0)*/
                     }
                     
-                    /*
                     if stencilValueCount == stencilValueMax {
                         renderEncoder.setDepthStencilState(ignoreStencilState)
                     } else {
                         renderEncoder.setDepthStencilState(testStencilState)
                     }
-                    */
                     
                     /*
                     if cullMode == CullMode_back {
@@ -499,45 +499,44 @@ public class Renderer : Actor {
                         renderEncoder.setCullMode(.front)
                     } else if cullMode == CullMode_none {
                         renderEncoder.setCullMode(.none)
-                    }
+                    }*/
                     
-                    if shaderType == ShaderType_Abort {
+                    if shaderType == .abort {
                         aborted = true
                     }
                         
-                    if shaderType == ShaderType_Flat {
+                    if shaderType == .flat {
                         renderEncoder.setRenderPipelineState(flatPipelineState)
                         renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                    } else if shaderType == ShaderType_Textured {
+                    } else if shaderType == .texture {
                         renderEncoder.setRenderPipelineState(texturePipelineState)
                         renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                    } else if shaderType == ShaderType_SDF {
+                    } else if shaderType == .sdf {
                         renderEncoder.setRenderPipelineState(sdfPipelineState)
                         renderEncoder.setFragmentSamplerState(mipmapSamplerState, index:0)
-                    } else if shaderType == ShaderType_Stencil_Begin {
+                    } else if shaderType == .stencilBegin {
                         renderEncoder.setDepthStencilState(decrementStencilState)
                         renderEncoder.setRenderPipelineState(stencilPipelineState)
                         renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                    } else if shaderType == ShaderType_Stencil_End {
+                    } else if shaderType == .stencilEnd {
                         renderEncoder.setDepthStencilState(incrementStencilState)
                         renderEncoder.setRenderPipelineState(stencilPipelineState)
                         renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
-                    }*/
-                    
+                    }
                     
                     if unit.vertices.vertexCount() > 0 {
                         drawRenderUnit(renderEncoder, unit)
                     }
                     
-                    /*
-                    if shaderType == ShaderType_Stencil_Begin {
+                    
+                    if shaderType == .stencilBegin {
                         stencilValueCount = max(stencilValueCount - 1, 0)
                         renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
                     }
-                    if shaderType == ShaderType_Stencil_End {
+                    if shaderType == .stencilEnd {
                         stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
                         renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-                    }*/
+                    }
                 }
             }
             renderUnitTree = AVLTree()

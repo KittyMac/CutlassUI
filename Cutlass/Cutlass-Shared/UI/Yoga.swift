@@ -48,6 +48,10 @@ public class Yoga {
     
     private var _last_bounds:GLKVector4 = GLKVector4Make(0, 0, 0, 0)
     
+    private var _clips:Bool = false
+    private var _clippingGeometry = BufferedGeometry()
+    private var _clippingVertices:FloatAlignedArray? = nil
+    
     private var _usesLeft:Bool = true
     private var _usesTop:Bool = true
     
@@ -126,17 +130,13 @@ public class Yoga {
             
             // TODO: parentContentOffset
             _last_bounds = GLKVector4Make(-pivotX, -pivotY, local_width, local_height)
+
+            if _clips {
+                let clips_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                pushClips(clips_ctx)
+                local_n += 1
+            }
             
-            /*
-            let savedAlpha = ctx.alpha
-            
-            ctx.matrix = local_matrix
-            ctx.nodeID = id()
-            ctx.contentSize = contentSize()
-            ctx.nodeSize = nodeSize()
-            ctx.parentContentOffset = parentContentOffset
-            ctx.alpha = frameContext.alpha * _alpha
-            */
             for view in views {
                 let view_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
                 view.render(view_ctx)
@@ -148,14 +148,62 @@ public class Yoga {
                                                -pivotY,
                                                0)
             
+            // TODO: set clipBounds...
+            
             for child in _children {
                 let child_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
                 local_n = child.render_recursive(local_n, child_ctx)
             }
+            
+            if _clips {
+                let clips_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                popClips(clips_ctx)
+                local_n += 1
+            }
+            
         }
         
         return local_n
     }
+    
+    private func pushClips(_ ctx:RenderFrameContext) {
+        let geom = _clippingGeometry.next()
+        
+        _clippingVertices = geom.vertices
+        
+        if let vertices = _clippingVertices {
+            vertices.reserve(6 * 7)
+            vertices.clear()
+            
+            let x_min = ctx.view.bounds.xMin()
+            let y_min = ctx.view.bounds.yMin()
+            let x_max = ctx.view.bounds.xMax()
+            let y_max = ctx.view.bounds.yMax()
+
+            vertices.pushQuadVC(ctx.view.matrix,
+                                GLKVector3Make(x_min, y_min, 0),
+                                GLKVector3Make(x_max, y_min, 0),
+                                GLKVector3Make(x_max, y_max, 0),
+                                GLKVector3Make(x_min, y_max, 0),
+                                GLKVector4Make(1.0, 1.0, 1.0, 1.0))
+            
+            ctx.renderer.submitRenderUnit(ctx, RenderUnit(shaderType: .stencilBegin,
+                                                          renderNumber: ctx.view.renderNumber,
+                                                          vertices: vertices))
+            ctx.renderer.submitRenderFinished(ctx)
+        }
+    }
+    
+    private func popClips(_ ctx:RenderFrameContext) {
+        if let vertices = _clippingVertices {
+            ctx.renderer.submitRenderUnit(ctx, RenderUnit(shaderType: .stencilEnd,
+                                                          renderNumber: ctx.view.renderNumber,
+                                                          vertices: vertices))
+            ctx.renderer.submitRenderFinished(ctx)
+        }
+    }
+    
+    
     
     // MARK: - Yoga Setters
     
@@ -186,6 +234,11 @@ public class Yoga {
         for yoga in yogas {
             YGNodeInsertChild(node, yoga.node, YGNodeGetChildCount(node))
         }
+        return self
+    }
+    
+    @discardableResult public func clips(_ v:Bool) -> Self {
+        _clips = v
         return self
     }
     

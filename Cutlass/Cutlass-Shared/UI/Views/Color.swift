@@ -19,7 +19,6 @@ public final class Color: Actor, Viewable, Colorable {
         let ctx:RenderFrameContext = args[x:0]
         let bounds = ctx.view.bounds
         
-        // TODO: create and submit the render unit
         let geom = self.bufferedGeometry.next()
         let vertices = geom.vertices
         
