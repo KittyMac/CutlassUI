@@ -101,6 +101,12 @@
 		4661521824733A6A00F87A9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4661521724733A6A00F87A9B /* Preview Assets.xcassets */; };
 		4661521B24733A6A00F87A9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4661521924733A6A00F87A9B /* LaunchScreen.storyboard */; };
 		4661522424733BD100F87A9B /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4662A30A247E0BD3004374A4 /* String+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A309247E0BD3004374A4 /* String+Bundle.swift */; };
+		4662A30B247E0BD3004374A4 /* String+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A309247E0BD3004374A4 /* String+Bundle.swift */; };
+		4662A30D247E0CE7004374A4 /* Imageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30C247E0CE7004374A4 /* Imageable.swift */; };
+		4662A30E247E0CE7004374A4 /* Imageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30C247E0CE7004374A4 /* Imageable.swift */; };
+		4662A310247E0CEB004374A4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30F247E0CEB004374A4 /* Image.swift */; };
+		4662A311247E0CEB004374A4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30F247E0CEB004374A4 /* Image.swift */; };
 		46C3D6162476E22100F8DC58 /* RenderUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6152476E22100F8DC58 /* RenderUnit.swift */; };
 		46C3D6172476E22100F8DC58 /* RenderUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6152476E22100F8DC58 /* RenderUnit.swift */; };
 		46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */; };
@@ -234,6 +240,9 @@
 		4661521A24733A6A00F87A9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4661521C24733A6A00F87A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4661522224733B4000F87A9B /* Cutlass.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Cutlass.modulemap; sourceTree = "<group>"; };
+		4662A309247E0BD3004374A4 /* String+Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Bundle.swift"; sourceTree = "<group>"; };
+		4662A30C247E0CE7004374A4 /* Imageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Imageable.swift; sourceTree = "<group>"; };
+		4662A30F247E0CEB004374A4 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		46C3D6152476E22100F8DC58 /* RenderUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderUnit.swift; sourceTree = "<group>"; };
 		46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderFrameContext.swift; sourceTree = "<group>"; };
 		46C3D61C24770C0F00F8DC58 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
@@ -333,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				4628104424759971009F04B3 /* Color.swift */,
+				4662A30F247E0CEB004374A4 /* Image.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -452,6 +462,7 @@
 		4661522324733B9700F87A9B /* Cutlass-Shared */ = {
 			isa = PBXGroup;
 			children = (
+				4662A308247E0BB5004374A4 /* Utility */,
 				46229643246DF14100A3ED6D /* Cutlass.h */,
 				4641A10F2474DCBA007C85D0 /* UI */,
 				4641A0B22474DB26007C85D0 /* Yoga */,
@@ -461,10 +472,18 @@
 			path = "Cutlass-Shared";
 			sourceTree = "<group>";
 		};
+		4662A308247E0BB5004374A4 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				4662A309247E0BD3004374A4 /* String+Bundle.swift */,
+				4617ECF1247D66D4008BEACD /* AVLTree.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		46C3D61B247707F000F8DC58 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				4617ECF1247D66D4008BEACD /* AVLTree.swift */,
 				46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */,
 				46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */,
 				46C3D61C24770C0F00F8DC58 /* Geometry.swift */,
@@ -479,6 +498,7 @@
 			isa = PBXGroup;
 			children = (
 				4648EDB624783B8C00189563 /* Colorable.swift */,
+				4662A30C247E0CE7004374A4 /* Imageable.swift */,
 				46E85CB12475AF1F0030E7CD /* Viewable.swift */,
 			);
 			path = Protocols;
@@ -734,6 +754,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A065247428B9007C85D0 /* Renderer.swift in Sources */,
+				4662A30A247E0BD3004374A4 /* String+Bundle.swift in Sources */,
+				4662A310247E0CEB004374A4 /* Image.swift in Sources */,
 				4648EDB42478389B00189563 /* GLKitExtension.swift in Sources */,
 				4641A1012474DB26007C85D0 /* YGStyle.cpp in Sources */,
 				46C3D61E24770C0F00F8DC58 /* Geometry.swift in Sources */,
@@ -751,6 +773,7 @@
 				4617ECF2247D66D4008BEACD /* AVLTree.swift in Sources */,
 				4628104524759971009F04B3 /* Color.swift in Sources */,
 				46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
+				4662A30D247E0CE7004374A4 /* Imageable.swift in Sources */,
 				46C3D62324770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,
 				46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */,
 				46C3D62024770C0F00F8DC58 /* BufferedGeometry.swift in Sources */,
@@ -777,6 +800,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */,
+				4662A30B247E0BD3004374A4 /* String+Bundle.swift in Sources */,
+				4662A311247E0CEB004374A4 /* Image.swift in Sources */,
 				4648EDB52478389B00189563 /* GLKitExtension.swift in Sources */,
 				4641A1022474DB26007C85D0 /* YGStyle.cpp in Sources */,
 				46C3D61F24770C0F00F8DC58 /* Geometry.swift in Sources */,
@@ -794,6 +819,7 @@
 				4617ECF3247D66D4008BEACD /* AVLTree.swift in Sources */,
 				4628104624759971009F04B3 /* Color.swift in Sources */,
 				46C3D61A2476E30900F8DC58 /* RenderFrameContext.swift in Sources */,
+				4662A30E247E0CE7004374A4 /* Imageable.swift in Sources */,
 				46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */,
 				46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */,
 				46C3D62124770C0F00F8DC58 /* BufferedGeometry.swift in Sources */,

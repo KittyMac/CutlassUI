@@ -69,6 +69,11 @@
                                                 <action selector="switchToExample:" target="Voe-Tx-rLC" id="KDo-AX-wIE"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Images" tag="2" keyEquivalent="2" id="iBI-HB-fct">
+                                            <connections>
+                                                <action selector="switchToExample:" target="Voe-Tx-rLC" id="YoW-J8-GPJ"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

@@ -48,6 +48,7 @@ public class CutlassView: NSView, CALayerDelegate {
         metalLayer.framebufferOnly = true
                 
         var backgroundColorValues:[CGFloat] = [1, 1, 1, 1]
+        // CGColorSpaceCreateDeviceRGB()
         if let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) {
             metalLayer.colorspace = colorSpace
             metalLayer.backgroundColor = CGColor(colorSpace: colorSpace, components: &backgroundColorValues)

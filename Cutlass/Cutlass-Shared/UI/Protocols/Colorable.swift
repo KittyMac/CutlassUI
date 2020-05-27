@@ -11,7 +11,7 @@ import Flynn
 import GLKit
 
 public class ColorableState {
-    var _color:GLKVector4 = GLKVector4Make(0, 0, 0, 0)
+    var _color:GLKVector4 = GLKVector4Make(1, 1, 1, 1)
     
     var color:Behavior? = nil
     var alpha:Behavior? = nil
@@ -38,7 +38,7 @@ public extension Colorable {
         return self
     }
     
-    func rgba(_ c:Int32 ) -> Self {
+    func rgba(_ c:UInt32 ) -> Self {
         let r = Float((c >> 24) & 0xFF) / 255.0
         let g = Float((c >> 16) & 0xFF) / 255.0
         let b = Float((c >> 8) & 0xFF) / 255.0

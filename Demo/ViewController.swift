@@ -25,54 +25,93 @@ class ViewController: SharedController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        colorsDemo()
+        switchToDemo(2)
     }
     
     func colorsDemo() {
         let node = Yoga().fill().rows().center().paddingAll(12)
-        .children([
-            Yoga().size(50%,100%).child(
-                Yoga().center().size(100%,100%).view( Color().black() ).child(
-                    Yoga().center().size(80%,80%).view( Color().green() ).child(
-                        Yoga().center().size(80%,80%).view( Color().blue() ).child(
-                            Yoga().center().size(80%,80%).view( Color().yellow() ).child(
-                                Yoga().center().size(80%,80%).view( Color().red() )
+            .children([
+                Yoga().size(50%,100%).child(
+                    Yoga().center().size(100%,100%).view( Color().black() ).child(
+                        Yoga().center().size(80%,80%).view( Color().green() ).child(
+                            Yoga().center().size(80%,80%).view( Color().blue() ).child(
+                                Yoga().center().size(80%,80%).view( Color().yellow() ).child(
+                                    Yoga().center().size(80%,80%).view( Color().red() )
+                                )
                             )
                         )
                     )
-                )
-            ),
-            
-            Yoga().size(50%,100%).rows().itemsStart().wrap().children([
-               Yoga().size(50%,50%).view( Color().red() ),
-               Yoga().size(50%,50%).view( Color().green() ),
-               Yoga().size(50%,50%).view( Color().blue() ),
-               Yoga().size(50%,50%).view( Color().yellow() )
+                ),
+                
+                Yoga().size(50%,100%).rows().itemsStart().wrap().children([
+                   Yoga().size(50%,50%).view( Color().red() ),
+                   Yoga().size(50%,50%).view( Color().green() ),
+                   Yoga().size(50%,50%).view( Color().blue() ),
+                   Yoga().size(50%,50%).view( Color().yellow() )
+                ])
             ])
-        ])
         cutlassView.renderer().setRoot(node)
     }
     
     func clipDemo() {
         let node = Yoga().fill().rows().itemsStart().paddingAll(12)
             .view( Color().rgba(0.98, 0.98, 0.98, 1.0) )
-        .children([
-            
-            Yoga().size(100,100).view( Color().red().alpha(0.25) ).child(
-                Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
-            ),
-            
-            Yoga().size(100,100).left(100).clips(true).view( Color().red().alpha(0.25) ).child(
-                Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
-            ),
-            
-            Yoga().size(100,100).left(200).clips(true).view( Color().red().alpha(0.25) ).child(
-                Yoga().size(100,100).origin(50%,50%).clips(true).view( Color().green().alpha(0.25) ).child(
-                    Yoga().size(100,100).origin(-75%,-75%).clips(true).view( Color().blue().alpha(0.25) )
+            .children([
+                
+                Yoga().size(100,100).view( Color().red().alpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
+                ),
+                
+                Yoga().size(100,100).left(100).clips(true).view( Color().red().alpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
+                ),
+                
+                Yoga().size(100,100).left(200).clips(true).view( Color().red().alpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).clips(true).view( Color().green().alpha(0.25) ).child(
+                        Yoga().size(100,100).origin(-75%,-75%).clips(true).view( Color().blue().alpha(0.25) )
+                    )
                 )
-            )
-           
-        ])
+               
+            ])
+        cutlassView.renderer().setRoot(node)
+    }
+    
+    func imageDemo() {
+        let node = Yoga().fill().rows().itemsStart().wrap().paddingAll(12)
+            .view( Color().rgba(0.98, 0.98, 0.98, 1.0) )
+            .children([
+                
+                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true) ),
+                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).red() ),
+                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).green() ),
+                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).blue() ),
+                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).rgba(0xFFFFFF33) ),
+                                
+                Yoga().size(128,256)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").fill() ),
+                
+                Yoga().size(128,256)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").aspectFit() ),
+                
+                Yoga().size(128,256)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").aspectFill() ),
+                
+                Yoga().size(256,128)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").fill() ),
+                
+                Yoga().size(256,128)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").aspectFit() ),
+                
+                Yoga().size(256,128)
+                    .view( Color().gray() )
+                    .view( Image().path("landscape_desert").aspectFill() )
+                   
+            ])
         cutlassView.renderer().setRoot(node)
     }
     
@@ -83,6 +122,9 @@ class ViewController: SharedController {
             break
         case 1:
             clipDemo()
+            break
+        case 2:
+            imageDemo()
             break
         default:
             break

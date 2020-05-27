@@ -24,6 +24,8 @@
 		4641A09B24744EA3007C85D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4641A09924744EA3007C85D0 /* LaunchScreen.storyboard */; };
 		4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; };
 		4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4641A0A02474508B007C85D0 /* Cutlass.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4662A313247E10A5004374A4 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 4662A312247E10A5004374A4 /* Assets */; };
+		4662A314247E10A5004374A4 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 4662A312247E10A5004374A4 /* Assets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,6 +73,7 @@
 		4641A09A24744EA3007C85D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4641A09C24744EA3007C85D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4641A0A02474508B007C85D0 /* Cutlass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cutlass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4662A312247E10A5004374A4 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		46E85CD02475DA350030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "../Cutlass/Frameworks/Flynn-releases/iOS/Flynn.framework"; sourceTree = "<group>"; };
 		46E85CD32475DA3B0030E7CD /* Flynn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flynn.framework; path = "../Cutlass/Frameworks/Flynn-releases/macOS/Flynn.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,7 @@
 		4641A06724742FFE007C85D0 = {
 			isa = PBXGroup;
 			children = (
+				4662A312247E10A5004374A4 /* Assets */,
 				4641A07524742FFE007C85D0 /* ViewController.swift */,
 				4641A07224742FFE007C85D0 /* CutlassDemo-macOS */,
 				4641A08D24744EA2007C85D0 /* CutlassDemo-iOS */,
@@ -236,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A07824742FFF007C85D0 /* Assets.xcassets in Resources */,
+				4662A313247E10A5004374A4 /* Assets in Resources */,
 				4641A07B24742FFF007C85D0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4641A09B24744EA3007C85D0 /* LaunchScreen.storyboard in Resources */,
+				4662A314247E10A5004374A4 /* Assets in Resources */,
 				4641A09824744EA3007C85D0 /* Assets.xcassets in Resources */,
 				4641A09624744EA2007C85D0 /* Main.storyboard in Resources */,
 			);
