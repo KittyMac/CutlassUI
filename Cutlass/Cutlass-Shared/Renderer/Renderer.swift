@@ -491,6 +491,7 @@ public class Renderer : Actor {
                             if let node = root.getNode(id:unit.yogaID) {
                                 node.size(Pixel(unit.contentSize.x), Pixel(unit.contentSize.y))
                                 needsLayout = true
+                                aborted = true
                             }
                         }
                     }
@@ -541,7 +542,7 @@ public class Renderer : Actor {
                         renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
                     }
                     
-                    if unit.vertices.vertexCount() > 0 {
+                    if aborted == false && unit.vertices.vertexCount() > 0 {
                         drawRenderUnit(renderEncoder, unit)
                     }
                     
