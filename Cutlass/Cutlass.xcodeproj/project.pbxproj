@@ -485,8 +485,8 @@
 			isa = PBXGroup;
 			children = (
 				46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */,
-				46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */,
 				46C3D61C24770C0F00F8DC58 /* Geometry.swift */,
+				46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */,
 				46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */,
 				46C3D6152476E22100F8DC58 /* RenderUnit.swift */,
 				4641A064247428B9007C85D0 /* Renderer.swift */,

@@ -15,27 +15,21 @@ extension String {
         // "documents://landscape_desert.jpg"
         // "caches://landscape_desert.jpg"
         self.init()
-                
-        let pathComponents = bundlePath.components(separatedBy: ":/")
         
-        switch pathComponents[0] {
-        case "http":
+        if bundlePath.starts(with: "http://") || bundlePath.starts(with: "https://") {
             self = bundlePath
-            break
-        case "https":
-            self = bundlePath
-            break
-        case "assets":
+            return
+        } else if bundlePath.starts(with: "assets://") {
             if let resourcePath = Bundle.main.resourcePath {
-                self = "\(resourcePath)/Assets/\(pathComponents[1])"
+                self = "\(resourcePath)/Assets/\(bundlePath.dropFirst(9))"
             }
-        case "documents":
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            self = "\(documentsPath)/\(pathComponents[1])"
-        case "caches":
+        } else if bundlePath.starts(with: "documents://") {
+           let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+           self = "\(documentsPath)/\(bundlePath.dropFirst(12))"
+        } else if bundlePath.starts(with: "caches://") {
             let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
-            self = "\(cachePath)/\(pathComponents[1])"
-        default:
+            self = "\(cachePath)/\(bundlePath.dropFirst(9))"
+        } else {
             // we default to resources:// and ".png" so that things like "imagename" are easy and possible
             if let resourcePath = Bundle.main.resourcePath {
                 let ext = (bundlePath as NSString).pathExtension

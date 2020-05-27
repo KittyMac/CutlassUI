@@ -28,9 +28,9 @@ public struct BufferedGeometry {
         }
     }
     
-    func invalidate() {
-        for buffer in buffers {
-            buffer.invalidate()
+    mutating func invalidate() {
+        for i in 0..<maxBuffers {
+            buffers[i].invalidate()
         }
     }
     

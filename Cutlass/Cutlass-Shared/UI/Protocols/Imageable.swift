@@ -18,6 +18,7 @@ public enum ImageModeType {
 }
 
 public class ImageableState {
+    var _image_hash:Int = 0
     var _image_width:Int = 0
     var _image_height:Int = 0
     var _image_aspect:Float = 0
@@ -96,6 +97,7 @@ public extension Imageable {
                     _imageable._image_width = textureInfo.width
                     _imageable._image_height = textureInfo.height
                     _imageable._image_aspect = Float(textureInfo.width) / Float(textureInfo.height)
+                    _imageable._image_hash = textureInfo.width + textureInfo.height + path.hashValue
                 }
             }
         }
@@ -107,8 +109,6 @@ public extension Imageable {
                                           _ vertices:FloatAlignedArray) {
         vertices.reserve(6 * 7)
         vertices.clear()
-        
-        protected_imageable_confirmImageSize(ctx)
         
         if imageLoaded() {
             let image_aspect = _imageable._image_aspect

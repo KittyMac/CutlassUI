@@ -23,10 +23,14 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
         let geom = self.bufferedGeometry.next()
         let vertices = geom.vertices
         
-        self.protected_imageable_fillVertices(ctx,
-                                              self._colorable._color,
-                                              bounds,
-                                              vertices)
+        self.protected_imageable_confirmImageSize(ctx)
+        
+        if geom.check(ctx, self._imageable._image_hash) == false {
+            self.protected_imageable_fillVertices(ctx,
+                                                  self._colorable._color,
+                                                  bounds,
+                                                  vertices)
+        }
         
         self.protected_viewable_submitRenderUnit(ctx, vertices, .texture, self._imageable._path)
         

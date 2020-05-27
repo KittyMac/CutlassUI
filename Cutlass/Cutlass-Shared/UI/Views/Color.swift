@@ -22,20 +22,22 @@ public final class Color: Actor, Viewable, Colorable {
         let geom = self.bufferedGeometry.next()
         let vertices = geom.vertices
         
-        vertices.reserve(6 * 7)
-        vertices.clear()
-        
-        let x_min = bounds.xMin()
-        let y_min = bounds.yMin()
-        let x_max = bounds.xMax()
-        let y_max = bounds.yMax()
+        if geom.check(ctx) == false {
+            vertices.reserve(6 * 7)
+            vertices.clear()
+            
+            let x_min = bounds.xMin()
+            let y_min = bounds.yMin()
+            let x_max = bounds.xMax()
+            let y_max = bounds.yMax()
 
-        vertices.pushQuadVC(ctx.view.matrix,
-                            GLKVector3Make(x_min, y_min, 0),
-                            GLKVector3Make(x_max, y_min, 0),
-                            GLKVector3Make(x_max, y_max, 0),
-                            GLKVector3Make(x_min, y_max, 0),
-                            self._colorable._color)
+            vertices.pushQuadVC(ctx.view.matrix,
+                                GLKVector3Make(x_min, y_min, 0),
+                                GLKVector3Make(x_max, y_min, 0),
+                                GLKVector3Make(x_max, y_max, 0),
+                                GLKVector3Make(x_min, y_max, 0),
+                                self._colorable._color)
+        }
         
         self.protected_viewable_submitRenderUnit(ctx, vertices)
         
