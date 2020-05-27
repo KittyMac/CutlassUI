@@ -81,11 +81,11 @@ class ViewController: SharedController {
             .view( Color().rgba(0.98, 0.98, 0.98, 1.0) )
             .children([
                 
-                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true) ),
-                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).red() ),
-                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).green() ),
-                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).blue() ),
-                Yoga().size(100,100).view( Image().path("unpressed_button").sizeToFit(true).rgba(0xFFFFFF33) ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button") ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").red() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").green() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").blue() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").rgba(0xFFFFFF33) ),
                                 
                 Yoga().size(128,256)
                     .view( Color().gray() )

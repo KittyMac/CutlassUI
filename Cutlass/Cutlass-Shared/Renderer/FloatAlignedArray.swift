@@ -17,15 +17,15 @@ public class FloatAlignedArray {
     For generating geometry for use with Metal. These structs point to memory allocated using
     posix_memalign() and can be fed directly into metal buffers without copying.
     */
-    static let alignment:Int = Int(getpagesize())
-    static let floatSize:Int = MemoryLayout<Float>.size
-    var _rawpointer:UnsafeMutableRawPointer? = nil
-    var _pointer:UnsafeMutablePointer<Float> = UnsafeMutablePointer<Float>.allocate(capacity: 0)
-    var _alloc:Int = 0
-    var _count:Int = 0
-    var _vertexCount:Int = 0
-    var _max:Int = 0
-    
+    private static let alignment:Int = Int(getpagesize())
+    private static let floatSize:Int = MemoryLayout<Float>.size
+    private var _rawpointer:UnsafeMutableRawPointer? = nil
+    private var _pointer:UnsafeMutablePointer<Float> = UnsafeMutablePointer<Float>.allocate(capacity: 0)
+    private var _alloc:Int = 0
+    private var _count:Int = 0
+    private var _vertexCount:Int = 0
+    private var _max:Int = 0
+        
     static func alignedSize(_ size:Int) -> Int {
         let x = (size + FloatAlignedArray.alignment - 1)
         let y = (~(FloatAlignedArray.alignment - 1))

@@ -22,6 +22,7 @@ import Flynn
  ])
  */
 
+public typealias YogaID = UInt64
 public typealias Pixel = Int
 public typealias Percentage = Float
 
@@ -34,6 +35,8 @@ public class Yoga {
     private var parent:Yoga?
     private var node:YGNodeRef
     
+    private var id:YogaID
+    
     private var views:[Viewable] = []
     private var _children:[Yoga] = []
     
@@ -45,6 +48,8 @@ public class Yoga {
     
     private var _alpha:Float = 1.0
     private var _z:Float = 0.0
+    
+    private var _sizeToFit:Bool = false
     
     private var _last_bounds:GLKVector4 = GLKVector4Make(0, 0, 0, 0)
     
@@ -62,6 +67,7 @@ public class Yoga {
     
     public init() {
         node = YGNodeNew()
+        id = YGNodeGetID(node)
     }
     
     
@@ -71,6 +77,21 @@ public class Yoga {
     
     
     // MARK - Walkers
+    
+    func getNode(id:YogaID) -> Yoga? {
+        if id == 0 {
+            return nil
+        }
+        if self.id == id {
+            return self
+        }
+        for child in _children {
+            if let result = child.getNode(id: id) {
+                return result
+            }
+        }
+        return nil
+    }
     
     public func layout() {
         // Before we can calculate the layout, we need to see if any of our children sizeToFit their content. If we do, we need
@@ -99,7 +120,7 @@ public class Yoga {
         let local_width = YGNodeLayoutGetWidth(node)
         let local_height = YGNodeLayoutGetHeight(node)
         
-        if (local_width > 0) && (local_height > 0) && (_alpha > 0) {
+        if (_alpha > 0) {
             
             let pivotX = _pivot.x * local_width
             let pivotY = _pivot.y * local_height
@@ -132,13 +153,13 @@ public class Yoga {
             _last_bounds = GLKVector4Make(-pivotX, -pivotY, local_width, local_height)
 
             if _clips {
-                let clips_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                let clips_ctx = ctx.clone(ViewFrameContext(id, local_matrix, _last_bounds, Int64(local_n)))
                 pushClips(clips_ctx)
                 local_n += 1
             }
             
             for view in views {
-                let view_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                let view_ctx = ctx.clone(ViewFrameContext(id, local_matrix,_last_bounds, Int64(local_n), _sizeToFit))
                 view.render(view_ctx)
                 local_n += 1
             }
@@ -151,12 +172,12 @@ public class Yoga {
             // TODO: set clipBounds...
             
             for child in _children {
-                let child_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                let child_ctx = ctx.clone(ViewFrameContext(id, local_matrix, _last_bounds, Int64(local_n)))
                 local_n = child.render_recursive(local_n, child_ctx)
             }
             
             if _clips {
-                let clips_ctx = ctx.clone(ViewFrameContext(matrix:local_matrix, bounds:_last_bounds, renderNumber:Int64(local_n * 100)))
+                let clips_ctx = ctx.clone(ViewFrameContext(id, local_matrix, _last_bounds, Int64(local_n)))
                 popClips(clips_ctx)
                 local_n += 1
             }
@@ -187,20 +208,20 @@ public class Yoga {
                                 GLKVector3Make(x_min, y_max, 0),
                                 GLKVector4Make(1.0, 1.0, 1.0, 1.0))
             
-            ctx.renderer.submitRenderUnit(ctx, RenderUnit(shaderType:.stencilBegin,
-                                                          renderNumber:ctx.view.renderNumber,
-                                                          vertices:vertices,
-                                                          textureName:nil))
+            ctx.renderer.submitRenderUnit(ctx, RenderUnit(ctx,
+                                                          .stencilBegin,
+                                                          vertices,
+                                                          ctx.view.bounds.size()))
             ctx.renderer.submitRenderFinished(ctx)
         }
     }
     
     private func popClips(_ ctx:RenderFrameContext) {
         if let vertices = _clippingVertices {
-            ctx.renderer.submitRenderUnit(ctx, RenderUnit(shaderType:.stencilEnd,
-                                                          renderNumber:ctx.view.renderNumber,
-                                                          vertices:vertices,
-                                                          textureName:nil))
+            ctx.renderer.submitRenderUnit(ctx, RenderUnit(ctx,
+                                                          .stencilEnd,
+                                                          vertices,
+                                                          ctx.view.bounds.size()))
             ctx.renderer.submitRenderFinished(ctx)
         }
     }
@@ -245,6 +266,11 @@ public class Yoga {
     }
     
     // MARK: - YGNode Setters
+    
+    @discardableResult public func sizeToFit(_ b:Bool) -> Self {
+        _sizeToFit = b
+        return self
+    }
     
     @discardableResult public func fill() -> Self {
         YGNodeStyleSetWidthPercent(node, 100)

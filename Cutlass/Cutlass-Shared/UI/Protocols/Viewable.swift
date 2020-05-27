@@ -18,13 +18,16 @@ public extension Viewable {
     
     func protected_viewable_submitRenderUnit(_ ctx:RenderFrameContext,
                                              _ vertices:FloatAlignedArray,
+                                             _ contentSize:GLKVector2,
                                              _ shaderType: ShaderType = .flat,
                                              _ textureName:String? = nil,
                                              _ partNumber:Int64 = 0) {
-        let unit = RenderUnit(shaderType: shaderType,
-                              renderNumber: ctx.view.renderNumber + partNumber,
-                              vertices: vertices,
-                              textureName: textureName)
+        let unit = RenderUnit(ctx,
+                              shaderType,
+                              vertices,
+                              contentSize,
+                              partNumber,
+                              textureName)
         ctx.renderer.submitRenderUnit(ctx, unit)
     }
 

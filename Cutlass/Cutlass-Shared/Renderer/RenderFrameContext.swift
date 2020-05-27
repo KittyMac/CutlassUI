@@ -35,7 +35,25 @@ public struct RenderFrameContext {
 }
 
 public struct ViewFrameContext {
+    let yogaID:YogaID
     let matrix:GLKMatrix4
     let bounds:GLKVector4
     let renderNumber:Int64
+    let fitToSize:Bool
+    
+    init (_ y:YogaID, _ m:GLKMatrix4, _ b:GLKVector4, _ rn:Int64, _ fts:Bool = false) {
+        yogaID = y
+        matrix = m
+        bounds = b
+        renderNumber = rn * 100
+        fitToSize = fts
+    }
+    
+    init() {
+        yogaID = 0
+        matrix = GLKMatrix4Identity
+        bounds = GLKVector4Make(0.0,0.0,0.0,0.0)
+        renderNumber = 0
+        fitToSize = false
+    }
 }

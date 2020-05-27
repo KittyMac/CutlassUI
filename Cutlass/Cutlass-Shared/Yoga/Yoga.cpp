@@ -235,6 +235,10 @@ YOGA_EXPORT YGNodeRef YGNodeNew(void) {
   return YGNodeNewWithConfig(YGConfigGetDefault());
 }
 
+YOGA_EXPORT uint64_t YGNodeGetID(YGNodeRef node) {
+  return (uint64_t)node;
+}
+
 YOGA_EXPORT YGNodeRef YGNodeClone(YGNodeRef oldNode) {
   YGNodeRef node = new YGNode(*oldNode);
   YGAssertWithConfig(

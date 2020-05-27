@@ -39,7 +39,7 @@ public final class Color: Actor, Viewable, Colorable {
                                 self._colorable._color)
         }
         
-        self.protected_viewable_submitRenderUnit(ctx, vertices)
+        self.protected_viewable_submitRenderUnit(ctx, vertices, bounds.size())
         
         self.protected_viewable_submitRenderFinished(ctx)
     }

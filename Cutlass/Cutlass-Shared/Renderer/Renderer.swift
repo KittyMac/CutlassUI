@@ -327,7 +327,7 @@ public class Renderer : Actor {
                                      pointSize: pointSize,
                                      pixelSize: pixelSize,
                                      frameNumber: self.frameNumberRequested,
-                                     view: ViewFrameContext(matrix: GLKMatrix4Identity, bounds: GLKVector4Make(0,0,0,0), renderNumber: 0))
+                                     view: ViewFrameContext())
                 
         self.render_start(ctx)
     }
@@ -337,9 +337,6 @@ public class Renderer : Actor {
         // an distinct renderable thing
         let ctx:RenderFrameContext = args[x:0]
         let unit:RenderUnit = args[x:1]
-        
-        // TODO: Replace this with a tree structure which can sort
-        // the render units as it inserts them
         self.renderUnitTree.insert(key: unit.renderNumber, payload:unit)
     }
     
@@ -478,13 +475,25 @@ public class Renderer : Actor {
             
             var aborted = false
             
-            // TODO: process and render all collected render units for this frame
             renderEncoder.setRenderPipelineState(flatPipelineState)
             renderEncoder.setFragmentSamplerState(normalSamplerState, index:0)
             
             renderUnitTree.doInOrder(node: renderUnitTree.root) { (node) in
                 if let unit = node.payload {
                     let shaderType = unit.shaderType
+                    
+                    if unit.viewFrame.fitToSize {
+                        // When a render unit has fitToSize set, it means it wants to ensure that the
+                        // yoga node related to this render unit has its width and height set to the
+                        // render size.
+                        if unit.viewFrame.bounds.width() != unit.contentSize.x ||
+                           unit.viewFrame.bounds.height() != unit.contentSize.y {
+                            if let node = root.getNode(id:unit.yogaID) {
+                                node.size(Pixel(unit.contentSize.x), Pixel(unit.contentSize.y))
+                                needsLayout = true
+                            }
+                        }
+                    }
                     
                     if let textureName = unit.textureName {
                         let texture = createTextureSync(textureName)

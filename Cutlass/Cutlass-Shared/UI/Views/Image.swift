@@ -24,7 +24,7 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
         let vertices = geom.vertices
         
         self.protected_imageable_confirmImageSize(ctx)
-        
+                
         if geom.check(ctx, self._imageable._image_hash) == false {
             self.protected_imageable_fillVertices(ctx,
                                                   self._colorable._color,
@@ -32,7 +32,11 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
                                                   vertices)
         }
         
-        self.protected_viewable_submitRenderUnit(ctx, vertices, .texture, self._imageable._path)
+        self.protected_viewable_submitRenderUnit(ctx,
+                                                 vertices,
+                                                 self._imageable._image_size,
+                                                 .texture,
+                                                 self._imageable._path)
         
         self.protected_viewable_submitRenderFinished(ctx)
     }

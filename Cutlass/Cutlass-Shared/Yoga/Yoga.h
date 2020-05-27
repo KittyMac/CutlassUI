@@ -55,6 +55,7 @@ typedef YGNodeRef (
 
 // YGNode
 WIN_EXPORT YGNodeRef YGNodeNew(void);
+WIN_EXPORT uint64_t YGNodeGetID(YGNodeRef node);
 WIN_EXPORT YGNodeRef YGNodeNewWithConfig(YGConfigRef config);
 WIN_EXPORT YGNodeRef YGNodeClone(YGNodeRef node);
 WIN_EXPORT void YGNodeFree(YGNodeRef node);

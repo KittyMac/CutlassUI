@@ -22,15 +22,14 @@ public class ImageableState {
     var _image_width:Int = 0
     var _image_height:Int = 0
     var _image_aspect:Float = 0
+    var _image_size:GLKVector2 = GLKVector2Make(0.0, 0.0)
     
     var _path:String? = nil
     var _mode:ImageModeType = .fill
-    var _sizeToFit:Bool = false
     var _stretchInsets:GLKVector4 = GLKVector4Make(0,0,0,0)
     
     var path:Behavior? = nil
     var mode:Behavior? = nil
-    var sizeToFit:Behavior? = nil
     var stretchInsets:Behavior? = nil
     
     init (_ actor:Actor) {
@@ -39,9 +38,6 @@ public class ImageableState {
         }
         mode = Behavior(actor) { (args:BehaviorArgs) in
             self._mode = args[x:0]
-        }
-        sizeToFit = Behavior(actor) { (args:BehaviorArgs) in
-            self._sizeToFit = args[x:0]
         }
         stretchInsets = Behavior(actor) { (args:BehaviorArgs) in
             self._stretchInsets = args[x:0]
@@ -56,10 +52,6 @@ public protocol Imageable : Actor {
 public extension Imageable {
     func path(_ p:String) -> Self {
         _imageable.path!(p)
-        return self
-    }
-    func sizeToFit(_ p:Bool) -> Self {
-        _imageable.sizeToFit!(p)
         return self
     }
     
@@ -98,6 +90,7 @@ public extension Imageable {
                     _imageable._image_height = textureInfo.height
                     _imageable._image_aspect = Float(textureInfo.width) / Float(textureInfo.height)
                     _imageable._image_hash = textureInfo.width + textureInfo.height + path.hashValue
+                    _imageable._image_size = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
                 }
             }
         }
