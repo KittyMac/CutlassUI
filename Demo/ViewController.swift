@@ -32,7 +32,7 @@ class ViewController: SharedController {
         let node = Yoga().fill().rows().center().paddingAll(12)
             .children([
                 Yoga().size(50%,100%).child(
-                    Yoga().center().size(100%,100%).view( Color().black() ).child(
+                    Yoga().center().fill().view( Color().black() ).child(
                         Yoga().center().size(80%,80%).view( Color().green() ).child(
                             Yoga().center().size(80%,80%).view( Color().blue() ).child(
                                 Yoga().center().size(80%,80%).view( Color().yellow() ).child(

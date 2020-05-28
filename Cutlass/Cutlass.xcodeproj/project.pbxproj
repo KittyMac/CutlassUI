@@ -119,6 +119,12 @@
 		46C3D62424770DEB00F8DC58 /* FloatAlignedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */; };
 		46E85CB22475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
 		46E85CB32475AF1F0030E7CD /* Viewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E85CB12475AF1F0030E7CD /* Viewable.swift */; };
+		46F7BFCC248005CE00D63DA5 /* Eventable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCB248005CE00D63DA5 /* Eventable.swift */; };
+		46F7BFCD248005CE00D63DA5 /* Eventable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCB248005CE00D63DA5 /* Eventable.swift */; };
+		46F7BFCF248036D200D63DA5 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCE248036D200D63DA5 /* NumericType.swift */; };
+		46F7BFD0248036D200D63DA5 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCE248036D200D63DA5 /* NumericType.swift */; };
+		46F7BFD3248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
+		46F7BFD4248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,6 +255,9 @@
 		46C3D61D24770C0F00F8DC58 /* BufferedGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferedGeometry.swift; sourceTree = "<group>"; };
 		46C3D62224770DEB00F8DC58 /* FloatAlignedArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatAlignedArray.swift; sourceTree = "<group>"; };
 		46E85CB12475AF1F0030E7CD /* Viewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Viewable.swift; sourceTree = "<group>"; };
+		46F7BFCB248005CE00D63DA5 /* Eventable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eventable.swift; sourceTree = "<group>"; };
+		46F7BFCE248036D200D63DA5 /* NumericType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericType.swift; sourceTree = "<group>"; };
+		46F7BFD1248036F200D63DA5 /* Percentage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Percentage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -475,6 +484,8 @@
 		4662A308247E0BB5004374A4 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				46F7BFD1248036F200D63DA5 /* Percentage.swift */,
+				46F7BFCE248036D200D63DA5 /* NumericType.swift */,
 				4662A309247E0BD3004374A4 /* String+Bundle.swift */,
 				4617ECF1247D66D4008BEACD /* AVLTree.swift */,
 			);
@@ -498,6 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				4648EDB624783B8C00189563 /* Colorable.swift */,
+				46F7BFCB248005CE00D63DA5 /* Eventable.swift */,
 				4662A30C247E0CE7004374A4 /* Imageable.swift */,
 				46E85CB12475AF1F0030E7CD /* Viewable.swift */,
 			);
@@ -753,6 +765,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46F7BFCC248005CE00D63DA5 /* Eventable.swift in Sources */,
 				4641A065247428B9007C85D0 /* Renderer.swift in Sources */,
 				4662A30A247E0BD3004374A4 /* String+Bundle.swift in Sources */,
 				4662A310247E0CEB004374A4 /* Image.swift in Sources */,
@@ -783,6 +796,8 @@
 				4641A10B2474DB26007C85D0 /* Yoga.cpp in Sources */,
 				4641A0DD2474DB26007C85D0 /* experiments.cpp in Sources */,
 				4641A0AE2474583D007C85D0 /* SDF.metal in Sources */,
+				46F7BFD3248036F200D63DA5 /* Percentage.swift in Sources */,
+				46F7BFCF248036D200D63DA5 /* NumericType.swift in Sources */,
 				4641A1112474DD4B007C85D0 /* Yoga.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -799,6 +814,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46F7BFCD248005CE00D63DA5 /* Eventable.swift in Sources */,
 				4641A0A524745778007C85D0 /* CutlassView-iOS.swift in Sources */,
 				4662A30B247E0BD3004374A4 /* String+Bundle.swift in Sources */,
 				4662A311247E0CEB004374A4 /* Image.swift in Sources */,
@@ -829,6 +845,8 @@
 				4641A10C2474DB26007C85D0 /* Yoga.cpp in Sources */,
 				4641A0DE2474DB26007C85D0 /* experiments.cpp in Sources */,
 				4641A0AF2474583D007C85D0 /* SDF.metal in Sources */,
+				46F7BFD4248036F200D63DA5 /* Percentage.swift in Sources */,
+				46F7BFD0248036D200D63DA5 /* NumericType.swift in Sources */,
 				4641A1122474DD4B007C85D0 /* Yoga.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
