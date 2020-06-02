@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4617ECF4247D880A008BEACD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07524742FFE007C85D0 /* ViewController.swift */; };
-		4617ECFD247DB7C5008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFC247DB7C5008BEACD /* Flynn.framework */; };
-		4617ECFE247DB7C5008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFC247DB7C5008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4617ED00247DB7CB008BEACD /* Flynn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFF247DB7CB008BEACD /* Flynn.framework */; };
-		4617ED01247DB7CB008BEACD /* Flynn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4617ECFF247DB7CB008BEACD /* Flynn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4641A07424742FFE007C85D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07324742FFE007C85D0 /* AppDelegate.swift */; };
 		4641A07624742FFE007C85D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A07524742FFE007C85D0 /* ViewController.swift */; };
 		4641A07824742FFF007C85D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4641A07724742FFF007C85D0 /* Assets.xcassets */; };
@@ -35,7 +31,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4617ED01247DB7CB008BEACD /* Flynn.framework in Embed Frameworks */,
 				4641A08624743135007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -47,7 +42,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4617ECFE247DB7C5008BEACD /* Flynn.framework in Embed Frameworks */,
 				4641A0A22474508C007C85D0 /* Cutlass.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -83,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4617ED00247DB7CB008BEACD /* Flynn.framework in Frameworks */,
 				4641A08524743135007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,7 +85,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4617ECFD247DB7C5008BEACD /* Flynn.framework in Frameworks */,
 				4641A0A12474508C007C85D0 /* Cutlass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

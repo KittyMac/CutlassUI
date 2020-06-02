@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Flynn",
+        "repositoryURL": "https://github.com/kittymac/flynn",
+        "state": {
+          "branch": null,
+          "revision": "24cb26f6f1a4dd319726ca630464e529d7253b9c",
+          "version": "0.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
