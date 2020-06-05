@@ -23,7 +23,7 @@ public class EventableState {
 }
 
 public protocol Eventable : Actor {
-    var _eventable:EventableState { get set }
+    var protected_eventable:EventableState { get set }
 }
 
 public extension Eventable {
@@ -54,12 +54,12 @@ public extension Eventable {
 
     
     func eventInset(_ top:Float, _ left:Float, _ bottom:Float, _ right:Float) -> Self {
-        _eventable.eventInset!(GLKVector4Make(top, left, bottom, right))
+        protected_eventable.eventInset!(GLKVector4Make(top, left, bottom, right))
         return self
     }
     
     func eventInsetAll(_ v:Float) -> Self {
-        _eventable.eventInset!(GLKVector4Make(v, v, v, v))
+        protected_eventable.eventInset!(GLKVector4Make(v, v, v, v))
         return self
     }
 }

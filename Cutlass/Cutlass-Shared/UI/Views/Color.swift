@@ -11,7 +11,7 @@ import Flynn
 import GLKit
 
 public final class Color: Actor, Viewable, Colorable {
-    public lazy var _colorable = ColorableState(self)
+    public lazy var protected_colorable = ColorableState(self)
     
     private var bufferedGeometry = BufferedGeometry()
     
@@ -36,7 +36,7 @@ public final class Color: Actor, Viewable, Colorable {
                                 GLKVector3Make(x_max, y_min, 0),
                                 GLKVector3Make(x_max, y_max, 0),
                                 GLKVector3Make(x_min, y_max, 0),
-                                self._colorable._color)
+                                self.protected_colorable._color)
         }
         
         self.protected_viewable_submitRenderUnit(ctx, vertices, bounds.size())

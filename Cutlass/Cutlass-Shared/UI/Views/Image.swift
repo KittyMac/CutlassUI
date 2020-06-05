@@ -11,8 +11,8 @@ import Flynn
 import GLKit
 
 public final class Image: Actor, Viewable, Colorable, Imageable {
-    public lazy var _colorable = ColorableState(self)
-    public lazy var _imageable = ImageableState(self)
+    public lazy var protected_colorable = ColorableState(self)
+    public lazy var protected_imageable = ImageableState(self)
     
     private var bufferedGeometry = BufferedGeometry()
     
@@ -25,18 +25,18 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
         
         self.protected_imageable_confirmImageSize(ctx)
                 
-        if geom.check(ctx, self._imageable._image_hash) == false {
+        if geom.check(ctx, self.protected_imageable._image_hash) == false {
             self.protected_imageable_fillVertices(ctx,
-                                                  self._colorable._color,
+                                                  self.protected_colorable._color,
                                                   bounds,
                                                   vertices)
         }
         
         self.protected_viewable_submitRenderUnit(ctx,
                                                  vertices,
-                                                 self._imageable._image_size,
+                                                 self.protected_imageable._image_size,
                                                  .texture,
-                                                 self._imageable._path)
+                                                 self.protected_imageable._path)
         
         self.protected_viewable_submitRenderFinished(ctx)
     }

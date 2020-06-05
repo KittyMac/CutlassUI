@@ -298,6 +298,14 @@ public class Renderer : Actor {
         self.needsLayout = true
     }
     
+    public lazy var setNeedsLayout = Behavior(self) { (args:BehaviorArgs) in
+        self.needsLayout = true
+    }
+    
+    public lazy var setNeedsRender = Behavior(self) { (args:BehaviorArgs) in
+        self.needsRender = true
+    }
+    
     // Render happens like this:
     // 1. Someone (a view most likely) asks us to render, sending us a CAMetalLayer
     // 2. We check and record the size of the drawable, but don't grab a drawable yet
@@ -363,6 +371,8 @@ public class Renderer : Actor {
         if renderAheadCount >= Renderer.maxConcurrentFrames {
             return
         }
+        
+        needsLayout = true
         
         if needsLayout ||
            Int(root.getWidth()) != Int(ctx.pointSize.width) ||
@@ -633,31 +643,24 @@ public class Renderer : Actor {
     // and we want to support loading an image atomically. So these methods include their own
     // locking mechanisms to keep them safe.
     
-    private var textureCacheLock:NSObject = NSObject()
     private var urlStringFromBundlePathLock:NSObject = NSObject()
     private var renderAheadCountLock:NSObject = NSObject()
     
-    private let serialQueue = DispatchQueue(label: "serial.queue", qos: .default)
-    
-    func getTexture(_ bundlePath:String) -> MTLTexture? {
+    public lazy var getTextureInfo = Behavior(self) { (args:BehaviorArgs) in
+        let sender:Imageable = args[x:0]
+        let bundlePath:String = args[x:1]
         let resolvedPath = String(bundlePath: bundlePath)
-        objc_sync_enter(textureCacheLock)
-        let texture = textureCache[resolvedPath]
-        objc_sync_exit(textureCacheLock)
-        if texture != nil {
-            return texture
+        if let texture = self.textureCache[resolvedPath] {
+            sender.updateTextureInfo(self, bundlePath, texture)
         }
-        return nil
     }
     
-    func createTextureSync(_ bundlePath:String) -> MTLTexture? {
+    private func createTextureSync(_ bundlePath:String) -> MTLTexture? {
         let resolvedPath = String(bundlePath: bundlePath)
         
         // images loaded from urls are only loaded asynchronously
         if bundlePath.starts(with: "http") {
-            objc_sync_enter(textureCacheLock)
             let texture = textureCache[resolvedPath]
-            objc_sync_exit(textureCacheLock)
             if texture != nil {
                 return texture
             }
@@ -667,20 +670,16 @@ public class Renderer : Actor {
         }
                     
         // This doesn't like being multi-threaded, because we use dictionary cache. So lock and then check again before loading
-        objc_sync_enter(textureCacheLock)
         var texture = textureCache[resolvedPath]
         if texture != nil {
-            objc_sync_exit(textureCacheLock)
             return texture
         }
         
         let isLoading = isLoadingTextureCache[resolvedPath]
         if isLoading != nil {
-            objc_sync_exit(textureCacheLock)
             return nil
         }
         isLoadingTextureCache[resolvedPath] = true
-        objc_sync_exit(textureCacheLock)
         
         let textureLoaderOptions = [
             MTKTextureLoader.Option.textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
@@ -690,9 +689,7 @@ public class Renderer : Actor {
         ]
         do {
             texture = try textureLoader.newTexture(URL: URL(fileURLWithPath: resolvedPath), options: textureLoaderOptions)
-            objc_sync_enter(textureCacheLock)
             textureCache[resolvedPath] = texture
-            objc_sync_exit(textureCacheLock)
             self.needsRender = true
             
             return texture
@@ -702,7 +699,14 @@ public class Renderer : Actor {
         return nil
     }
     
-    func createTextureAsync(_ bundlePath:String) {
+    private lazy var registerTexture = Behavior(self) { (args:BehaviorArgs) in
+        let resolvedPath:String = args[x:0]
+        let texture:MTLTexture = args[x:1]
+        self.textureCache[resolvedPath] = texture
+        self.needsRender = true
+    }
+    
+    private func createTextureAsync(_ bundlePath:String) {
         let textureLoaderOptions = [
             MTKTextureLoader.Option.textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
             MTKTextureLoader.Option.textureStorageMode: NSNumber(value: MTLStorageMode.`private`.rawValue),
@@ -712,44 +716,34 @@ public class Renderer : Actor {
         
         let resolvedPath = String(bundlePath: bundlePath)
         
-        objc_sync_enter(textureCacheLock)
         let isLoading = isLoadingTextureCache[resolvedPath]
         if isLoading != nil {
-            objc_sync_exit(textureCacheLock)
             return
         }
         isLoadingTextureCache[resolvedPath] = true
-        objc_sync_exit(textureCacheLock)
         
-        serialQueue.async {
-            if bundlePath.starts(with: "http") == false {
-                do {
-                    let texture = try self.textureLoader.newTexture(URL: URL(fileURLWithPath: resolvedPath), options: textureLoaderOptions)
-                    objc_sync_enter(self.textureCacheLock)
-                    self.textureCache[resolvedPath] = texture
-                    objc_sync_exit(self.textureCacheLock)
-                    self.needsRender = true
-                    
-                } catch {
-                    print("Texture failed to load: \(error)")
+        if bundlePath.starts(with: "http") == false {
+            do {
+                let texture = try self.textureLoader.newTexture(URL: URL(fileURLWithPath: resolvedPath), options: textureLoaderOptions)
+                self.textureCache[resolvedPath] = texture
+                self.needsRender = true
+                
+            } catch {
+                print("Texture failed to load: \(error)")
+            }
+            return
+        }
+        
+        if let url = URL(string: resolvedPath) {
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let data = data {
+                    self.textureLoader.newTexture(data: data, options: textureLoaderOptions, completionHandler: { (texture, error) in
+                        if let texture = texture {
+                            self.registerTexture(resolvedPath, texture)
+                        }
+                    })
                 }
-                return
-            }
-            
-            if let url = URL(string: resolvedPath) {
-                URLSession.shared.dataTask(with: url) { (data, response, error) in
-                    if let data = data {
-                        self.textureLoader.newTexture(data: data, options: textureLoaderOptions, completionHandler: { (texture, error) in
-                            if let texture = texture {
-                                objc_sync_enter(self.textureCacheLock)
-                                self.textureCache[resolvedPath] = texture
-                                objc_sync_exit(self.textureCacheLock)
-                                self.needsRender = true
-                            }
-                        })
-                    }
-                }.resume()
-            }
+            }.resume()
         }
     }
     

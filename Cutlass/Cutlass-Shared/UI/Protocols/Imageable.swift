@@ -31,6 +31,7 @@ public class ImageableState {
     var path:Behavior? = nil
     var mode:Behavior? = nil
     var stretchInsets:Behavior? = nil
+    var updateTextureInfo:Behavior? = nil
     
     init (_ actor:Actor) {
         path = Behavior(actor) { (args:BehaviorArgs) in
@@ -42,56 +43,67 @@ public class ImageableState {
         stretchInsets = Behavior(actor) { (args:BehaviorArgs) in
             self._stretchInsets = args[x:0]
         }
+        updateTextureInfo = Behavior(actor) { (args:BehaviorArgs) in
+            let renderer:Renderer = args[x:0]
+            let path:String = args[x:1]
+            let textureInfo:MTLTexture = args[x:2]
+            self._image_width = textureInfo.width
+            self._image_height = textureInfo.height
+            self._image_aspect = Float(textureInfo.width) / Float(textureInfo.height)
+            self._image_hash = textureInfo.width + textureInfo.height + path.hashValue
+            self._image_size = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
+            renderer.setNeedsRender()
+        }
     }
 }
 
 public protocol Imageable : Actor {
-    var _imageable:ImageableState { get set }
+    var protected_imageable:ImageableState { get set }
 }
 
 public extension Imageable {
-    func path(_ p:String) -> Self {
-        _imageable.path!(p)
+    
+    @discardableResult func updateTextureInfo(_ renderer:Renderer, _ path:String, _ texture:MTLTexture) -> Self {
+        protected_imageable.updateTextureInfo!(renderer, path, texture)
         return self
     }
     
-    func stretch(_ top:Float, _ left:Float, _ bottom:Float, _ right:Float) -> Self {
-        _imageable.stretchInsets!(GLKVector4Make(top,left,bottom,right))
+    @discardableResult func path(_ p:String) -> Self {
+        protected_imageable.path!(p)
         return self
     }
     
-    func stretchAll(_ v:Float) -> Self {
-        _imageable.stretchInsets!(GLKVector4Make(v,v,v,v))
+    @discardableResult func stretch(_ top:Float, _ left:Float, _ bottom:Float, _ right:Float) -> Self {
+        protected_imageable.stretchInsets!(GLKVector4Make(top,left,bottom,right))
         return self
     }
     
-    func fill() -> Self {
-        _imageable.mode!(ImageModeType.fill)
+    @discardableResult func stretchAll(_ v:Float) -> Self {
+        protected_imageable.stretchInsets!(GLKVector4Make(v,v,v,v))
         return self
     }
-    func aspectFit() -> Self {
-        _imageable.mode!(ImageModeType.aspectFit)
+    
+    @discardableResult func fill() -> Self {
+        protected_imageable.mode!(ImageModeType.fill)
         return self
     }
-    func aspectFill() -> Self {
-        _imageable.mode!(ImageModeType.aspectFill)
+    @discardableResult func aspectFit() -> Self {
+        protected_imageable.mode!(ImageModeType.aspectFit)
+        return self
+    }
+    @discardableResult func aspectFill() -> Self {
+        protected_imageable.mode!(ImageModeType.aspectFill)
         return self
     }
     
     func imageLoaded() -> Bool {
-        return (_imageable._image_width != 0) || (_imageable._image_height != 0)
+        return (protected_imageable._image_width != 0) || (protected_imageable._image_height != 0)
     }
     
     func protected_imageable_confirmImageSize(_ ctx:RenderFrameContext) {
-        if let path = _imageable._path {
+        if let path = protected_imageable._path {
             if (imageLoaded() == false) {
-                if let textureInfo = ctx.renderer.getTexture(path) {
-                    _imageable._image_width = textureInfo.width
-                    _imageable._image_height = textureInfo.height
-                    _imageable._image_aspect = Float(textureInfo.width) / Float(textureInfo.height)
-                    _imageable._image_hash = textureInfo.width + textureInfo.height + path.hashValue
-                    _imageable._image_size = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
-                }
+                ctx.renderer.getTextureInfo(self, path)
             }
         }
     }
@@ -104,7 +116,7 @@ public extension Imageable {
         vertices.clear()
         
         if imageLoaded() {
-            let image_aspect = _imageable._image_aspect
+            let image_aspect = protected_imageable._image_aspect
             let bounds_aspect = bounds.z / bounds.w
             
             var x_min = bounds.xMin()
@@ -117,7 +129,7 @@ public extension Imageable {
             var t_min:Float = 0.0
             var t_max:Float = 1.0
             
-            if _imageable._mode == .aspectFit {
+            if protected_imageable._mode == .aspectFit {
                 if image_aspect > bounds_aspect {
                     let c = (y_min + y_max) / 2
                     let h = (x_max - x_min) / image_aspect
@@ -129,7 +141,7 @@ public extension Imageable {
                     x_min = c - (w / 2)
                     x_max = c + (w / 2)
                 }
-            } else if _imageable._mode == .aspectFill {
+            } else if protected_imageable._mode == .aspectFill {
                 let combined_aspect = (image_aspect / bounds_aspect)
                 if combined_aspect > 1.0 {
                     s_min = 0.5 - ((1.0 / combined_aspect) / 2)

@@ -97,8 +97,6 @@
 		4661521824733A6A00F87A9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4661521724733A6A00F87A9B /* Preview Assets.xcassets */; };
 		4661521B24733A6A00F87A9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4661521924733A6A00F87A9B /* LaunchScreen.storyboard */; };
 		4661522424733BD100F87A9B /* Cutlass.h in Headers */ = {isa = PBXBuildFile; fileRef = 46229643246DF14100A3ED6D /* Cutlass.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46627BDF2486D2FE00A2A610 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46627BDE2486D2FE00A2A610 /* Flynn */; };
-		46627BE12486D31A00A2A610 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46627BE02486D31A00A2A610 /* Flynn */; };
 		4662A30A247E0BD3004374A4 /* String+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A309247E0BD3004374A4 /* String+Bundle.swift */; };
 		4662A30B247E0BD3004374A4 /* String+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A309247E0BD3004374A4 /* String+Bundle.swift */; };
 		4662A30D247E0CE7004374A4 /* Imageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30C247E0CE7004374A4 /* Imageable.swift */; };
@@ -123,6 +121,8 @@
 		46F7BFD0248036D200D63DA5 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCE248036D200D63DA5 /* NumericType.swift */; };
 		46F7BFD3248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
 		46F7BFD4248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
+		46FCA08D2488AECD00746DE5 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46FCA08C2488AECD00746DE5 /* Flynn */; };
+		46FCA08F2488AEDA00746DE5 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46FCA08E2488AEDA00746DE5 /* Flynn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,7 +259,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46627BDF2486D2FE00A2A610 /* Flynn in Frameworks */,
+				46FCA08D2488AECD00746DE5 /* Flynn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +275,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46627BE12486D31A00A2A610 /* Flynn in Frameworks */,
+				46FCA08F2488AEDA00746DE5 /* Flynn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +570,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46229654246DF14200A3ED6D /* Build configuration list for PBXNativeTarget "Cutlass-macOS" */;
 			buildPhases = (
+				46627BE22486E10E00A2A610 /* FlynnLint */,
 				4622963B246DF14100A3ED6D /* Headers */,
 				4622963C246DF14100A3ED6D /* Sources */,
 				4622963D246DF14100A3ED6D /* Frameworks */,
@@ -582,7 +583,7 @@
 			);
 			name = "Cutlass-macOS";
 			packageProductDependencies = (
-				46627BDE2486D2FE00A2A610 /* Flynn */,
+				46FCA08C2488AECD00746DE5 /* Flynn */,
 			);
 			productName = Cutlass;
 			productReference = 46229640246DF14100A3ED6D /* Cutlass.framework */;
@@ -610,6 +611,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 466151F524731BE300F87A9B /* Build configuration list for PBXNativeTarget "Cutlass-iOS" */;
 			buildPhases = (
+				46AEA32F24870A7000C618CF /* FlynnLint */,
 				466151EB24731BE300F87A9B /* Headers */,
 				466151EC24731BE300F87A9B /* Sources */,
 				466151ED24731BE300F87A9B /* Frameworks */,
@@ -622,7 +624,7 @@
 			);
 			name = "Cutlass-iOS";
 			packageProductDependencies = (
-				46627BE02486D31A00A2A610 /* Flynn */,
+				46FCA08E2488AEDA00746DE5 /* Flynn */,
 			);
 			productName = "Cutlass-iOS";
 			productReference = 466151F024731BE300F87A9B /* Cutlass.framework */;
@@ -705,7 +707,7 @@
 			);
 			mainGroup = 46229636246DF14100A3ED6D;
 			packageReferences = (
-				46627BDD2486D2FE00A2A610 /* XCRemoteSwiftPackageReference "flynn" */,
+				46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */,
 			);
 			productRefGroup = 46229641246DF14100A3ED6D /* Products */;
 			projectDirPath = "";
@@ -760,6 +762,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		46627BE22486E10E00A2A610 /* FlynnLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = FlynnLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${BUILD_ROOT}/../../SourcePackages/checkouts/flynn/meta/FlynnLint ${SRCROOT}\n";
+		};
+		46AEA32F24870A7000C618CF /* FlynnLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = FlynnLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${BUILD_ROOT}/../../SourcePackages/checkouts/flynn/meta/FlynnLint ${SRCROOT}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4622963C246DF14100A3ED6D /* Sources */ = {
@@ -1351,9 +1392,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		46627BDD2486D2FE00A2A610 /* XCRemoteSwiftPackageReference "flynn" */ = {
+		46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kittymac/flynn";
+			repositoryURL = "https://github.com/KittyMac/flynn";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.0.1;
@@ -1362,14 +1403,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		46627BDE2486D2FE00A2A610 /* Flynn */ = {
+		46FCA08C2488AECD00746DE5 /* Flynn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 46627BDD2486D2FE00A2A610 /* XCRemoteSwiftPackageReference "flynn" */;
+			package = 46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */;
 			productName = Flynn;
 		};
-		46627BE02486D31A00A2A610 /* Flynn */ = {
+		46FCA08E2488AEDA00746DE5 /* Flynn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 46627BDD2486D2FE00A2A610 /* XCRemoteSwiftPackageReference "flynn" */;
+			package = 46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */;
 			productName = Flynn;
 		};
 /* End XCSwiftPackageProductDependency section */

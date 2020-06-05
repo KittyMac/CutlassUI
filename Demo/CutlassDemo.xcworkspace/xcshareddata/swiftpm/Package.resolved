@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Flynn",
-        "repositoryURL": "https://github.com/kittymac/flynn",
+        "repositoryURL": "https://github.com/KittyMac/flynn",
         "state": {
           "branch": null,
-          "revision": "24cb26f6f1a4dd319726ca630464e529d7253b9c",
+          "revision": "1652f525f1edde563ec1e3130514e53f0d0c8066",
           "version": "0.0.1"
         }
       }
