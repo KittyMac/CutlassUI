@@ -15,27 +15,27 @@ extension GLKVector4 {
     func xMin() -> Float {
         return x
     }
-    
+
     func xMax() -> Float {
         return x + z
     }
-    
+
     func yMin() -> Float {
         return y
     }
-    
+
     func yMax() -> Float {
         return y + w
     }
-    
+
     func width() -> Float {
         return z
     }
-    
+
     func height() -> Float {
         return w
     }
-    
+
     func size() -> GLKVector2 {
         return GLKVector2Make(z, w)
     }

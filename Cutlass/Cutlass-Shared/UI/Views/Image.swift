@@ -11,33 +11,33 @@ import Flynn
 import GLKit
 
 public final class Image: Actor, Viewable, Colorable, Imageable {
-    public lazy var protected_colorable = ColorableState(self)
-    public lazy var protected_imageable = ImageableState(self)
-    
+    public lazy var safeColorable = ColorableState(self)
+    public lazy var safeImageable = ImageableState(self)
+
     private var bufferedGeometry = BufferedGeometry()
-    
-    public lazy var render = Behavior(self) { (args:BehaviorArgs) in
-        let ctx:RenderFrameContext = args[x:0]
+
+    public lazy var render = Behavior(self) { (args: BehaviorArgs) in
+        let ctx: RenderFrameContext = args[x:0]
         let bounds = ctx.view.bounds
-        
+
         let geom = self.bufferedGeometry.next()
         let vertices = geom.vertices
-        
-        self.protected_imageable_confirmImageSize(ctx)
-                
-        if geom.check(ctx, self.protected_imageable._image_hash) == false {
-            self.protected_imageable_fillVertices(ctx,
-                                                  self.protected_colorable._color,
+
+        self.safeImageable_confirmImageSize(ctx)
+
+        if geom.check(ctx, self.safeImageable.imageHash) == false {
+            self.safeImageable_fillVertices(ctx,
+                                                  self.safeColorable.color,
                                                   bounds,
                                                   vertices)
         }
-        
-        self.protected_viewable_submitRenderUnit(ctx,
+
+        self.safeViewable_submitRenderUnit(ctx,
                                                  vertices,
-                                                 self.protected_imageable._image_size,
+                                                 self.safeImageable.imageSize,
                                                  .texture,
-                                                 self.protected_imageable._path)
-        
-        self.protected_viewable_submitRenderFinished(ctx)
+                                                 self.safeImageable.path)
+
+        self.safeViewable_submitRenderFinished(ctx)
     }
 }

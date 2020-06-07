@@ -570,6 +570,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46229654246DF14200A3ED6D /* Build configuration list for PBXNativeTarget "Cutlass-macOS" */;
 			buildPhases = (
+				465D50BB248C9EBF0012678E /* SwiftLint */,
 				46627BE22486E10E00A2A610 /* FlynnLint */,
 				4622963B246DF14100A3ED6D /* Headers */,
 				4622963C246DF14100A3ED6D /* Sources */,
@@ -611,6 +612,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 466151F524731BE300F87A9B /* Build configuration list for PBXNativeTarget "Cutlass-iOS" */;
 			buildPhases = (
+				465D50BC248C9ECF0012678E /* SwiftLint */,
 				46AEA32F24870A7000C618CF /* FlynnLint */,
 				466151EB24731BE300F87A9B /* Headers */,
 				466151EC24731BE300F87A9B /* Sources */,
@@ -764,6 +766,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		465D50BB248C9EBF0012678E /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		465D50BC248C9ECF0012678E /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		46627BE22486E10E00A2A610 /* FlynnLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

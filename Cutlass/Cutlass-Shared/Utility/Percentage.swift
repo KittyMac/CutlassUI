@@ -13,12 +13,12 @@ import GLKit
 import Flynn
 
 postfix operator %
-public postfix func % (p: Float) -> Percentage {
-    return Percentage(p)
+public postfix func % (pct: Float) -> Percentage {
+    return Percentage(pct)
 }
 
-public struct Percentage :CutlassNumericType {
-    public var value :Float
+public struct Percentage: CutlassNumericType {
+    public var value: Float
     public init(_ value: Float) {
         self.value = value
     }

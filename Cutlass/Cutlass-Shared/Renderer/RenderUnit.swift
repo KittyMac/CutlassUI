@@ -29,24 +29,30 @@ public enum CullMode {
 }
 
 public struct RenderUnit {
-    let cullMode:CullMode = .none
-    let color:GLKVector4 = GLKVector4Make(1.0, 1.0, 1.0, 1.0)
-    
-    let yogaID:YogaID
-    let viewFrame:ViewFrameContext
-    let shaderType:ShaderType
-    let renderNumber:Int64
-    let vertices:FloatAlignedArray
-    let contentSize:GLKVector2
-    let textureName:String?
-    
-    init (_ ctx:RenderFrameContext, _ st:ShaderType, _ v:FloatAlignedArray, _ cs:GLKVector2, _ pn:Int64 = 0, _ txt:String? = nil) {
+    let cullMode: CullMode = .none
+    let color: GLKVector4 = GLKVector4Make(1.0, 1.0, 1.0, 1.0)
+
+    let yogaID: YogaID
+    let viewFrame: ViewFrameContext
+    let shaderType: ShaderType
+    let renderNumber: Int64
+    let vertices: FloatAlignedArray
+    let contentSize: GLKVector2
+    let textureName: String?
+
+    init (_ ctx: RenderFrameContext,
+          _ shdr: ShaderType,
+          _ vtx: FloatAlignedArray,
+          _ csz: GLKVector2,
+          _ pnr: Int64 = 0,
+          _ txt: String? = nil) {
+
         yogaID = ctx.view.yogaID
         viewFrame = ctx.view
-        renderNumber = ctx.view.renderNumber + pn
-        shaderType = st
-        vertices = v
-        contentSize = cs
+        renderNumber = ctx.view.renderNumber + pnr
+        shaderType = shdr
+        vertices = vtx
+        contentSize = csz
         textureName = txt
     }
 }

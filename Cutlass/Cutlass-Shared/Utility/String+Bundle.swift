@@ -9,13 +9,13 @@
 import Foundation
 
 extension String {
-    public init(bundlePath:String, defaultExt:String = "png") {
+    public init(bundlePath: String, defaultExt: String = "png") {
         // name is a "url path" to a file.  These are like in planet:
         // "resources://landscape_desert.jpg"
         // "documents://landscape_desert.jpg"
         // "caches://landscape_desert.jpg"
         self.init()
-        
+
         if bundlePath.starts(with: "http://") || bundlePath.starts(with: "https://") {
             self = bundlePath
             return
@@ -35,7 +35,7 @@ extension String {
                 let ext = (bundlePath as NSString).pathExtension
                 if ext.count == 0 {
                     self = "\(resourcePath)/Assets/\(bundlePath).\(defaultExt)"
-                }else{
+                } else {
                     self = "\(resourcePath)/Assets/\(bundlePath)"
                 }
             }

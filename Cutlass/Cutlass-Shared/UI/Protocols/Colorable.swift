@@ -11,95 +11,94 @@ import Flynn
 import GLKit
 
 public class ColorableState {
-    var _color:GLKVector4 = GLKVector4Make(1, 1, 1, 1)
-    
-    var color:Behavior? = nil
-    var alpha:Behavior? = nil
-        
-    init (_ actor:Actor) {
-        color = Behavior(actor) { (args:BehaviorArgs) in
-            self._color = args[x:0]
+    var color: GLKVector4 = GLKVector4Make(1, 1, 1, 1)
+
+    var beColor: Behavior?
+    var beAlpha: Behavior?
+
+    init (_ actor: Actor) {
+        beColor = Behavior(actor) { (args: BehaviorArgs) in
+            self.color = args[x:0]
         }
-        
-        alpha = Behavior(actor) { (args:BehaviorArgs) in
-            self._color.a = args[x:0]
+
+        beAlpha = Behavior(actor) { (args: BehaviorArgs) in
+            self.color.a = args[x:0]
         }
     }
 }
 
-public protocol Colorable : Actor {
-    var protected_colorable:ColorableState { get set }
+public protocol Colorable: Actor {
+    var safeColorable: ColorableState { get set }
 }
 
 public extension Colorable {
-    
-    func alpha(_ a:Float) -> Self {
-        protected_colorable.alpha!(a)
+
+    func alpha(_ aaa: Float) -> Self {
+        safeColorable.beAlpha!(aaa)
         return self
     }
-    
-    func rgba(_ c:UInt32 ) -> Self {
-        let r = Float((c >> 24) & 0xFF) / 255.0
-        let g = Float((c >> 16) & 0xFF) / 255.0
-        let b = Float((c >> 8) & 0xFF) / 255.0
-        let a = Float((c >> 0) & 0xFF) / 255.0
-        protected_colorable.color!(GLKVector4Make(r, g, b, a))
+
+    func rgba(_ ccc: UInt32 ) -> Self {
+        let rrr = Float((ccc >> 24) & 0xFF) / 255.0
+        let ggg = Float((ccc >> 16) & 0xFF) / 255.0
+        let bbb = Float((ccc >> 8) & 0xFF) / 255.0
+        let aaa = Float((ccc >> 0) & 0xFF) / 255.0
+        safeColorable.beColor!(GLKVector4Make(rrr, ggg, bbb, aaa))
         return self
     }
-    
-    func rgba(_ r:Float, _ g:Float, _ b:Float, _ a:Float ) -> Self {
-        protected_colorable.color!(GLKVector4Make(r, g, b, a))
+
+    func rgba(_ rrr: Float, _ ggg: Float, _ bbb: Float, _ aaa: Float ) -> Self {
+        safeColorable.beColor!(GLKVector4Make(rrr, ggg, bbb, aaa))
         return self
     }
-    
+
     func clear() -> Self {
-        protected_colorable.color!(GLKVector4Make(0, 0, 0, 0))
+        safeColorable.beColor!(GLKVector4Make(0, 0, 0, 0))
         return self
     }
-    
+
     func white() -> Self {
-        protected_colorable.color!(GLKVector4Make(1, 1, 1, 1))
+        safeColorable.beColor!(GLKVector4Make(1, 1, 1, 1))
         return self
     }
-    
+
     func black() -> Self {
-        protected_colorable.color!(GLKVector4Make(0, 0, 0, 1))
+        safeColorable.beColor!(GLKVector4Make(0, 0, 0, 1))
         return self
     }
-    
+
     func gray() -> Self {
-        protected_colorable.color!(GLKVector4Make(0.7, 0.7, 0.7, 1))
+        safeColorable.beColor!(GLKVector4Make(0.7, 0.7, 0.7, 1))
         return self
     }
-    
+
     func red() -> Self {
-        protected_colorable.color!(GLKVector4Make(1, 0, 0, 1))
+        safeColorable.beColor!(GLKVector4Make(1, 0, 0, 1))
         return self
     }
-    
+
     func green() -> Self {
-        protected_colorable.color!(GLKVector4Make(0, 1, 0, 1))
+        safeColorable.beColor!(GLKVector4Make(0, 1, 0, 1))
         return self
     }
-    
+
     func blue() -> Self {
-        protected_colorable.color!(GLKVector4Make(0, 0, 1, 1))
+        safeColorable.beColor!(GLKVector4Make(0, 0, 1, 1))
         return self
     }
-    
+
     func yellow() -> Self {
-        protected_colorable.color!(GLKVector4Make(1, 1, 0, 1))
+        safeColorable.beColor!(GLKVector4Make(1, 1, 0, 1))
         return self
     }
-    
+
     func magenta() -> Self {
-        protected_colorable.color!(GLKVector4Make(1, 0, 1, 1))
+        safeColorable.beColor!(GLKVector4Make(1, 0, 1, 1))
         return self
     }
-    
+
     func cyan() -> Self {
-        protected_colorable.color!(GLKVector4Make(0, 1, 1, 1))
+        safeColorable.beColor!(GLKVector4Make(0, 1, 1, 1))
         return self
     }
 }
-

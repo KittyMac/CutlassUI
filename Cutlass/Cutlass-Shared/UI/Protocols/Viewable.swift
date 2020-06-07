@@ -10,18 +10,18 @@ import Foundation
 import Flynn
 import GLKit
 
-public protocol Viewable : Actor {
-    var render:Behavior { get }
+public protocol Viewable: Actor {
+    var render: Behavior { get }
 }
 
 public extension Viewable {
-    
-    func protected_viewable_submitRenderUnit(_ ctx:RenderFrameContext,
-                                             _ vertices:FloatAlignedArray,
-                                             _ contentSize:GLKVector2,
-                                             _ shaderType: ShaderType = .flat,
-                                             _ textureName:String? = nil,
-                                             _ partNumber:Int64 = 0) {
+
+    func safeViewable_submitRenderUnit(_ ctx: RenderFrameContext,
+                                       _ vertices: FloatAlignedArray,
+                                       _ contentSize: GLKVector2,
+                                       _ shaderType: ShaderType = .flat,
+                                       _ textureName: String? = nil,
+                                       _ partNumber: Int64 = 0) {
         let unit = RenderUnit(ctx,
                               shaderType,
                               vertices,
@@ -31,9 +31,7 @@ public extension Viewable {
         ctx.renderer.submitRenderUnit(ctx, unit)
     }
 
-    
-    func protected_viewable_submitRenderFinished(_ ctx:RenderFrameContext) {
+    func safeViewable_submitRenderFinished(_ ctx: RenderFrameContext) {
         ctx.renderer.submitRenderFinished(ctx)
     }
 }
-
