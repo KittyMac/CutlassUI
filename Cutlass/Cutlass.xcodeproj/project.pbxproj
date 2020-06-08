@@ -103,6 +103,8 @@
 		4662A30E247E0CE7004374A4 /* Imageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30C247E0CE7004374A4 /* Imageable.swift */; };
 		4662A310247E0CEB004374A4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30F247E0CEB004374A4 /* Image.swift */; };
 		4662A311247E0CEB004374A4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4662A30F247E0CEB004374A4 /* Image.swift */; };
+		46B8A333248E03830076973B /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46B8A332248E03830076973B /* Flynn */; };
+		46B8A335248E038B0076973B /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46B8A334248E038B0076973B /* Flynn */; };
 		46C3D6162476E22100F8DC58 /* RenderUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6152476E22100F8DC58 /* RenderUnit.swift */; };
 		46C3D6172476E22100F8DC58 /* RenderUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6152476E22100F8DC58 /* RenderUnit.swift */; };
 		46C3D6192476E30900F8DC58 /* RenderFrameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C3D6182476E30900F8DC58 /* RenderFrameContext.swift */; };
@@ -121,8 +123,6 @@
 		46F7BFD0248036D200D63DA5 /* NumericType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFCE248036D200D63DA5 /* NumericType.swift */; };
 		46F7BFD3248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
 		46F7BFD4248036F200D63DA5 /* Percentage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F7BFD1248036F200D63DA5 /* Percentage.swift */; };
-		46FCA08D2488AECD00746DE5 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46FCA08C2488AECD00746DE5 /* Flynn */; };
-		46FCA08F2488AEDA00746DE5 /* Flynn in Frameworks */ = {isa = PBXBuildFile; productRef = 46FCA08E2488AEDA00746DE5 /* Flynn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,7 +259,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46FCA08D2488AECD00746DE5 /* Flynn in Frameworks */,
+				46B8A333248E03830076973B /* Flynn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +275,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46FCA08F2488AEDA00746DE5 /* Flynn in Frameworks */,
+				46B8A335248E038B0076973B /* Flynn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +584,7 @@
 			);
 			name = "Cutlass-macOS";
 			packageProductDependencies = (
-				46FCA08C2488AECD00746DE5 /* Flynn */,
+				46B8A332248E03830076973B /* Flynn */,
 			);
 			productName = Cutlass;
 			productReference = 46229640246DF14100A3ED6D /* Cutlass.framework */;
@@ -626,7 +626,7 @@
 			);
 			name = "Cutlass-iOS";
 			packageProductDependencies = (
-				46FCA08E2488AEDA00746DE5 /* Flynn */,
+				46B8A334248E038B0076973B /* Flynn */,
 			);
 			productName = "Cutlass-iOS";
 			productReference = 466151F024731BE300F87A9B /* Cutlass.framework */;
@@ -709,7 +709,7 @@
 			);
 			mainGroup = 46229636246DF14100A3ED6D;
 			packageReferences = (
-				46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */,
+				46B8A331248E03830076973B /* XCRemoteSwiftPackageReference "flynn" */,
 			);
 			productRefGroup = 46229641246DF14100A3ED6D /* Products */;
 			projectDirPath = "";
@@ -1430,25 +1430,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */ = {
+		46B8A331248E03830076973B /* XCRemoteSwiftPackageReference "flynn" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/KittyMac/flynn";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.1;
+				minimumVersion = 0.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		46FCA08C2488AECD00746DE5 /* Flynn */ = {
+		46B8A332248E03830076973B /* Flynn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */;
+			package = 46B8A331248E03830076973B /* XCRemoteSwiftPackageReference "flynn" */;
 			productName = Flynn;
 		};
-		46FCA08E2488AEDA00746DE5 /* Flynn */ = {
+		46B8A334248E038B0076973B /* Flynn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 46FCA08B2488AECD00746DE5 /* XCRemoteSwiftPackageReference "flynn" */;
+			package = 46B8A331248E03830076973B /* XCRemoteSwiftPackageReference "flynn" */;
 			productName = Flynn;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -10,95 +10,127 @@ import Foundation
 import Flynn
 import GLKit
 
-public class ColorableState {
-    var color: GLKVector4 = GLKVector4Make(1, 1, 1, 1)
+public class ColorableState<T> {
+    public var color: GLKVector4 = GLKVector4Make(1, 1, 1, 1)
 
-    var beColor: Behavior?
-    var beAlpha: Behavior?
-
-    init (_ actor: Actor) {
-        beColor = Behavior(actor) { (args: BehaviorArgs) in
-            self.color = args[x:0]
-        }
-
-        beAlpha = Behavior(actor) { (args: BehaviorArgs) in
-            self.color.a = args[x:0]
-        }
-    }
-}
-
-public protocol Colorable: Actor {
-    var safeColorable: ColorableState { get set }
-}
-
-public extension Colorable {
-
-    func alpha(_ aaa: Float) -> Self {
-        safeColorable.beAlpha!(aaa)
-        return self
+    private func setColor(_ red: Float, _ green: Float, _ blue: Float, _ alpha: Float) {
+        color = GLKVector4Make(red, green, blue, alpha)
     }
 
-    func rgba(_ ccc: UInt32 ) -> Self {
+    lazy var beColor = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter NSNumber - red component
+        // flynnlint:parameter NSNumber - green component
+        // flynnlint:parameter NSNumber - blue component
+        // flynnlint:parameter NSNumber - alpha component
+        let rrr: NSNumber = args[x:0]
+        let ggg: NSNumber = args[x:1]
+        let bbb: NSNumber = args[x:2]
+        let aaa: NSNumber = args[x:3]
+        self.setColor(rrr.floatValue, ggg.floatValue, bbb.floatValue, aaa.floatValue)
+    }
+
+    lazy var beAlpha = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter Float - alpha component
+        self.color.a = args[x:0]
+    }
+
+    lazy var beRGBA = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter UInt32 - color as an UInt32 (ie 0xFF00FFFF)
+        let ccc: UInt32 = args[x:0]
         let rrr = Float((ccc >> 24) & 0xFF) / 255.0
         let ggg = Float((ccc >> 16) & 0xFF) / 255.0
         let bbb = Float((ccc >> 8) & 0xFF) / 255.0
         let aaa = Float((ccc >> 0) & 0xFF) / 255.0
-        safeColorable.beColor!(GLKVector4Make(rrr, ggg, bbb, aaa))
-        return self
+        self.color = GLKVector4Make(rrr, ggg, bbb, aaa)
     }
 
-    func rgba(_ rrr: Float, _ ggg: Float, _ bbb: Float, _ aaa: Float ) -> Self {
-        safeColorable.beColor!(GLKVector4Make(rrr, ggg, bbb, aaa))
-        return self
+    lazy var beClear = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0, 0, 0, 0)
     }
 
-    func clear() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0, 0, 0, 0))
-        return self
+    lazy var beWhite = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(1, 1, 1, 1)
     }
 
-    func white() -> Self {
-        safeColorable.beColor!(GLKVector4Make(1, 1, 1, 1))
-        return self
+    lazy var beBlack = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0, 0, 0, 1)
     }
 
-    func black() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0, 0, 0, 1))
-        return self
+    lazy var beGray = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0.7, 0.7, 0.7, 1.0)
     }
 
-    func gray() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0.7, 0.7, 0.7, 1))
-        return self
+    lazy var beRed = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(1, 0, 0, 1)
     }
 
-    func red() -> Self {
-        safeColorable.beColor!(GLKVector4Make(1, 0, 0, 1))
-        return self
+    lazy var beGreen = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0, 1, 0, 1)
     }
 
-    func green() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0, 1, 0, 1))
-        return self
+    lazy var beBlue = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0, 0, 1, 1)
     }
 
-    func blue() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0, 0, 1, 1))
-        return self
+    lazy var beYellow = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(1, 1, 0, 1)
     }
 
-    func yellow() -> Self {
-        safeColorable.beColor!(GLKVector4Make(1, 1, 0, 1))
-        return self
+    lazy var beMagenta = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(1, 0, 1, 1)
     }
 
-    func magenta() -> Self {
-        safeColorable.beColor!(GLKVector4Make(1, 0, 1, 1))
-        return self
+    lazy var beCyan = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.setColor(0, 1, 1, 1)
     }
 
-    func cyan() -> Self {
-        safeColorable.beColor!(GLKVector4Make(0, 1, 1, 1))
-        return self
+    init (_ actor: T) {
+        beColor.setActor(actor)
+        beAlpha.setActor(actor)
+        beRGBA.setActor(actor)
+        beClear.setActor(actor)
+        beWhite.setActor(actor)
+        beBlack.setActor(actor)
+        beGray.setActor(actor)
+        beRed.setActor(actor)
+        beGreen.setActor(actor)
+        beBlue.setActor(actor)
+        beYellow.setActor(actor)
+        beMagenta.setActor(actor)
+        beCyan.setActor(actor)
     }
+}
+
+public protocol Colorable: Actor {
+    var safeColorable: ColorableState<Self> { get set }
+
+    var beColor: ChainableBehavior<Self> { get }
+    var beAlpha: ChainableBehavior<Self> { get }
+    var beRGBA: ChainableBehavior<Self> { get }
+    var beClear: ChainableBehavior<Self> { get }
+    var beWhite: ChainableBehavior<Self> { get }
+    var beBlack: ChainableBehavior<Self> { get }
+    var beGray: ChainableBehavior<Self> { get }
+    var beRed: ChainableBehavior<Self> { get }
+    var beGreen: ChainableBehavior<Self> { get }
+    var beBlue: ChainableBehavior<Self> { get }
+    var beYellow: ChainableBehavior<Self> { get }
+    var beMagenta: ChainableBehavior<Self> { get }
+    var beCyan: ChainableBehavior<Self> { get }
+}
+
+public extension Colorable {
+    var beColor: ChainableBehavior<Self> { return safeColorable.beColor }
+    var beAlpha: ChainableBehavior<Self> { return safeColorable.beAlpha }
+    var beRGBA: ChainableBehavior<Self> { return safeColorable.beRGBA }
+    var beClear: ChainableBehavior<Self> { return safeColorable.beClear }
+    var beWhite: ChainableBehavior<Self> { return safeColorable.beWhite }
+    var beBlack: ChainableBehavior<Self> { return safeColorable.beBlack }
+    var beGray: ChainableBehavior<Self> { return safeColorable.beGray }
+    var beRed: ChainableBehavior<Self> { return safeColorable.beRed }
+    var beGreen: ChainableBehavior<Self> { return safeColorable.beGreen }
+    var beBlue: ChainableBehavior<Self> { return safeColorable.beBlue }
+    var beYellow: ChainableBehavior<Self> { return safeColorable.beYellow }
+    var beMagenta: ChainableBehavior<Self> { return safeColorable.beMagenta }
+    var beCyan: ChainableBehavior<Self> { return safeColorable.beCyan }
 }

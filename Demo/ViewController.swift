@@ -32,11 +32,11 @@ class ViewController: SharedController {
         let node = Yoga().fill().rows().center().paddingAll(12)
             .children([
                 Yoga().size(50%,100%).child(
-                    Yoga().center().fill().view( Color().black() ).child(
-                        Yoga().center().size(80%,80%).view( Color().green() ).child(
-                            Yoga().center().size(80%,80%).view( Color().blue() ).child(
-                                Yoga().center().size(80%,80%).view( Color().yellow() ).child(
-                                    Yoga().center().size(80%,80%).view( Color().red() )
+                    Yoga().center().fill().view( Color().beBlack() ).child(
+                        Yoga().center().size(80%,80%).view( Color().beGreen() ).child(
+                            Yoga().center().size(80%,80%).view( Color().beBlue() ).child(
+                                Yoga().center().size(80%,80%).view( Color().beYellow() ).child(
+                                    Yoga().center().size(80%,80%).view( Color().beRed() )
                                 )
                             )
                         )
@@ -44,75 +44,75 @@ class ViewController: SharedController {
                 ),
                 
                 Yoga().size(50%,100%).rows().itemsStart().wrap().children([
-                   Yoga().size(50%,50%).view( Color().red() ),
-                   Yoga().size(50%,50%).view( Color().green() ),
-                   Yoga().size(50%,50%).view( Color().blue() ),
-                   Yoga().size(50%,50%).view( Color().yellow() )
+                   Yoga().size(50%,50%).view( Color().beRed() ),
+                   Yoga().size(50%,50%).view( Color().beGreen() ),
+                   Yoga().size(50%,50%).view( Color().beBlue() ),
+                   Yoga().size(50%,50%).view( Color().beYellow() )
                 ])
             ])
-        cutlassView.renderer().setRoot(node)
+        cutlassView.renderer().beSetRoot(node)
     }
     
     func clipDemo() {
         let node = Yoga().fill().rows().itemsStart().paddingAll(12)
-            .view( Color().rgba(0.98, 0.98, 0.98, 1.0) )
+            .view( Color().beColor(0.98, 0.98, 0.98, 1.0) )
             .children([
                 
-                Yoga().size(100,100).view( Color().red().alpha(0.25) ).child(
-                    Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
+                Yoga().size(100,100).view( Color().beRed().beAlpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).view( Color().beGreen().beAlpha(0.25) )
                 ),
                 
-                Yoga().size(100,100).left(100).clips(true).view( Color().red().alpha(0.25) ).child(
-                    Yoga().size(100,100).origin(50%,50%).view( Color().green().alpha(0.25) )
+                Yoga().size(100,100).left(100).clips(true).view( Color().beRed().beAlpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).view( Color().beGreen().beAlpha(0.25) )
                 ),
                 
-                Yoga().size(100,100).left(200).clips(true).view( Color().red().alpha(0.25) ).child(
-                    Yoga().size(100,100).origin(50%,50%).clips(true).view( Color().green().alpha(0.25) ).child(
-                        Yoga().size(100,100).origin(-75%,-75%).clips(true).view( Color().blue().alpha(0.25) )
+                Yoga().size(100,100).left(200).clips(true).view( Color().beRed().beAlpha(0.25) ).child(
+                    Yoga().size(100,100).origin(50%,50%).clips(true).view( Color().beGreen().beAlpha(0.25) ).child(
+                        Yoga().size(100,100).origin(-75%,-75%).clips(true).view( Color().beBlue().beAlpha(0.25) )
                     )
                 )
                
             ])
-        cutlassView.renderer().setRoot(node)
+        cutlassView.renderer().beSetRoot(node)
     }
     
     func imageDemo() {
         let node = Yoga().fill().rows().itemsStart().wrap().paddingAll(12)
-            .view( Color().rgba(0.98, 0.98, 0.98, 1.0) )
+            .view( Color().beColor(0.98, 0.98, 0.98, 1.0) )
             .children([
                 
-                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button") ),
-                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").red() ),
-                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").green() ),
-                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").blue() ),
-                Yoga().size(100,100).sizeToFit(true).view( Image().path("unpressed_button").rgba(0xFFFFFF33) ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().bePath("unpressed_button") ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().bePath("unpressed_button").beRed() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().bePath("unpressed_button").beGreen() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().bePath("unpressed_button").beBlue() ),
+                Yoga().size(100,100).sizeToFit(true).view( Image().bePath("unpressed_button").beRGBA(0xFFFFFF33) ),
                                 
                 Yoga().size(128,256)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").fill() ),
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beFill() ),
                 
                 Yoga().size(128,256)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").aspectFit() ),
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beAspectFit() ),
                 
                 Yoga().size(128,256)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").aspectFill() ),
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beAspectFill() ),
                 
                 Yoga().size(256,128)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").fill() ),
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beFill() ),
                 
                 Yoga().size(256,128)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").aspectFit() ),
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beAspectFit() ),
                 
                 Yoga().size(256,128)
-                    .view( Color().gray() )
-                    .view( Image().path("landscape_desert").aspectFill() )
+                    .view( Color().beGray() )
+                    .view( Image().bePath("landscape_desert").beAspectFill() )
                    
             ])
-        cutlassView.renderer().setRoot(node)
+        cutlassView.renderer().beSetRoot(node)
     }
     
     func switchToDemo(_ n:Int) {

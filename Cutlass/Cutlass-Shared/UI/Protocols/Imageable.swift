@@ -7,6 +7,7 @@
 //
 
 // swiftlint:disable function_body_length
+// swiftlint:disable force_cast
 
 import Foundation
 import Flynn
@@ -19,7 +20,7 @@ public enum ImageModeType {
     case stretch
 }
 
-public class ImageableState {
+public class ImageableState<T> {
     var imageHash: Int = 0
     var imageWidth: Int = 0
     var imageHeight: Int = 0
@@ -30,94 +31,106 @@ public class ImageableState {
     var mode: ImageModeType = .fill
     var stretchInsets: GLKVector4 = GLKVector4Make(0, 0, 0, 0)
 
-    var bePath: Behavior?
-    var beMode: Behavior?
-    var beStretchInsets: Behavior?
-    var beUpdateTextureInfo: Behavior?
+    lazy var bePath = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter String - path to the image
+        self.path = args[x:0]
+    }
 
-    init (_ actor: Actor) {
-        bePath = Behavior(actor) { (args: BehaviorArgs) in
-            self.path = args[x:0]
-        }
-        beMode = Behavior(actor) { (args: BehaviorArgs) in
-            self.mode = args[x:0]
-        }
-        beStretchInsets = Behavior(actor) { (args: BehaviorArgs) in
-            self.stretchInsets = args[x:0]
-        }
-        beUpdateTextureInfo = Behavior(actor) { (args: BehaviorArgs) in
-            let renderer: Renderer = args[x:0]
-            let path: String = args[x:1]
-            let textureInfo: MTLTexture = args[x:2]
-            self.imageWidth = textureInfo.width
-            self.imageHeight = textureInfo.height
-            self.imageAspect = Float(textureInfo.width) / Float(textureInfo.height)
-            self.imageHash = textureInfo.width + textureInfo.height + path.hashValue
-            self.imageSize = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
-            renderer.setNeedsRender()
-        }
+    lazy var beMode = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter ImageModeType - image mode for displaying the image
+        self.mode = args[x:0]
+    }
+
+    lazy var beFill = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.mode = .fill
+    }
+
+    lazy var beAspectFill = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.mode = .aspectFill
+    }
+
+    lazy var beAspectFit = ChainableBehavior<T> { (_: BehaviorArgs) in
+        self.mode = .aspectFit
+    }
+
+    lazy var beStretch = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter Float - top inset
+        // flynnlint:parameter Float - left inset
+        // flynnlint:parameter Float - bottom inset
+        // flynnlint:parameter Float - right inset
+        self.stretchInsets = GLKVector4Make(args[x:0], args[x:1], args[x:2], args[x:3])
+        self.mode = .stretch
+    }
+
+    lazy var beStretchAll = ChainableBehavior<T> { (args: BehaviorArgs) in
+        // flynnlint:parameter Float - top, left, bottom and right inset
+        let vvv: Float = args[x:0]
+        self.stretchInsets = GLKVector4Make(vvv, vvv, vvv, vvv)
+        self.mode = .stretch
+    }
+
+    lazy var beUpdateTextureInfo = Behavior { (args: BehaviorArgs) in
+        // flynnlint:parameter Renderer - cutlass renderer
+        // flynnlint:parameter String - path to image
+        // flynnlint:parameter MTLTexture - texture for the image
+        let renderer: Renderer = args[x:0]
+        let path: String = args[x:1]
+        let textureInfo: MTLTexture = args[x:2]
+        self.imageWidth = textureInfo.width
+        self.imageHeight = textureInfo.height
+        self.imageAspect = Float(textureInfo.width) / Float(textureInfo.height)
+        self.imageHash = textureInfo.width + textureInfo.height + path.hashValue
+        self.imageSize = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
+        renderer.beSetNeedsRender()
+    }
+
+    init (_ actor: T) {
+        bePath.setActor(actor)
+        beMode.setActor(actor)
+        beFill.setActor(actor)
+        beAspectFill.setActor(actor)
+        beAspectFit.setActor(actor)
+        beStretch.setActor(actor)
+        beStretchAll.setActor(actor)
+        beUpdateTextureInfo.setActor(actor as! Actor)
     }
 }
 
 public protocol Imageable: Actor {
-    var safeImageable: ImageableState { get set }
+    var safeImageable: ImageableState<Self> { get set }
 }
 
 public extension Imageable {
 
-    @discardableResult func updateTextureInfo(_ renderer: Renderer, _ path: String, _ texture: MTLTexture) -> Self {
-        safeImageable.beUpdateTextureInfo!(renderer, path, texture)
-        return self
-    }
+    var bePath: ChainableBehavior<Self> { return safeImageable.bePath }
+    var beMode: ChainableBehavior<Self> { return safeImageable.beMode }
+    var beFill: ChainableBehavior<Self> { return safeImageable.beFill }
+    var beAspectFill: ChainableBehavior<Self> { return safeImageable.beAspectFill }
+    var beAspectFit: ChainableBehavior<Self> { return safeImageable.beAspectFit }
+    var beStretch: ChainableBehavior<Self> { return safeImageable.beStretch }
+    var beStretchAll: ChainableBehavior<Self> { return safeImageable.beStretchAll }
+    var beUpdateTextureInfo: Behavior { return safeImageable.beUpdateTextureInfo }
 
-    @discardableResult func path(_ path: String) -> Self {
-        safeImageable.bePath!(path)
-        return self
-    }
-
-    @discardableResult func stretch(_ top: Float, _ left: Float, _ bottom: Float, _ right: Float) -> Self {
-        safeImageable.beStretchInsets!(GLKVector4Make(top, left, bottom, right))
-        return self
-    }
-
-    @discardableResult func stretchAll(_ vvv: Float) -> Self {
-        safeImageable.beStretchInsets!(GLKVector4Make(vvv, vvv, vvv, vvv))
-        return self
-    }
-
-    @discardableResult func fill() -> Self {
-        safeImageable.beMode!(ImageModeType.fill)
-        return self
-    }
-    @discardableResult func aspectFit() -> Self {
-        safeImageable.beMode!(ImageModeType.aspectFit)
-        return self
-    }
-    @discardableResult func aspectFill() -> Self {
-        safeImageable.beMode!(ImageModeType.aspectFill)
-        return self
-    }
-
-    func imageLoaded() -> Bool {
+    func safeImageLoaded() -> Bool {
         return (safeImageable.imageWidth != 0) || (safeImageable.imageHeight != 0)
     }
 
-    func safeImageable_confirmImageSize(_ ctx: RenderFrameContext) {
+    func safeImageableConfirmImageSize(_ ctx: RenderFrameContext) {
         if let path = safeImageable.path {
-            if !imageLoaded() {
-                ctx.renderer.getTextureInfo(self, path)
+            if !safeImageLoaded() {
+                ctx.renderer.beGetTextureInfo(path, beUpdateTextureInfo)
             }
         }
     }
 
-    func safeImageable_fillVertices(_ ctx: RenderFrameContext,
-                                    _ color: GLKVector4,
-                                    _ bounds: GLKVector4,
-                                    _ vertices: FloatAlignedArray) {
+    func safeImageableFillVertices(_ ctx: RenderFrameContext,
+                                   _ color: GLKVector4,
+                                   _ bounds: GLKVector4,
+                                   _ vertices: FloatAlignedArray) {
         vertices.reserve(6 * 7)
         vertices.clear()
 
-        if imageLoaded() {
+        if safeImageLoaded() {
             let imageAspect = safeImageable.imageAspect
             let boundsAspect = bounds.z / bounds.w
 

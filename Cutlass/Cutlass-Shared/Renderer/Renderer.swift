@@ -293,17 +293,18 @@ public class Renderer: Actor {
     private var needsLayout: Bool = true
     private var needsRender: Bool = true
 
-    public lazy var setRoot = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSetRoot = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter Yoga - The yoga node to set the root as
         self.root.removeAll()
         self.root.child(args[x:0])
         self.needsLayout = true
     }
 
-    public lazy var setNeedsLayout = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSetNeedsLayout = Behavior(self) { (_: BehaviorArgs) in
         self.needsLayout = true
     }
 
-    public lazy var setNeedsRender = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSetNeedsRender = Behavior(self) { (_: BehaviorArgs) in
         self.needsRender = true
     }
 
@@ -318,7 +319,10 @@ public class Renderer: Actor {
     private var frameNumberRequested: Int64 = 0
     private var renderUnitTree: AVLTree<Int64, RenderUnit> = AVLTree()
 
-    public lazy var render = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter CAMetalLayer - The metal layer to render into
+        // flynnlint:parameter CGSize - The size of the view associated with the metal layer
+        // flynnlint:parameter CGFloat - the scale of the view associated with the metal layer
         let metalLayer: CAMetalLayer = args[x:0]
         let contentsSize: CGSize = args[x:1]
         let contentsScale: CGFloat = args[x:2]
@@ -341,7 +345,10 @@ public class Renderer: Actor {
         self.render_start(ctx)
     }
 
-    public lazy var submitRenderUnit = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSubmitRenderUnit = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter RenderFrameContext - The render frame context
+        // flynnlint:parameter RenderUnit - The render unit to render
+
         // Each view can submit a number of render units, with each render unit being
         // an distinct renderable thing
         let ctx: RenderFrameContext = args[x:0]
@@ -349,7 +356,9 @@ public class Renderer: Actor {
         self.renderUnitTree.insert(key: unit.renderNumber, payload: unit)
     }
 
-    public lazy var submitRenderFinished = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSubmitRenderFinished = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter RenderFrameContext - The render frame context
+
         // Each view which received a render call must call submitRenderFinished when they
         // have finished that render call. The Renderer tracks these to know when all views
         // in a render frame have finished.
@@ -361,7 +370,7 @@ public class Renderer: Actor {
         }
     }
 
-    public lazy var submitRenderOnScreen = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSubmitRenderOnScreen = Behavior(self) { (_: BehaviorArgs) in
         self.renderAheadCount -= 1
     }
 
@@ -573,7 +582,7 @@ public class Renderer: Actor {
             renderEncoder.endEncoding()
 
             commandBuffer.addCompletedHandler { (_) in
-                self.submitRenderOnScreen()
+                self.beSubmitRenderOnScreen()
             }
 
             if aborted == false {
@@ -642,12 +651,15 @@ public class Renderer: Actor {
     // and we want to support loading an image atomically. So these methods include their own
     // locking mechanisms to keep them safe.
 
-    public lazy var getTextureInfo = Behavior(self) { (args: BehaviorArgs) in
-        let sender: Imageable = args[x:0]
-        let bundlePath: String = args[x:1]
+    public lazy var beGetTextureInfo = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter Renderer - The cutlass renderer
+        // flynnlint:parameter String - The bundle path of the texture to load
+        // flynnlint:parameter Behavior - Callback with the texture
+        let bundlePath: String = args[x:0]
+        let callback: Behavior = args[x:1]
         let resolvedPath = String(bundlePath: bundlePath)
         if let texture = self.textureCache[resolvedPath] {
-            sender.updateTextureInfo(self, bundlePath, texture)
+            callback(self, bundlePath, texture)
         }
     }
 

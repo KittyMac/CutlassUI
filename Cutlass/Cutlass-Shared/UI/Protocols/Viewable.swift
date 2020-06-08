@@ -11,27 +11,27 @@ import Flynn
 import GLKit
 
 public protocol Viewable: Actor {
-    var render: Behavior { get }
+    var beRender: Behavior { get }
 }
 
 public extension Viewable {
 
-    func safeViewable_submitRenderUnit(_ ctx: RenderFrameContext,
-                                       _ vertices: FloatAlignedArray,
-                                       _ contentSize: GLKVector2,
-                                       _ shaderType: ShaderType = .flat,
-                                       _ textureName: String? = nil,
-                                       _ partNumber: Int64 = 0) {
+    func safeViewableSubmitRenderUnit(_ ctx: RenderFrameContext,
+                                      _ vertices: FloatAlignedArray,
+                                      _ contentSize: GLKVector2,
+                                      _ shaderType: ShaderType = .flat,
+                                      _ textureName: String? = nil,
+                                      _ partNumber: Int64 = 0) {
         let unit = RenderUnit(ctx,
                               shaderType,
                               vertices,
                               contentSize,
                               partNumber,
                               textureName)
-        ctx.renderer.submitRenderUnit(ctx, unit)
+        ctx.renderer.beSubmitRenderUnit(ctx, unit)
     }
 
-    func safeViewable_submitRenderFinished(_ ctx: RenderFrameContext) {
-        ctx.renderer.submitRenderFinished(ctx)
+    func safeViewableSubmitRenderFinished(_ ctx: RenderFrameContext) {
+        ctx.renderer.beSubmitRenderFinished(ctx)
     }
 }

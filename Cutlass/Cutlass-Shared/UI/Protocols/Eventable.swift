@@ -53,12 +53,12 @@ public extension Eventable {
         return false
     }
 
-    func eventInset(_ top: Pixel, _ left: Pixel, _ bottom: Pixel, _ right: Pixel) -> Self {
+    func safeEventInset(_ top: Pixel, _ left: Pixel, _ bottom: Pixel, _ right: Pixel) -> Self {
         safeEventable.eventInset!(GLKVector4Make(top, left, bottom, right))
         return self
     }
 
-    func eventInsetAll(_ inset: Pixel) -> Self {
+    func safeEventInsetAll(_ inset: Pixel) -> Self {
         safeEventable.eventInset!(GLKVector4Make(inset, inset, inset, inset))
         return self
     }

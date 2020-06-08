@@ -16,28 +16,29 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
 
     private var bufferedGeometry = BufferedGeometry()
 
-    public lazy var render = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter RenderFrameContext - The render frame context
         let ctx: RenderFrameContext = args[x:0]
         let bounds = ctx.view.bounds
 
         let geom = self.bufferedGeometry.next()
         let vertices = geom.vertices
 
-        self.safeImageable_confirmImageSize(ctx)
+        self.safeImageableConfirmImageSize(ctx)
 
         if geom.check(ctx, self.safeImageable.imageHash) == false {
-            self.safeImageable_fillVertices(ctx,
-                                                  self.safeColorable.color,
-                                                  bounds,
-                                                  vertices)
+            self.safeImageableFillVertices(ctx,
+                                           self.safeColorable.color,
+                                           bounds,
+                                           vertices)
         }
 
-        self.safeViewable_submitRenderUnit(ctx,
-                                                 vertices,
-                                                 self.safeImageable.imageSize,
-                                                 .texture,
-                                                 self.safeImageable.path)
+        self.safeViewableSubmitRenderUnit(ctx,
+                                      vertices,
+                                      self.safeImageable.imageSize,
+                                      .texture,
+                                      self.safeImageable.path)
 
-        self.safeViewable_submitRenderFinished(ctx)
+        self.safeViewableSubmitRenderFinished(ctx)
     }
 }

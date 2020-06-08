@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/KittyMac/flynn",
         "state": {
           "branch": null,
-          "revision": "1652f525f1edde563ec1e3130514e53f0d0c8066",
-          "version": "0.0.1"
+          "revision": "fd82673e073eba75bfd2f21ad54076e4fb4dc339",
+          "version": "0.0.2"
         }
       }
     ]

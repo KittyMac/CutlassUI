@@ -156,7 +156,7 @@ public class Yoga {
 
             for view in views {
                 let viewCtx = ctx.clone(ViewFrameContext(yogaID, localMatrix, _lastBounds, Int64(localN), _sizeToFit))
-                view.render(viewCtx)
+                view.beRender(viewCtx)
                 localN += 1
             }
 
@@ -202,21 +202,21 @@ public class Yoga {
                                 GLKVector3Make(xmin, ymax, 0),
                                 GLKVector4Make(1.0, 1.0, 1.0, 1.0))
 
-            ctx.renderer.submitRenderUnit(ctx, RenderUnit(ctx,
+            ctx.renderer.beSubmitRenderUnit(ctx, RenderUnit(ctx,
                                                           .stencilBegin,
                                                           vertices,
                                                           ctx.view.bounds.size()))
-            ctx.renderer.submitRenderFinished(ctx)
+            ctx.renderer.beSubmitRenderFinished(ctx)
         }
     }
 
     private func popClips(_ ctx: RenderFrameContext) {
         if let vertices = _clippingVertices {
-            ctx.renderer.submitRenderUnit(ctx, RenderUnit(ctx,
+            ctx.renderer.beSubmitRenderUnit(ctx, RenderUnit(ctx,
                                                           .stencilEnd,
                                                           vertices,
                                                           ctx.view.bounds.size()))
-            ctx.renderer.submitRenderFinished(ctx)
+            ctx.renderer.beSubmitRenderFinished(ctx)
         }
     }
 

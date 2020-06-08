@@ -15,7 +15,8 @@ public final class Color: Actor, Viewable, Colorable {
 
     private var bufferedGeometry = BufferedGeometry()
 
-    public lazy var render = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
+        // flynnlint:parameter RenderFrameContext - The context of the render frame
         let ctx: RenderFrameContext = args[x:0]
         let bounds = ctx.view.bounds
 
@@ -39,8 +40,8 @@ public final class Color: Actor, Viewable, Colorable {
                                 self.safeColorable.color)
         }
 
-        self.safeViewable_submitRenderUnit(ctx, vertices, bounds.size())
+        self.safeViewableSubmitRenderUnit(ctx, vertices, bounds.size())
 
-        self.safeViewable_submitRenderFinished(ctx)
+        self.safeViewableSubmitRenderFinished(ctx)
     }
 }
