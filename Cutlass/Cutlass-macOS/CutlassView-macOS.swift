@@ -98,7 +98,7 @@ public class CutlassView: NSView, CALayerDelegate {
 
     private func render() {
         autoreleasepool {
-            _renderer.beRender(metalLayer, contentsSize, contentsScale)
+            _renderer.beRenderFrame(metalLayer, contentsSize, contentsScale)
         }
     }
 

@@ -202,20 +202,22 @@ public class Yoga {
                                 GLKVector3Make(xmin, ymax, 0),
                                 GLKVector4Make(1.0, 1.0, 1.0, 1.0))
 
-            ctx.renderer.beSubmitRenderUnit(ctx, RenderUnit(ctx,
-                                                          .stencilBegin,
-                                                          vertices,
-                                                          ctx.view.bounds.size()))
+            let renderUnit = RenderUnit(ctx,
+                                        .stencilBegin,
+                                        vertices,
+                                        ctx.view.bounds.size())
+            ctx.renderer.beSubmitRenderUnit(ctx, renderUnit)
             ctx.renderer.beSubmitRenderFinished(ctx)
         }
     }
 
     private func popClips(_ ctx: RenderFrameContext) {
         if let vertices = _clippingVertices {
-            ctx.renderer.beSubmitRenderUnit(ctx, RenderUnit(ctx,
-                                                          .stencilEnd,
-                                                          vertices,
-                                                          ctx.view.bounds.size()))
+            let renderUnit = RenderUnit(ctx,
+                                        .stencilEnd,
+                                        vertices,
+                                        ctx.view.bounds.size())
+            ctx.renderer.beSubmitRenderUnit(ctx, renderUnit)
             ctx.renderer.beSubmitRenderFinished(ctx)
         }
     }

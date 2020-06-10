@@ -319,7 +319,7 @@ public class Renderer: Actor {
     private var frameNumberRequested: Int64 = 0
     private var renderUnitTree: AVLTree<Int64, RenderUnit> = AVLTree()
 
-    public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRenderFrame = Behavior(self) { (args: BehaviorArgs) in
         // flynnlint:parameter CAMetalLayer - The metal layer to render into
         // flynnlint:parameter CGSize - The size of the view associated with the metal layer
         // flynnlint:parameter CGFloat - the scale of the view associated with the metal layer
@@ -652,7 +652,6 @@ public class Renderer: Actor {
     // locking mechanisms to keep them safe.
 
     public lazy var beGetTextureInfo = Behavior(self) { (args: BehaviorArgs) in
-        // flynnlint:parameter Renderer - The cutlass renderer
         // flynnlint:parameter String - The bundle path of the texture to load
         // flynnlint:parameter Behavior - Callback with the texture
         let bundlePath: String = args[x:0]

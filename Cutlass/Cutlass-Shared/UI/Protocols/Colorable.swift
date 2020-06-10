@@ -103,20 +103,6 @@ public class ColorableState<T> {
 
 public protocol Colorable: Actor {
     var safeColorable: ColorableState<Self> { get set }
-
-    var beColor: ChainableBehavior<Self> { get }
-    var beAlpha: ChainableBehavior<Self> { get }
-    var beRGBA: ChainableBehavior<Self> { get }
-    var beClear: ChainableBehavior<Self> { get }
-    var beWhite: ChainableBehavior<Self> { get }
-    var beBlack: ChainableBehavior<Self> { get }
-    var beGray: ChainableBehavior<Self> { get }
-    var beRed: ChainableBehavior<Self> { get }
-    var beGreen: ChainableBehavior<Self> { get }
-    var beBlue: ChainableBehavior<Self> { get }
-    var beYellow: ChainableBehavior<Self> { get }
-    var beMagenta: ChainableBehavior<Self> { get }
-    var beCyan: ChainableBehavior<Self> { get }
 }
 
 public extension Colorable {
