@@ -71,7 +71,7 @@ public class Renderer: Actor {
     init(pixelFormat: MTLPixelFormat, device: MTLDevice) {
         self.metalDevice = device
         self.pixelFormat = pixelFormat
-
+        
         metalCommandQueue = metalDevice.makeCommandQueue()
 
         //Get the framework bundle by using `Bundle(for: type(of: self))` from inside any framework class.
@@ -253,6 +253,7 @@ public class Renderer: Actor {
     }
 
     private func privateInit() {
+        safeCoreAffinity = .onlyPerformance
         depthTexture = getDepthTexture(size: CGSize(width: 128, height: 128))
     }
 

@@ -15,6 +15,11 @@ public final class Color: Actor, Viewable, Colorable {
 
     private var bufferedGeometry = BufferedGeometry()
 
+    public override init() {
+        super.init()
+        safeViewableInit()
+    }
+
     public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
         // flynnlint:parameter RenderFrameContext - The context of the render frame
         let ctx: RenderFrameContext = args[x:0]

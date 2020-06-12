@@ -16,6 +16,10 @@ public protocol Viewable: Actor {
 
 public extension Viewable {
 
+    func safeViewableInit() {
+        safeCoreAffinity = .onlyEfficiency
+    }
+
     func safeViewableSubmitRenderUnit(_ ctx: RenderFrameContext,
                                       _ vertices: FloatAlignedArray,
                                       _ contentSize: GLKVector2,
