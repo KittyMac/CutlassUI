@@ -71,7 +71,7 @@ public class Renderer: Actor {
     init(pixelFormat: MTLPixelFormat, device: MTLDevice) {
         self.metalDevice = device
         self.pixelFormat = pixelFormat
-        
+
         metalCommandQueue = metalDevice.makeCommandQueue()
 
         //Get the framework bundle by using `Bundle(for: type(of: self))` from inside any framework class.
@@ -294,18 +294,18 @@ public class Renderer: Actor {
     private var needsLayout: Bool = true
     private var needsRender: Bool = true
 
-    public lazy var beSetRoot = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSetRoot = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter Yoga - The yoga node to set the root as
         self.root.removeAll()
         self.root.child(args[x:0])
         self.needsLayout = true
     }
 
-    public lazy var beSetNeedsLayout = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSetNeedsLayout = Behavior(self) { [unowned self] (_: BehaviorArgs) in
         self.needsLayout = true
     }
 
-    public lazy var beSetNeedsRender = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSetNeedsRender = Behavior(self) { [unowned self] (_: BehaviorArgs) in
         self.needsRender = true
     }
 
@@ -320,7 +320,7 @@ public class Renderer: Actor {
     private var frameNumberRequested: Int64 = 0
     private var renderUnitTree: AVLTree<Int64, RenderUnit> = AVLTree()
 
-    public lazy var beRenderFrame = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRenderFrame = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter CAMetalLayer - The metal layer to render into
         // flynnlint:parameter CGSize - The size of the view associated with the metal layer
         // flynnlint:parameter CGFloat - the scale of the view associated with the metal layer
@@ -346,7 +346,7 @@ public class Renderer: Actor {
         self.render_start(ctx)
     }
 
-    public lazy var beSubmitRenderUnit = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSubmitRenderUnit = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter RenderFrameContext - The render frame context
         // flynnlint:parameter RenderUnit - The render unit to render
 
@@ -357,7 +357,7 @@ public class Renderer: Actor {
         self.renderUnitTree.insert(key: unit.renderNumber, payload: unit)
     }
 
-    public lazy var beSubmitRenderFinished = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beSubmitRenderFinished = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter RenderFrameContext - The render frame context
 
         // Each view which received a render call must call submitRenderFinished when they
@@ -371,7 +371,7 @@ public class Renderer: Actor {
         }
     }
 
-    public lazy var beSubmitRenderOnScreen = Behavior(self) { (_: BehaviorArgs) in
+    public lazy var beSubmitRenderOnScreen = Behavior(self) { [unowned self] (_: BehaviorArgs) in
         self.renderAheadCount -= 1
     }
 
@@ -652,7 +652,7 @@ public class Renderer: Actor {
     // and we want to support loading an image atomically. So these methods include their own
     // locking mechanisms to keep them safe.
 
-    public lazy var beGetTextureInfo = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beGetTextureInfo = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter String - The bundle path of the texture to load
         // flynnlint:parameter Behavior - Callback with the texture
         let bundlePath: String = args[x:0]

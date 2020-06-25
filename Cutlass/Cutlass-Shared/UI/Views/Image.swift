@@ -21,7 +21,7 @@ public final class Image: Actor, Viewable, Colorable, Imageable {
         safeViewableInit()
     }
 
-    public lazy var beRender = Behavior(self) { (args: BehaviorArgs) in
+    public lazy var beRender = Behavior(self) { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter RenderFrameContext - The render frame context
         let ctx: RenderFrameContext = args[x:0]
         let bounds = ctx.view.bounds

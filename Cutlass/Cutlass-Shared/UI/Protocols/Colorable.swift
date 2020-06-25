@@ -10,14 +10,14 @@ import Foundation
 import Flynn
 import GLKit
 
-public class ColorableState<T> {
+public class ColorableState<T: Actor> {
     public var color: GLKVector4 = GLKVector4Make(1, 1, 1, 1)
 
     private func setColor(_ red: Float, _ green: Float, _ blue: Float, _ alpha: Float) {
         color = GLKVector4Make(red, green, blue, alpha)
     }
 
-    lazy var beColor = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beColor = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter NSNumber - red component
         // flynnlint:parameter NSNumber - green component
         // flynnlint:parameter NSNumber - blue component
@@ -29,12 +29,12 @@ public class ColorableState<T> {
         self.setColor(rrr.floatValue, ggg.floatValue, bbb.floatValue, aaa.floatValue)
     }
 
-    lazy var beAlpha = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beAlpha = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter Float - alpha component
         self.color.a = args[x:0]
     }
 
-    lazy var beRGBA = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beRGBA = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter UInt32 - color as an UInt32 (ie 0xFF00FFFF)
         let ccc: UInt32 = args[x:0]
         let rrr = Float((ccc >> 24) & 0xFF) / 255.0
@@ -44,43 +44,43 @@ public class ColorableState<T> {
         self.color = GLKVector4Make(rrr, ggg, bbb, aaa)
     }
 
-    lazy var beClear = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beClear = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0, 0, 0, 0)
     }
 
-    lazy var beWhite = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beWhite = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(1, 1, 1, 1)
     }
 
-    lazy var beBlack = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beBlack = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0, 0, 0, 1)
     }
 
-    lazy var beGray = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beGray = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0.7, 0.7, 0.7, 1.0)
     }
 
-    lazy var beRed = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beRed = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(1, 0, 0, 1)
     }
 
-    lazy var beGreen = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beGreen = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0, 1, 0, 1)
     }
 
-    lazy var beBlue = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beBlue = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0, 0, 1, 1)
     }
 
-    lazy var beYellow = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beYellow = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(1, 1, 0, 1)
     }
 
-    lazy var beMagenta = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beMagenta = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(1, 0, 1, 1)
     }
 
-    lazy var beCyan = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beCyan = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.setColor(0, 1, 1, 1)
     }
 

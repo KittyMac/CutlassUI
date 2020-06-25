@@ -7,7 +7,6 @@
 //
 
 // swiftlint:disable function_body_length
-// swiftlint:disable force_cast
 
 import Foundation
 import Flynn
@@ -20,7 +19,7 @@ public enum ImageModeType {
     case stretch
 }
 
-public class ImageableState<T> {
+public class ImageableState<T: Actor> {
     var imageHash: Int = 0
     var imageWidth: Int = 0
     var imageHeight: Int = 0
@@ -31,29 +30,29 @@ public class ImageableState<T> {
     var mode: ImageModeType = .fill
     var stretchInsets: GLKVector4 = GLKVector4Make(0, 0, 0, 0)
 
-    lazy var bePath = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var bePath = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter String - path to the image
         self.path = args[x:0]
     }
 
-    lazy var beMode = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beMode = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter ImageModeType - image mode for displaying the image
         self.mode = args[x:0]
     }
 
-    lazy var beFill = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beFill = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.mode = .fill
     }
 
-    lazy var beAspectFill = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beAspectFill = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.mode = .aspectFill
     }
 
-    lazy var beAspectFit = ChainableBehavior<T> { (_: BehaviorArgs) in
+    lazy var beAspectFit = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
         self.mode = .aspectFit
     }
 
-    lazy var beStretch = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beStretch = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter Float - top inset
         // flynnlint:parameter Float - left inset
         // flynnlint:parameter Float - bottom inset
@@ -62,14 +61,14 @@ public class ImageableState<T> {
         self.mode = .stretch
     }
 
-    lazy var beStretchAll = ChainableBehavior<T> { (args: BehaviorArgs) in
+    lazy var beStretchAll = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter Float - top, left, bottom and right inset
         let vvv: Float = args[x:0]
         self.stretchInsets = GLKVector4Make(vvv, vvv, vvv, vvv)
         self.mode = .stretch
     }
 
-    lazy var beUpdateTextureInfo = Behavior { (args: BehaviorArgs) in
+    lazy var beUpdateTextureInfo = Behavior { [unowned self] (args: BehaviorArgs) in
         // flynnlint:parameter Renderer - cutlass renderer
         // flynnlint:parameter String - path to image
         // flynnlint:parameter MTLTexture - texture for the image
@@ -92,7 +91,7 @@ public class ImageableState<T> {
         beAspectFit.setActor(actor)
         beStretch.setActor(actor)
         beStretchAll.setActor(actor)
-        beUpdateTextureInfo.setActor(actor as! Actor)
+        beUpdateTextureInfo.setActor(actor)
     }
 }
 
