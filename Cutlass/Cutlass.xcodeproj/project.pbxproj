@@ -612,8 +612,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 466151F524731BE300F87A9B /* Build configuration list for PBXNativeTarget "Cutlass-iOS" */;
 			buildPhases = (
-				465D50BC248C9ECF0012678E /* SwiftLint */,
 				46AEA32F24870A7000C618CF /* FlynnLint */,
+				465D50BC248C9ECF0012678E /* SwiftLint */,
 				466151EB24731BE300F87A9B /* Headers */,
 				466151EC24731BE300F87A9B /* Sources */,
 				466151ED24731BE300F87A9B /* Frameworks */,
@@ -836,7 +836,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "${BUILD_ROOT}/../../SourcePackages/checkouts/flynn/meta/FlynnLint ${SRCROOT}\n";
+			shellScript = "FLYNNLINTSWIFTPM=${SRCROOT}/.build/checkouts/flynn/meta/FlynnLint\nFLYNNLINTXCODE=${BUILD_ROOT}/../../SourcePackages/checkouts/flynn/meta/FlynnLint\n\nif [ -f \"${FLYNNLINTSWIFTPM}\" ]; then\n    ${FLYNNLINTSWIFTPM} ${SRCROOT}\nelif [ -f \"${FLYNNLINTXCODE}\" ]; then\n    ${FLYNNLINTXCODE} ${SRCROOT}\nelse\n    echo \"warning: Unable to find FlynnLint, aborting...\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
