@@ -1434,7 +1434,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/KittyMac/flynn";
 			requirement = {
-				branch = master;
+				branch = dispatch_queues_opt;
 				kind = branch;
 			};
 		};

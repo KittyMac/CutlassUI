@@ -18,25 +18,26 @@ public class ColorableState<T: Actor> {
     }
 
     lazy var beColor = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter NSNumber - red component
-        // flynnlint:parameter NSNumber - green component
-        // flynnlint:parameter NSNumber - blue component
-        // flynnlint:parameter NSNumber - alpha component
-        let rrr: NSNumber = args[x:0]
-        let ggg: NSNumber = args[x:1]
-        let bbb: NSNumber = args[x:2]
-        let aaa: NSNumber = args[x:3]
-        self.setColor(rrr.floatValue, ggg.floatValue, bbb.floatValue, aaa.floatValue)
+        // flynnlint:parameter Double - red component
+        // flynnlint:parameter Double - green component
+        // flynnlint:parameter Double - blue component
+        // flynnlint:parameter Double - alpha component
+        let rrr: Double = args[x:0]
+        let ggg: Double = args[x:1]
+        let bbb: Double = args[x:2]
+        let aaa: Double = args[x:3]
+        self.setColor(Float(rrr), Float(ggg), Float(bbb), Float(aaa))
     }
 
     lazy var beAlpha = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter Float - alpha component
-        self.color.a = args[x:0]
+        // flynnlint:parameter Double - alpha component
+        let aaa: Double = args[x:0]
+        self.color.a = Float(aaa)
     }
 
     lazy var beRGBA = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter UInt32 - color as an UInt32 (ie 0xFF00FFFF)
-        let ccc: UInt32 = args[x:0]
+        // flynnlint:parameter Int - color as an Int (ie 0xFF00FFFF)
+        let ccc: Int = args[x:0]
         let rrr = Float((ccc >> 24) & 0xFF) / 255.0
         let ggg = Float((ccc >> 16) & 0xFF) / 255.0
         let bbb = Float((ccc >> 8) & 0xFF) / 255.0

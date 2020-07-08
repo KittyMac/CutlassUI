@@ -253,7 +253,7 @@ public class Renderer: Actor {
     }
 
     private func privateInit() {
-        safeCoreAffinity = .onlyPerformance
+        unsafeCoreAffinity = .onlyPerformance
         depthTexture = getDepthTexture(size: CGSize(width: 128, height: 128))
     }
 

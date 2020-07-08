@@ -17,7 +17,7 @@ public protocol Viewable: Actor {
 public extension Viewable {
 
     func safeViewableInit() {
-        safeCoreAffinity = .onlyEfficiency
+        unsafeCoreAffinity = .onlyEfficiency
     }
 
     func safeViewableSubmitRenderUnit(_ ctx: RenderFrameContext,
