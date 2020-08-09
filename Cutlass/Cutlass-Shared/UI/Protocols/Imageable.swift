@@ -19,7 +19,7 @@ public enum ImageModeType {
     case stretch
 }
 
-public class ImageableState<T: Actor> {
+public class ImageableState {
     var imageHash: Int = 0
     var imageWidth: Int = 0
     var imageHeight: Int = 0
@@ -29,86 +29,58 @@ public class ImageableState<T: Actor> {
     var path: String?
     var mode: ImageModeType = .fill
     var stretchInsets: GLKVector4 = GLKVector4Make(0, 0, 0, 0)
-
-    lazy var bePath = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter String - path to the image
-        self.path = args[x:0]
-    }
-
-    lazy var beMode = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter ImageModeType - image mode for displaying the image
-        self.mode = args[x:0]
-    }
-
-    lazy var beFill = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
-        self.mode = .fill
-    }
-
-    lazy var beAspectFill = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
-        self.mode = .aspectFill
-    }
-
-    lazy var beAspectFit = ChainableBehavior<T> { [unowned self] (_: BehaviorArgs) in
-        self.mode = .aspectFit
-    }
-
-    lazy var beStretch = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter Float - top inset
-        // flynnlint:parameter Float - left inset
-        // flynnlint:parameter Float - bottom inset
-        // flynnlint:parameter Float - right inset
-        self.stretchInsets = GLKVector4Make(args[x:0], args[x:1], args[x:2], args[x:3])
-        self.mode = .stretch
-    }
-
-    lazy var beStretchAll = ChainableBehavior<T> { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter Float - top, left, bottom and right inset
-        let vvv: Float = args[x:0]
-        self.stretchInsets = GLKVector4Make(vvv, vvv, vvv, vvv)
-        self.mode = .stretch
-    }
-
-    lazy var beUpdateTextureInfo = Behavior { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter Renderer - cutlass renderer
-        // flynnlint:parameter String - path to image
-        // flynnlint:parameter MTLTexture - texture for the image
-        let renderer: Renderer = args[x:0]
-        let path: String = args[x:1]
-        let textureInfo: MTLTexture = args[x:2]
-        self.imageWidth = textureInfo.width
-        self.imageHeight = textureInfo.height
-        self.imageAspect = Float(textureInfo.width) / Float(textureInfo.height)
-        self.imageHash = textureInfo.width + textureInfo.height + path.hashValue
-        self.imageSize = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
-        renderer.beSetNeedsRender()
-    }
-
-    init (_ actor: T) {
-        bePath.setActor(actor)
-        beMode.setActor(actor)
-        beFill.setActor(actor)
-        beAspectFill.setActor(actor)
-        beAspectFit.setActor(actor)
-        beStretch.setActor(actor)
-        beStretchAll.setActor(actor)
-        beUpdateTextureInfo.setActor(actor)
-    }
 }
 
-public protocol Imageable: Actor {
-    var safeImageable: ImageableState<Self> { get set }
+public protocol Imageable: Actor, UpdateTextureInfo {
+    var safeImageable: ImageableState { get set }
 }
 
 public extension Imageable {
 
-    var bePath: ChainableBehavior<Self> { return safeImageable.bePath }
-    var beMode: ChainableBehavior<Self> { return safeImageable.beMode }
-    var beFill: ChainableBehavior<Self> { return safeImageable.beFill }
-    var beAspectFill: ChainableBehavior<Self> { return safeImageable.beAspectFill }
-    var beAspectFit: ChainableBehavior<Self> { return safeImageable.beAspectFit }
-    var beStretch: ChainableBehavior<Self> { return safeImageable.beStretch }
-    var beStretchAll: ChainableBehavior<Self> { return safeImageable.beStretchAll }
-    var beUpdateTextureInfo: Behavior { return safeImageable.beUpdateTextureInfo }
+    private func _bePath(_ path: String) {
+        safeImageable.path = path
+    }
+
+    private func _beMode(_ mode: ImageModeType) {
+        safeImageable.mode = mode
+    }
+
+    private func _beFill() {
+        safeImageable.mode = .fill
+    }
+
+    private func _beAspectFill() {
+        safeImageable.mode = .aspectFill
+    }
+
+    private func _beAspectFit() {
+        safeImageable.mode = .aspectFit
+    }
+
+    private func _beStretch(_ top: Float,
+                            _ left: Float,
+                            _ bottom: Float,
+                            _ right: Float) {
+        safeImageable.stretchInsets = GLKVector4Make(top, left, bottom, right)
+        safeImageable.mode = .stretch
+    }
+
+    private func _beStretchAll(_ value: Float) {
+        // flynnlint:parameter Float - top, left, bottom and right inset
+        safeImageable.stretchInsets = GLKVector4Make(value, value, value, value)
+        safeImageable.mode = .stretch
+    }
+
+    private func _beUpdateTextureInfo(_ renderer: Renderer,
+                                      _ path: String,
+                                      _ textureInfo: MTLTexture) {
+        safeImageable.imageWidth = textureInfo.width
+        safeImageable.imageHeight = textureInfo.height
+        safeImageable.imageAspect = Float(textureInfo.width) / Float(textureInfo.height)
+        safeImageable.imageHash = textureInfo.width + textureInfo.height + path.hashValue
+        safeImageable.imageSize = GLKVector2Make(Float(textureInfo.width), Float(textureInfo.height))
+        renderer.beSetNeedsRender()
+    }
 
     func safeImageLoaded() -> Bool {
         return (safeImageable.imageWidth != 0) || (safeImageable.imageHeight != 0)
@@ -117,7 +89,7 @@ public extension Imageable {
     func safeImageableConfirmImageSize(_ ctx: RenderFrameContext) {
         if let path = safeImageable.path {
             if !safeImageLoaded() {
-                ctx.renderer.beGetTextureInfo(path, beUpdateTextureInfo)
+                ctx.renderer.beGetTextureInfo(path, self)
             }
         }
     }
@@ -178,4 +150,52 @@ public extension Imageable {
                                  GLKVector2Make(smin, tmax))
         }
     }
+}
+
+// MARK: - Autogenerated by FlynnLint
+// Contents of file after this marker will be overwritten as needed
+
+extension Imageable {
+
+    @discardableResult
+    public func bePath(_ path: String) -> Self {
+        unsafeSend { self._bePath(path) }
+        return self
+    }
+    @discardableResult
+    public func beMode(_ mode: ImageModeType) -> Self {
+        unsafeSend { self._beMode(mode) }
+        return self
+    }
+    @discardableResult
+    public func beFill() -> Self {
+        unsafeSend(_beFill)
+        return self
+    }
+    @discardableResult
+    public func beAspectFill() -> Self {
+        unsafeSend(_beAspectFill)
+        return self
+    }
+    @discardableResult
+    public func beAspectFit() -> Self {
+        unsafeSend(_beAspectFit)
+        return self
+    }
+    @discardableResult
+    public func beStretch(_ top: Float, _ left: Float, _ bottom: Float, _ right: Float) -> Self {
+        unsafeSend { self._beStretch(top, left, bottom, right) }
+        return self
+    }
+    @discardableResult
+    public func beStretchAll(_ value: Float) -> Self {
+        unsafeSend { self._beStretchAll(value) }
+        return self
+    }
+    @discardableResult
+    public func beUpdateTextureInfo(_ renderer: Renderer, _ path: String, _ textureInfo: MTLTexture) -> Self {
+        unsafeSend { self._beUpdateTextureInfo(renderer, path, textureInfo) }
+        return self
+    }
+
 }

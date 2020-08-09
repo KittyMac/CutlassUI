@@ -23,6 +23,11 @@ import UIKit
 import Cocoa
 #endif
 
+public protocol UpdateTextureInfo {
+    @discardableResult
+    func beUpdateTextureInfo(_ renderer: Renderer, _ path: String, _ texture: MTLTexture) -> Self
+}
+
 struct SceneMatrices {
     var projectionMatrix: GLKMatrix4 = GLKMatrix4Identity
     var modelviewMatrix: GLKMatrix4 = GLKMatrix4Identity
@@ -294,19 +299,18 @@ public class Renderer: Actor {
     private var needsLayout: Bool = true
     private var needsRender: Bool = true
 
-    public lazy var beSetRoot = Behavior(self) { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter Yoga - The yoga node to set the root as
-        self.root.removeAll()
-        self.root.child(args[x:0])
-        self.needsLayout = true
+    private func _beSetRoot(_ newRoot: Yoga) {
+        root.removeAll()
+        root.child(newRoot)
+        needsLayout = true
     }
 
-    public lazy var beSetNeedsLayout = Behavior(self) { [unowned self] (_: BehaviorArgs) in
-        self.needsLayout = true
+    private func _beSetNeedsLayout() {
+        needsLayout = true
     }
 
-    public lazy var beSetNeedsRender = Behavior(self) { [unowned self] (_: BehaviorArgs) in
-        self.needsRender = true
+    private func _beSetNeedsRender() {
+        needsRender = true
     }
 
     // Render happens like this:
@@ -320,13 +324,9 @@ public class Renderer: Actor {
     private var frameNumberRequested: Int64 = 0
     private var renderUnitTree: AVLTree<Int64, RenderUnit> = AVLTree()
 
-    public lazy var beRenderFrame = Behavior(self) { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter CAMetalLayer - The metal layer to render into
-        // flynnlint:parameter CGSize - The size of the view associated with the metal layer
-        // flynnlint:parameter CGFloat - the scale of the view associated with the metal layer
-        let metalLayer: CAMetalLayer = args[x:0]
-        let contentsSize: CGSize = args[x:1]
-        let contentsScale: CGFloat = args[x:2]
+    private func _beRenderFrame(_ metalLayer: CAMetalLayer,
+                                _ contentsSize: CGSize,
+                                _ contentsScale: CGFloat) {
 
         let pointSize = CGSize(width: contentsSize.width, height: contentsSize.height)
         let pixelSize = CGSize(width: contentsSize.width * contentsScale, height: contentsSize.height * contentsScale)
@@ -334,56 +334,19 @@ public class Renderer: Actor {
         metalLayer.drawableSize = pixelSize
         metalLayer.contentsScale = contentsScale
 
-        self.frameNumberRequested += 1
+        frameNumberRequested += 1
 
         let ctx = RenderFrameContext(renderer: self,
                                      metalLayer: metalLayer,
                                      pointSize: pointSize,
                                      pixelSize: pixelSize,
-                                     frameNumber: self.frameNumberRequested,
+                                     frameNumber: frameNumberRequested,
                                      view: ViewFrameContext())
 
-        self.render_start(ctx)
-    }
-
-    public lazy var beSubmitRenderUnit = Behavior(self) { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter RenderFrameContext - The render frame context
-        // flynnlint:parameter RenderUnit - The render unit to render
-
-        // Each view can submit a number of render units, with each render unit being
-        // an distinct renderable thing
-        let ctx: RenderFrameContext = args[x:0]
-        let unit: RenderUnit = args[x:1]
-        self.renderUnitTree.insert(key: unit.renderNumber, payload: unit)
-    }
-
-    public lazy var beSubmitRenderFinished = Behavior(self) { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter RenderFrameContext - The render frame context
-
-        // Each view which received a render call must call submitRenderFinished when they
-        // have finished that render call. The Renderer tracks these to know when all views
-        // in a render frame have finished.
-        let ctx: RenderFrameContext = args[x:0]
-        self.numberOfViewsToRender -= 1
-
-        if self.numberOfViewsToRender == 0 {
-            self.render_finish(ctx)
-        }
-    }
-
-    public lazy var beSubmitRenderOnScreen = Behavior(self) { [unowned self] (_: BehaviorArgs) in
-        self.renderAheadCount -= 1
-    }
-
-    // MARK: - Internal - Rendering
-
-    private func render_start(_ ctx: RenderFrameContext) {
         // make sure we are not trying to render more than the max concurrent frames
         if renderAheadCount >= Renderer.maxConcurrentFrames {
             return
         }
-
-        needsLayout = true
 
         if needsLayout ||
            Int(root.getWidth()) != Int(ctx.pointSize.width) ||
@@ -408,202 +371,218 @@ public class Renderer: Actor {
         renderAheadCount += 1
     }
 
-    private func render_finish(_ ctx: RenderFrameContext) {
+    private func _beSubmitRenderUnit(_ ctx: RenderFrameContext, _ unit: RenderUnit) {
+        renderUnitTree.insert(key: unit.renderNumber, payload: unit)
+    }
 
-        if let drawable = ctx.metalLayer.nextDrawable() {
-            let drawableWidth = drawable.texture.width
-            let drawableHeight = drawable.texture.height
+    private func _beSubmitRenderFinished(_ ctx: RenderFrameContext) {
+        // Each view which received a render call must call submitRenderFinished when they
+        // have finished that render call. The Renderer tracks these to know when all views
+        // in a render frame have finished.
+        numberOfViewsToRender -= 1
 
-            if drawableWidth != Int(ctx.pixelSize.width) || drawableHeight != Int(ctx.pixelSize.height) {
-                print(".")
-                renderAheadCount -= 1
-                return
-            }
+        if numberOfViewsToRender == 0 {
 
-            if drawableWidth != depthTexture.width || drawableHeight != depthTexture.height {
-                depthTexture = getDepthTexture(size: CGSize(width: drawableWidth, height: drawableHeight))
-            }
+            if let drawable = ctx.metalLayer.nextDrawable() {
+                let drawableWidth = drawable.texture.width
+                let drawableHeight = drawable.texture.height
 
-            let renderPassDescriptor = MTLRenderPassDescriptor()
-            if let depthAttachment = renderPassDescriptor.depthAttachment {
-                depthAttachment.texture = depthTexture
-                depthAttachment.clearDepth = 1.0
-                depthAttachment.storeAction = .dontCare
-                depthAttachment.loadAction = .clear
-
-                if let stencilAttachment = renderPassDescriptor.stencilAttachment {
-                    stencilAttachment.texture = depthAttachment.texture
-                    stencilAttachment.storeAction = .dontCare
-                    stencilAttachment.loadAction = .clear
-                    stencilAttachment.clearStencil = 255
+                if drawableWidth != Int(ctx.pixelSize.width) || drawableHeight != Int(ctx.pixelSize.height) {
+                    print(".")
+                    renderAheadCount -= 1
+                    return
                 }
-            }
 
-            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
-            renderPassDescriptor.colorAttachments[0].loadAction = .clear
-            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1.0,
-                                                                                green: 1.0,
-                                                                                blue: 1.0,
-                                                                                alpha: 1.0)
+                if drawableWidth != depthTexture.width || drawableHeight != depthTexture.height {
+                    depthTexture = getDepthTexture(size: CGSize(width: drawableWidth, height: drawableHeight))
+                }
 
-            guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
-                renderAheadCount -= 1
-                return
-            }
+                let renderPassDescriptor = MTLRenderPassDescriptor()
+                if let depthAttachment = renderPassDescriptor.depthAttachment {
+                    depthAttachment.texture = depthTexture
+                    depthAttachment.clearDepth = 1.0
+                    depthAttachment.storeAction = .dontCare
+                    depthAttachment.loadAction = .clear
 
-            guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
-                renderAheadCount -= 1
-                return
-            }
+                    if let stencilAttachment = renderPassDescriptor.stencilAttachment {
+                        stencilAttachment.texture = depthAttachment.texture
+                        stencilAttachment.storeAction = .dontCare
+                        stencilAttachment.loadAction = .clear
+                        stencilAttachment.clearStencil = 255
+                    }
+                }
 
-            // Set up our projection matrix
-            let aspect = fabsf(Float(ctx.pointSize.width / ctx.pointSize.height))
+                renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+                renderPassDescriptor.colorAttachments[0].loadAction = .clear
+                renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1.0,
+                                                                                    green: 1.0,
+                                                                                    blue: 1.0,
+                                                                                    alpha: 1.0)
 
-            // calculate the field of view such that at a given depth we
-            // match the size of the window exactly
-            var radtheta: Float = 0.0
-            let distance: Float = 5000.0
+                guard let commandBuffer = metalCommandQueue.makeCommandBuffer() else {
+                    renderAheadCount -= 1
+                    return
+                }
 
-            radtheta = 2.0 * atan2( Float(ctx.pointSize.height / 2.0), distance )
+                guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
+                    renderAheadCount -= 1
+                    return
+                }
 
-            let projectionMatrix = GLKMatrix4MakePerspective(
-                radtheta,
-                aspect,
-                1.0,
-                distance * 10.0)
-            sceneMatrices.projectionMatrix = projectionMatrix
+                // Set up our projection matrix
+                let aspect = fabsf(Float(ctx.pointSize.width / ctx.pointSize.height))
 
-            // define the modelview and projection matrics and make them
-            // available to the shaders
-            var modelViewMatrix = GLKMatrix4Identity
-            modelViewMatrix = GLKMatrix4Translate(modelViewMatrix,
-                                                  Float(ctx.pointSize.width * -0.5),
-                                                  Float(ctx.pointSize.height * 0.5),
-                                                  -5000.0)
-            modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, Float.pi)
-            sceneMatrices.modelviewMatrix = modelViewMatrix
+                // calculate the field of view such that at a given depth we
+                // match the size of the window exactly
+                var radtheta: Float = 0.0
+                let distance: Float = 5000.0
 
-            renderEncoder.setVertexBytes(&sceneMatrices, length: MemoryLayout<SceneMatrices>.stride, index: 1)
-            renderEncoder.setFragmentBytes(&sdfUniforms, length: MemoryLayout<SDFUniforms>.stride, index: 0)
+                radtheta = 2.0 * atan2( Float(ctx.pointSize.height / 2.0), distance )
 
-            globalUniforms.globalColor.r = -99
-            globalUniforms.globalColor.g = -999
-            globalUniforms.globalColor.b = -9999
-            globalUniforms.globalColor.a = -99999
+                let projectionMatrix = GLKMatrix4MakePerspective(
+                    radtheta,
+                    aspect,
+                    1.0,
+                    distance * 10.0)
+                sceneMatrices.projectionMatrix = projectionMatrix
 
-            stencilValueCount = stencilValueMax
-            renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
-            renderEncoder.setDepthStencilState(ignoreStencilState)
+                // define the modelview and projection matrics and make them
+                // available to the shaders
+                var modelViewMatrix = GLKMatrix4Identity
+                modelViewMatrix = GLKMatrix4Translate(modelViewMatrix,
+                                                      Float(ctx.pointSize.width * -0.5),
+                                                      Float(ctx.pointSize.height * 0.5),
+                                                      -5000.0)
+                modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, Float.pi)
+                sceneMatrices.modelviewMatrix = modelViewMatrix
 
-            var aborted = false
+                renderEncoder.setVertexBytes(&sceneMatrices, length: MemoryLayout<SceneMatrices>.stride, index: 1)
+                renderEncoder.setFragmentBytes(&sdfUniforms, length: MemoryLayout<SDFUniforms>.stride, index: 0)
 
-            renderEncoder.setRenderPipelineState(flatPipelineState)
-            renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+                globalUniforms.globalColor.r = -99
+                globalUniforms.globalColor.g = -999
+                globalUniforms.globalColor.b = -9999
+                globalUniforms.globalColor.a = -99999
 
-            renderUnitTree.doInOrder(node: renderUnitTree.root) { (node) in
-                if let unit = node.payload {
-                    let shaderType = unit.shaderType
+                stencilValueCount = stencilValueMax
+                renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                renderEncoder.setDepthStencilState(ignoreStencilState)
 
-                    if unit.viewFrame.fitToSize {
-                        // When a render unit has fitToSize set, it means it wants to ensure that the
-                        // yoga node related to this render unit has its width and height set to the
-                        // render size.
-                        if unit.viewFrame.bounds.width() != unit.contentSize.x ||
-                           unit.viewFrame.bounds.height() != unit.contentSize.y {
-                            if let node = root.getNode(yodaID: unit.yogaID) {
-                                node.size(Pixel(unit.contentSize.x), Pixel(unit.contentSize.y))
-                                needsLayout = true
-                                aborted = true
+                var aborted = false
+
+                renderEncoder.setRenderPipelineState(flatPipelineState)
+                renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+
+                renderUnitTree.doInOrder(node: renderUnitTree.root) { (node) in
+                    if let unit = node.payload {
+                        let shaderType = unit.shaderType
+
+                        if unit.viewFrame.fitToSize {
+                            // When a render unit has fitToSize set, it means it wants to ensure that the
+                            // yoga node related to this render unit has its width and height set to the
+                            // render size.
+                            if unit.viewFrame.bounds.width() != unit.contentSize.x ||
+                               unit.viewFrame.bounds.height() != unit.contentSize.y {
+                                if let node = root.getNode(yodaID: unit.yogaID) {
+                                    node.size(Pixel(unit.contentSize.x), Pixel(unit.contentSize.y))
+                                    needsLayout = true
+                                    aborted = true
+                                }
                             }
                         }
-                    }
 
-                    if let textureName = unit.textureName {
-                        let texture = createTextureSync(textureName)
-                        if texture == nil {
-                            return
+                        if let textureName = unit.textureName {
+                            let texture = createTextureSync(textureName)
+                            if texture == nil {
+                                return
+                            }
+                            renderEncoder.setFragmentTexture(texture, index: 0)
                         }
-                        renderEncoder.setFragmentTexture(texture, index: 0)
-                    }
 
-                    if stencilValueCount == stencilValueMax {
-                        renderEncoder.setDepthStencilState(ignoreStencilState)
-                    } else {
-                        renderEncoder.setDepthStencilState(testStencilState)
-                    }
+                        if stencilValueCount == stencilValueMax {
+                            renderEncoder.setDepthStencilState(ignoreStencilState)
+                        } else {
+                            renderEncoder.setDepthStencilState(testStencilState)
+                        }
 
-                    /*
-                    if cullMode == CullMode_back {
-                        renderEncoder.setCullMode(.back)
-                    } else if cullMode == CullMode_front {
-                        renderEncoder.setCullMode(.front)
-                    } else if cullMode == CullMode_none {
-                        renderEncoder.setCullMode(.none)
-                    }*/
+                        /*
+                        if cullMode == CullMode_back {
+                            renderEncoder.setCullMode(.back)
+                        } else if cullMode == CullMode_front {
+                            renderEncoder.setCullMode(.front)
+                        } else if cullMode == CullMode_none {
+                            renderEncoder.setCullMode(.none)
+                        }*/
 
-                    if shaderType == .abort {
-                        aborted = true
-                    }
+                        if shaderType == .abort {
+                            aborted = true
+                        }
 
-                    if shaderType == .flat {
-                        renderEncoder.setRenderPipelineState(flatPipelineState)
-                        renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
-                    } else if shaderType == .texture {
-                        renderEncoder.setRenderPipelineState(texturePipelineState)
-                        renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
-                    } else if shaderType == .sdf {
-                        renderEncoder.setRenderPipelineState(sdfPipelineState)
-                        renderEncoder.setFragmentSamplerState(mipmapSamplerState, index: 0)
-                    } else if shaderType == .stencilBegin {
-                        renderEncoder.setDepthStencilState(decrementStencilState)
-                        renderEncoder.setRenderPipelineState(stencilPipelineState)
-                        renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
-                    } else if shaderType == .stencilEnd {
-                        renderEncoder.setDepthStencilState(incrementStencilState)
-                        renderEncoder.setRenderPipelineState(stencilPipelineState)
-                        renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
-                    }
+                        if shaderType == .flat {
+                            renderEncoder.setRenderPipelineState(flatPipelineState)
+                            renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+                        } else if shaderType == .texture {
+                            renderEncoder.setRenderPipelineState(texturePipelineState)
+                            renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+                        } else if shaderType == .sdf {
+                            renderEncoder.setRenderPipelineState(sdfPipelineState)
+                            renderEncoder.setFragmentSamplerState(mipmapSamplerState, index: 0)
+                        } else if shaderType == .stencilBegin {
+                            renderEncoder.setDepthStencilState(decrementStencilState)
+                            renderEncoder.setRenderPipelineState(stencilPipelineState)
+                            renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+                        } else if shaderType == .stencilEnd {
+                            renderEncoder.setDepthStencilState(incrementStencilState)
+                            renderEncoder.setRenderPipelineState(stencilPipelineState)
+                            renderEncoder.setFragmentSamplerState(normalSamplerState, index: 0)
+                        }
 
-                    if aborted == false && unit.vertices.vertexCount() > 0 {
-                        drawRenderUnit(renderEncoder, unit)
-                    }
+                        if aborted == false && unit.vertices.vertexCount() > 0 {
+                            drawRenderUnit(renderEncoder, unit)
+                        }
 
-                    if shaderType == .stencilBegin {
-                        stencilValueCount = max(stencilValueCount - 1, 0)
-                        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                        if shaderType == .stencilBegin {
+                            stencilValueCount = max(stencilValueCount - 1, 0)
+                            renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                        }
+                        if shaderType == .stencilEnd {
+                            stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
+                            renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                        }
                     }
-                    if shaderType == .stencilEnd {
-                        stencilValueCount = min(stencilValueCount + 1, stencilValueMax)
-                        renderEncoder.setStencilReferenceValue(UInt32(stencilValueCount))
+                }
+                renderUnitTree = AVLTree()
+
+                renderEncoder.endEncoding()
+
+                commandBuffer.addCompletedHandler { (_) in
+                    self.beSubmitRenderOnScreen()
+                }
+
+                if aborted == false {
+                    commandBuffer.present(drawable)
+                }
+                commandBuffer.commit()
+
+                if aborted == false {
+                    // Simple FPS so we can compare performance
+                    numFrames += 1
+
+                    let currentTime = CFAbsoluteTimeGetCurrent()
+                    let elapsedTime = currentTime - lastFramesTime
+                    if elapsedTime > 1.0 {
+                        print("\(numFrames) fps")
+                        numFrames = 0
+                        lastFramesTime = currentTime
                     }
                 }
             }
-            renderUnitTree = AVLTree()
 
-            renderEncoder.endEncoding()
-
-            commandBuffer.addCompletedHandler { (_) in
-                self.beSubmitRenderOnScreen()
-            }
-
-            if aborted == false {
-                commandBuffer.present(drawable)
-            }
-            commandBuffer.commit()
-
-            if aborted == false {
-                // Simple FPS so we can compare performance
-                numFrames += 1
-
-                let currentTime = CFAbsoluteTimeGetCurrent()
-                let elapsedTime = currentTime - lastFramesTime
-                if elapsedTime > 1.0 {
-                    print("\(numFrames) fps")
-                    numFrames = 0
-                    lastFramesTime = currentTime
-                }
-            }
         }
+    }
+
+    private func _beSubmitRenderOnScreen() {
+        renderAheadCount -= 1
     }
 
     private func drawRenderUnit(_ renderEncoder: MTLRenderCommandEncoder, _ unit: RenderUnit) {
@@ -647,19 +626,12 @@ public class Renderer: Actor {
         }*/
     }
 
-    // MARK: - Safe Texture Utility Methods
-    // Note: we don't trust the places that calls these methods to do so from the same thread,
-    // and we want to support loading an image atomically. So these methods include their own
-    // locking mechanisms to keep them safe.
+    // MARK: - Texture Utility Methods
 
-    public lazy var beGetTextureInfo = Behavior(self) { [unowned self] (args: BehaviorArgs) in
-        // flynnlint:parameter String - The bundle path of the texture to load
-        // flynnlint:parameter Behavior - Callback with the texture
-        let bundlePath: String = args[x:0]
-        let callback: Behavior = args[x:1]
+    private func _beGetTextureInfo(_ bundlePath: String, _ sender: UpdateTextureInfo) {
         let resolvedPath = String(bundlePath: bundlePath)
         if let texture = self.textureCache[resolvedPath] {
-            callback(self, bundlePath, texture)
+            sender.beUpdateTextureInfo(self, bundlePath, texture)
         }
     }
 
@@ -706,9 +678,7 @@ public class Renderer: Actor {
         return nil
     }
 
-    private lazy var registerTexture = Behavior(self) { (args: BehaviorArgs) in
-        let resolvedPath: String = args[x:0]
-        let texture: MTLTexture = args[x:1]
+    private func _beRegisterTexture(_ resolvedPath: String, _ texture: MTLTexture) {
         self.textureCache[resolvedPath] = texture
         self.needsRender = true
     }
@@ -749,11 +719,64 @@ public class Renderer: Actor {
                                                   options: textureLoaderOptions,
                                                   completionHandler: { (texture, _) in
                         if let texture = texture {
-                            self.registerTexture(resolvedPath, texture)
+                            self.beRegisterTexture(resolvedPath, texture)
                         }
                     })
                 }
             }.resume()
         }
     }
+}
+
+// MARK: - Autogenerated by FlynnLint
+// Contents of file after this marker will be overwritten as needed
+
+extension Renderer {
+
+    @discardableResult
+    public func beSetRoot(_ newRoot: Yoga) -> Self {
+        unsafeSend { self._beSetRoot(newRoot) }
+        return self
+    }
+    @discardableResult
+    public func beSetNeedsLayout() -> Self {
+        unsafeSend(_beSetNeedsLayout)
+        return self
+    }
+    @discardableResult
+    public func beSetNeedsRender() -> Self {
+        unsafeSend(_beSetNeedsRender)
+        return self
+    }
+    @discardableResult
+    public func beRenderFrame(_ metalLayer: CAMetalLayer, _ contentsSize: CGSize, _ contentsScale: CGFloat) -> Self {
+        unsafeSend { self._beRenderFrame(metalLayer, contentsSize, contentsScale) }
+        return self
+    }
+    @discardableResult
+    public func beSubmitRenderUnit(_ ctx: RenderFrameContext, _ unit: RenderUnit) -> Self {
+        unsafeSend { self._beSubmitRenderUnit(ctx, unit) }
+        return self
+    }
+    @discardableResult
+    public func beSubmitRenderFinished(_ ctx: RenderFrameContext) -> Self {
+        unsafeSend { self._beSubmitRenderFinished(ctx) }
+        return self
+    }
+    @discardableResult
+    public func beSubmitRenderOnScreen() -> Self {
+        unsafeSend(_beSubmitRenderOnScreen)
+        return self
+    }
+    @discardableResult
+    public func beGetTextureInfo(_ bundlePath: String, _ sender: UpdateTextureInfo) -> Self {
+        unsafeSend { self._beGetTextureInfo(bundlePath, sender) }
+        return self
+    }
+    @discardableResult
+    public func beRegisterTexture(_ resolvedPath: String, _ texture: MTLTexture) -> Self {
+        unsafeSend { self._beRegisterTexture(resolvedPath, texture) }
+        return self
+    }
+
 }

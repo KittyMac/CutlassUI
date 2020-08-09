@@ -1434,7 +1434,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/KittyMac/flynn";
 			requirement = {
-				branch = dispatch_queues_opt;
+				branch = ponyrt_v2;
 				kind = branch;
 			};
 		};

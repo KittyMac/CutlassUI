@@ -9,7 +9,7 @@
 import Foundation
 import Flynn
 import GLKit
-
+/*
 public class EventableState {
     var eventInsets: GLKVector4 = GLKVector4Make(0, 0, 0, 0)
     var eventInset: Behavior?
@@ -63,3 +63,4 @@ public extension Eventable {
         return self
     }
 }
+*/

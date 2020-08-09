@@ -11,7 +11,8 @@ import Flynn
 import GLKit
 
 public protocol Viewable: Actor {
-    var beRender: Behavior { get }
+    @discardableResult
+    func beRender(_ context: RenderFrameContext) -> Self
 }
 
 public extension Viewable {
